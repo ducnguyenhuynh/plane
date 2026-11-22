@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenci",
+      "heading": "Agenci",
+      "description": "Przypisz agentów do stanowisk w projekcie i wybierz model używany przez każdego z nich."
     }
   }
 }

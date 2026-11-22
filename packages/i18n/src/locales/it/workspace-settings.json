@@ -494,6 +494,11 @@
         "heading": "Script",
         "new_script": "Nuovo script",
         "description": "Automatizza i tuoi flussi di lavoro con script personalizzati e regole di automazione."
+      },
+      "ai_agents": {
+        "title": "Agenti IA",
+        "heading": "Agenti IA",
+        "description": "Colleghi un provider IA una volta, poi assegni gli agenti alle posizioni di progetto dalle impostazioni di ciascun progetto."
       }
     },
     "empty_state": {

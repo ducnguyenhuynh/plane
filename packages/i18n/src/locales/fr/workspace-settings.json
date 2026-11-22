@@ -494,6 +494,11 @@
         "heading": "Scripts",
         "new_script": "Nouveau script",
         "description": "Automatisez vos flux de travail avec des scripts personnalisés et des règles d’automatisation."
+      },
+      "ai_agents": {
+        "title": "Agents IA",
+        "heading": "Agents IA",
+        "description": "Connectez un fournisseur d'IA une fois, puis affectez des agents à des postes de projet depuis les paramètres de chaque projet."
       }
     },
     "empty_state": {

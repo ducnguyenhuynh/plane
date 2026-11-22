@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agentes",
+      "heading": "Agentes",
+      "description": "Atribua agentes a posições do projeto e escolha qual modelo cada um usa."
     }
   }
 }

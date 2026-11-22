@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agents",
+      "heading": "Agents",
+      "description": "Place agents in project positions and choose which model each one runs."
     }
   }
 }

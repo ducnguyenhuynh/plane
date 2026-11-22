@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenten",
+      "heading": "Agenten",
+      "description": "Agenten Projektpositionen zuweisen und festlegen, welches Modell jeder verwendet."
     }
   }
 }

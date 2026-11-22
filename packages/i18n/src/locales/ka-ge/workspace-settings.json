@@ -494,6 +494,11 @@
         "heading": "Scripts",
         "new_script": "New Script",
         "description": "Automate your workflows with custom scripts and automation rules."
+      },
+      "ai_agents": {
+        "title": "AI აგენტები",
+        "heading": "AI აგენტები",
+        "description": "დააკავშირეთ AI პროვაიდერი ერთხელ და შემდეგ მიუთითეთ აგენტები პროექტის პოზიციებზე თითოეული პროექტის პარამეტრებიდან."
       }
     },
     "empty_state": {

@@ -494,6 +494,11 @@
         "heading": "스크립트",
         "new_script": "새 스크립트",
         "description": "커스텀 스크립트와 자동화 규칙으로 워크플로우를 자동화하세요."
+      },
+      "ai_agents": {
+        "title": "AI 에이전트",
+        "heading": "AI 에이전트",
+        "description": "AI 제공업체를 한 번 연결한 다음 각 프로젝트 설정에서 에이전트를 프로젝트 포지션에 배치할 수 있습니다."
       }
     },
     "empty_state": {

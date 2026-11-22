@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenti",
+      "heading": "Agenti",
+      "description": "Assegni gli agenti alle posizioni di progetto e scelga il modello usato da ciascuno."
     }
   }
 }

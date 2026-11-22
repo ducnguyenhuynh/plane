@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Ajanlar",
+      "heading": "Ajanlar",
+      "description": "Ajanları proje pozisyonlarına atayın ve her birinin kullanacağı modeli seçin."
     }
   }
 }

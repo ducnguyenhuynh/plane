@@ -494,6 +494,11 @@
         "heading": "Skrypty",
         "new_script": "Nowy skrypt",
         "description": "Automatyzuj swoje przepływy pracy za pomocą niestandardowych skryptów i reguł automatyzacji."
+      },
+      "ai_agents": {
+        "title": "Agenci AI",
+        "heading": "Agenci AI",
+        "description": "Połącz dostawcę AI raz, a następnie przypisz agentów do stanowisk w projektach w ustawieniach każdego projektu."
       }
     },
     "empty_state": {

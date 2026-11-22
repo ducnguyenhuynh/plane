@@ -79,3 +79,50 @@ export interface ISlackIntegrationData {
   };
   is_enterprise_install: boolean;
 }
+
+export type TGitHubConnection = {
+  id?: string;
+  login: string;
+  is_active: boolean;
+  has_token: boolean;
+};
+
+export type TBackstageConnection = {
+  id?: string;
+  base_url: string;
+  is_active: boolean;
+  has_token: boolean;
+};
+
+export type TGitHubRepository = {
+  full_name: string;
+  html_url: string;
+  default_branch: string;
+  private: boolean;
+};
+
+export type TSlackEvents = {
+  issue_created: boolean;
+  issue_updated: boolean;
+  comment_created: boolean;
+};
+
+export type TProjectIntegration = {
+  id: string;
+  project_id: string;
+  github_repository: string;
+  github_repository_url: string;
+  github_default_branch: string;
+  is_github_enabled: boolean;
+  has_slack_webhook: boolean;
+  slack_events: TSlackEvents;
+  is_slack_enabled: boolean;
+  backstage_entity_ref: string;
+  is_backstage_enabled: boolean;
+};
+
+export type TProjectIntegrationPayload = Partial<
+  Omit<TProjectIntegration, "id" | "project_id" | "github_repository_url" | "has_slack_webhook">
+> & {
+  slack_webhook_url?: string;
+};

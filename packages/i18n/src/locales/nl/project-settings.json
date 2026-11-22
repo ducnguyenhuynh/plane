@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenten",
+      "heading": "Agenten",
+      "description": "Wijs agenten toe aan projectposities en kies welk model elk gebruikt."
     }
   }
 }

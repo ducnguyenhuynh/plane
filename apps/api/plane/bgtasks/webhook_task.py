@@ -54,6 +54,8 @@ from plane.utils.email import generate_plain_text_from_html
 from plane.utils.exception_logger import log_exception
 from plane.utils.url_security import pinned_fetch
 
+from .slack_task import send_slack_notification
+
 
 SERIALIZER_MAPPER = {
     "project": ProjectSerializer,
@@ -430,6 +432,19 @@ def webhook_activity(
         race conditions where objects might have been deleted.
     """
     try:
+        # Slack runs alongside webhooks; a Slack failure must never break webhook delivery
+        try:
+            send_slack_notification.delay(
+                event=event,
+                verb=verb,
+                field=field,
+                event_id=str(event_id),
+                slug=slug,
+                origin=current_site,
+            )
+        except Exception as e:
+            log_exception(e)
+
         webhooks = Webhook.objects.filter(workspace__slug=slug, is_active=True)
 
         if event == "project":

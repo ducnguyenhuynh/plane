@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+export * from "./connection.service";
 export * from "./github.service";
 export * from "./integration.service";
 export * from "./jira.service";

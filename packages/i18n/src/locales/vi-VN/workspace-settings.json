@@ -494,6 +494,11 @@
         "heading": "Script",
         "new_script": "Script mới",
         "description": "Tự động hóa quy trình làm việc của bạn với các script và quy tắc tự động hóa tùy chỉnh."
+      },
+      "ai_agents": {
+        "title": "Tác nhân AI",
+        "heading": "Tác nhân AI",
+        "description": "Kết nối nhà cung cấp AI một lần, sau đó gán tác nhân vào các vị trí trong dự án từ phần cài đặt của từng dự án."
       }
     },
     "empty_state": {

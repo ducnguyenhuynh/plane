@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # See the LICENSE file for details.
 
+from .agent import urlpatterns as agent_urls
+from .agent_run import urlpatterns as agent_run_urls
+from .integration_connection import urlpatterns as integration_connection_urls
 from .analytic import urlpatterns as analytic_urls
 from .api import urlpatterns as api_urls
 from .asset import urlpatterns as asset_urls
@@ -24,6 +27,9 @@ from .timezone import urlpatterns as timezone_urls
 from .exporter import urlpatterns as exporter_urls
 
 urlpatterns = [
+    *agent_urls,
+    *agent_run_urls,
+    *integration_connection_urls,
     *analytic_urls,
     *asset_urls,
     *cycle_urls,

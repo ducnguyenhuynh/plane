@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenti",
+      "heading": "Agenti",
+      "description": "Priraďte agentov na pozície v projekte a vyberte, ktorý model každý z nich používa."
     }
   }
 }

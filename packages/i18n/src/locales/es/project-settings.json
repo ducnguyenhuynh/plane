@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agentes",
+      "heading": "Agentes",
+      "description": "Asigne agentes a posiciones del proyecto y elija el modelo que ejecuta cada uno."
     }
   }
 }

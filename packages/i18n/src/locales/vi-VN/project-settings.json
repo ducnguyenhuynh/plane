@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Tác nhân",
+      "heading": "Tác nhân",
+      "description": "Gán tác nhân vào các vị trí trong dự án và chọn mô hình mà mỗi tác nhân sử dụng."
     }
   }
 }

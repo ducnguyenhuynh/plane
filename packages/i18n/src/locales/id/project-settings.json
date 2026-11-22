@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agen",
+      "heading": "Agen",
+      "description": "Tempatkan agen pada posisi proyek dan pilih model yang dijalankan setiap agen."
     }
   }
 }

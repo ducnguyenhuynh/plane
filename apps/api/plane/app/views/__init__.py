@@ -32,6 +32,19 @@ from .user.base import (
 )
 
 
+from .agent import AIAgentEndpoint, AIAgentTestEndpoint, ProjectAIAgentEndpoint
+
+from .agent_run import AgentRunDetailEndpoint, AgentRunRetryEndpoint, IssueAgentRunEndpoint, ProjectAgentTeamEndpoint
+
+from .integration_connection import (
+    BackstageConnectionEndpoint,
+    BackstageTestEndpoint,
+    GitHubConnectionEndpoint,
+    GitHubRepositoriesEndpoint,
+    ProjectIntegrationEndpoint,
+    ProjectSlackTestEndpoint,
+)
+
 from .base import BaseAPIView, BaseViewSet
 
 from .workspace.base import (

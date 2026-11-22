@@ -6,10 +6,12 @@
 
 import type { IconGlyph } from "@makeplane/propel/components/icon";
 import {
+  CodeOutline,
   CyclesOutline,
   EstimateOutline,
   IntakeOutline,
   LabelsOutline,
+  LinkOutline,
   MembersOutline,
   ModuleOutline,
   PagesOutline,
@@ -35,4 +37,6 @@ export const PROJECT_SETTINGS_ICONS: Record<TProjectSettingsTabs, IconGlyph | Re
   labels: LabelsOutline,
   estimates: EstimateOutline,
   automations: TriggerOutline,
+  agents: CodeOutline,
+  integrations: LinkOutline,
 };

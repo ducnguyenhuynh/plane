@@ -494,6 +494,11 @@
         "heading": "Scripts",
         "new_script": "Nieuw script",
         "description": "Automatiseer je workflows met aangepaste scripts en automatiseringsregels."
+      },
+      "ai_agents": {
+        "title": "AI-agenten",
+        "heading": "AI-agenten",
+        "description": "Verbind één keer een AI-provider en wijs daarna agenten toe aan projectposities via de instellingen van elk project."
       }
     },
     "empty_state": {

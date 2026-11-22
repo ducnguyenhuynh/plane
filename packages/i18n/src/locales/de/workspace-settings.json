@@ -494,6 +494,11 @@
         "heading": "Skripte",
         "new_script": "Neues Skript",
         "description": "Automatisieren Sie Ihre Workflows mit benutzerdefinierten Skripten und Automatisierungsregeln."
+      },
+      "ai_agents": {
+        "title": "KI-Agenten",
+        "heading": "KI-Agenten",
+        "description": "KI-Anbieter einmal verbinden und Agenten dann in den Projekteinstellungen den Projektpositionen zuweisen."
       }
     },
     "empty_state": {

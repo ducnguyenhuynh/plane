@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agenți",
+      "heading": "Agenți",
+      "description": "Atribuiți agenți pe poziții de proiect și alegeți ce model folosește fiecare."
     }
   }
 }

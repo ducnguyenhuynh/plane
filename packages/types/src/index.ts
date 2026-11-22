@@ -5,6 +5,8 @@
  */
 
 export * from "./activity";
+export * from "./agent";
+export * from "./agent-run";
 export * from "./ai";
 export * from "./analytics";
 export * from "./api_token";

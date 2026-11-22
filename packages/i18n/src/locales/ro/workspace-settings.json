@@ -494,6 +494,11 @@
         "heading": "Script-uri",
         "new_script": "Script nou",
         "description": "Automatizează fluxurile tale de lucru cu scripturi personalizate și reguli de automatizare."
+      },
+      "ai_agents": {
+        "title": "Agenți AI",
+        "heading": "Agenți AI",
+        "description": "Conectați un furnizor AI o singură dată, apoi atribuiți agenți pe poziții de proiect din setările fiecărui proiect."
       }
     },
     "empty_state": {

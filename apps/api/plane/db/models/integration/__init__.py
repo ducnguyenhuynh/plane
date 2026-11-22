@@ -3,6 +3,7 @@
 # See the LICENSE file for details.
 
 from .base import Integration, WorkspaceIntegration
+from .connection import BackstageConnection, GitHubConnection, ProjectIntegration
 from .github import (
     GithubRepository,
     GithubRepositorySync,

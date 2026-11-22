@@ -120,6 +120,15 @@ from .intake import (
     IntakeIssueDetailSerializer,
 )
 
+from .agent import AIAgentSerializer, ProjectAgentTeamSerializer, ProjectAIAgentSerializer
+from .agent_run import AgentRunDetailSerializer, AgentRunSerializer
+
+from .integration_connection import (
+    BackstageConnectionSerializer,
+    GitHubConnectionSerializer,
+    ProjectIntegrationSerializer,
+)
+
 from .analytic import AnalyticViewSerializer
 
 from .notification import NotificationSerializer, UserNotificationPreferenceSerializer

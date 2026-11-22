@@ -494,6 +494,11 @@
         "heading": "Komut Dosyaları",
         "new_script": "Yeni Komut Dosyası",
         "description": "İş akışlarınızı özel komut dosyaları ve otomasyon kurallarıyla otomatikleştirin."
+      },
+      "ai_agents": {
+        "title": "AI ajanları",
+        "heading": "AI ajanları",
+        "description": "Bir AI sağlayıcısını bir kez bağlayın, ardından her projenin ayarlarından ajanları proje pozisyonlarına atayın."
       }
     },
     "empty_state": {

@@ -4,14 +4,16 @@
  * See the LICENSE file for details.
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 // plane ui
 import { WorkItemsOutline } from "@makeplane/propel/icons";
+import { Button } from "@makeplane/propel/components/button";
 import { Breadcrumbs } from "@plane/blocks/breadcrumb";
 import { Header } from "@plane/blocks/layout";
 // components
+import { AgentRunModal } from "@/components/agent-run";
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
 import { IssueDetailQuickActions } from "@/components/issues/issue-detail/issue-detail-quick-actions";
 // hooks
@@ -24,6 +26,8 @@ import { useProjectCrumbProps } from "@/components/breadcrumbs/use-project-crumb
 export const WorkItemDetailsHeader = observer(function WorkItemDetailsHeader() {
   // router
   const { workspaceSlug, workItem } = useParams();
+  // states
+  const [isAgentRunOpen, setIsAgentRunOpen] = useState(false);
   // store hooks
   const { getProjectById, loader } = useProject();
   const {
@@ -66,11 +70,27 @@ export const WorkItemDetailsHeader = observer(function WorkItemDetailsHeader() {
       </Header.LeftItem>
       <Header.RightItem>
         {projectId && issueId && (
-          <IssueDetailQuickActions
-            workspaceSlug={workspaceSlug?.toString()}
-            projectId={projectId?.toString()}
-            issueId={issueId?.toString()}
-          />
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              stretch="auto"
+              label="Cook with AI"
+              onClick={() => setIsAgentRunOpen(true)}
+            />
+            <IssueDetailQuickActions
+              workspaceSlug={workspaceSlug?.toString()}
+              projectId={projectId?.toString()}
+              issueId={issueId?.toString()}
+            />
+            <AgentRunModal
+              workspaceSlug={workspaceSlug?.toString() ?? ""}
+              projectId={projectId?.toString()}
+              issueId={issueId?.toString()}
+              isOpen={isAgentRunOpen}
+              onClose={() => setIsAgentRunOpen(false)}
+            />
+          </div>
         )}
       </Header.RightItem>
     </Header>

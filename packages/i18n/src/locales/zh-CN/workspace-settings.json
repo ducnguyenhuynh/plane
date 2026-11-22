@@ -494,6 +494,11 @@
         "heading": "脚本",
         "new_script": "新建脚本",
         "description": "使用自定义脚本和自动化规则自动化您的工作流程。"
+      },
+      "ai_agents": {
+        "title": "AI 智能体",
+        "heading": "AI 智能体",
+        "description": "连接一次 AI 提供商，然后在每个项目的设置中将智能体分配到项目角色。"
       }
     },
     "empty_state": {

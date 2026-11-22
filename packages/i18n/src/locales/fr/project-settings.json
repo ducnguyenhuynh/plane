@@ -527,6 +527,11 @@
           }
         }
       }
+    },
+    "agents": {
+      "title": "Agents",
+      "heading": "Agents",
+      "description": "Affectez des agents à des postes de projet et choisissez le modèle utilisé par chacun."
     }
   }
 }

@@ -494,6 +494,11 @@
         "heading": "Skripty",
         "new_script": "Nový skript",
         "description": "Automatizujte svoje pracovné postupy pomocou vlastných skriptov a automatizačných pravidiel."
+      },
+      "ai_agents": {
+        "title": "AI agenti",
+        "heading": "AI agenti",
+        "description": "Pripojte poskytovateľa AI raz a potom priraďte agentov na pozície v projektoch v nastaveniach každého projektu."
       }
     },
     "empty_state": {

@@ -494,6 +494,11 @@
         "heading": "Scripts",
         "new_script": "New Script",
         "description": "Automate your workflows with custom scripts and automation rules."
+      },
+      "ai_agents": {
+        "title": "AI agents",
+        "heading": "AI agents",
+        "description": "Connect an AI provider once, then place agents in project positions from each project's settings."
       }
     },
     "empty_state": {

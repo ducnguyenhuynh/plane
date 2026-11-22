@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # See the LICENSE file for details.
 
+from .agent import AgentProvider, AgentRole, AIAgent, ProjectAgentTeam, ProjectAIAgent
+from .agent_run import AgentRun, AgentRunArtifact, AgentRunEvent, AgentRunStage, AgentRunStatus, AgentRunTask
 from .analytic import AnalyticView
 from .api import APIActivityLog, APIToken
 from .asset import FileAsset
@@ -20,11 +22,14 @@ from .exporter import ExporterHistory
 from .importer import Importer
 from .intake import Intake, IntakeIssue
 from .integration import (
+    BackstageConnection,
     GithubCommentSync,
+    GitHubConnection,
     GithubIssueSync,
     GithubRepository,
     GithubRepositorySync,
     Integration,
+    ProjectIntegration,
     SlackProjectSync,
     WorkspaceIntegration,
 )
