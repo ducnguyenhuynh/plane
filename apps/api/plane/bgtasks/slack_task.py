@@ -17,11 +17,24 @@ from plane.utils.url_security import pinned_fetch
 
 def slack_message(event, verb, field, events, subject, comment_snippet=""):
     """Pick the message for an activity, or None when the project does not subscribe to it."""
+    if event == "agent_run":
+        # Rows saved before the key existed behave as subscribed
+        if not events.get("agent_run", True):
+            return None
+        prefix = {
+            "started": ":robot_face: Agent run started",
+            "completed": ":white_check_mark: Agent run completed",
+            "failed": ":x: Agent run failed",
+        }.get(verb)
+        if not prefix:
+            return None
+        suffix = f": {comment_snippet}" if comment_snippet else ""
+        return f"{prefix} on {subject}{suffix}"
     if event == "issue" and verb == "created":
         return f":new: New work item: {subject}" if events.get("issue_created") else None
     if event == "issue" and verb == "updated":
         # Field-level updates are noisy; only notify when the state moves
-        if field != "state" or not events.get("issue_updated"):
+        if field not in ("state", "state_id") or not events.get("issue_updated"):
             return None
         return f":repeat: State updated on {subject}"
     if event == "issue_comment" and verb == "created":

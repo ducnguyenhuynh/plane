@@ -5,3 +5,4 @@
  */
 
 export { AgentRunModal } from "./agent-run-modal";
+export { AgentRunSummary } from "./agent-run-summary";

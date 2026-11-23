@@ -445,5 +445,64 @@
       "label": "Epic-Titel",
       "required": "Ein Titel für das Epic ist erforderlich."
     }
+  },
+  "agent_run": {
+    "title": "Agent-Lauf",
+    "subtitle": "PM plant → Entwickler setzen um → QA prüft → Endergebnis. Verlauf und Artefakte bleiben erhalten.",
+    "empty_hint": "Starten Sie einen Lauf, damit die Projektagenten dieses Werkelement planen, Unteraufgaben erstellen, umsetzen und das Ergebnis prüfen.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Wird gestartet…",
+    "start_new_run": "Neuen Lauf starten",
+    "retry_run": "Lauf wiederholen",
+    "retrying": "Wird wiederholt…",
+    "cancel_run": "Lauf abbrechen",
+    "cancelling": "Wird abgebrochen…",
+    "cancel_title": "Diesen Lauf abbrechen?",
+    "cancel_content": "Die Agenten stoppen in der aktuellen Phase. Danach können Sie einen neuen Lauf starten.",
+    "run_history": "Laufhistorie",
+    "run_option": "{status} · {date}",
+    "final_result": "Endergebnis",
+    "subtasks": "Unteraufgaben",
+    "artifacts": "Artefakte",
+    "history": "Verlauf",
+    "no_agent": "Kein Agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Entwickler: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Überarbeitungsrunde {round}",
+    "active_hint": "Dieser Lauf ist {status}; das Panel aktualisiert sich alle paar Sekunden.",
+    "status": {
+      "queued": "In der Warteschlange",
+      "running": "Läuft",
+      "completed": "Abgeschlossen",
+      "failed": "Fehlgeschlagen"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Umsetzung",
+      "qa": "QA",
+      "final": "Abschluss",
+      "done": "Fertig"
+    },
+    "toast": {
+      "started_title": "Agent-Lauf in der Warteschlange",
+      "started_message": "Der PM prüft das Werkelement.",
+      "start_failed_title": "Lauf konnte nicht gestartet werden",
+      "start_failed_message": "Weisen Sie zuerst Agenten den Projektpositionen zu.",
+      "retry_title": "Wiederholung in der Warteschlange",
+      "retry_message": "Der Lauf wird ab der letzten Phase fortgesetzt.",
+      "retry_failed_title": "Wiederholung fehlgeschlagen",
+      "cancelled_title": "Lauf abgebrochen",
+      "cancelled_message": "Die Agenten haben in der aktuellen Phase gestoppt.",
+      "cancel_failed_title": "Lauf konnte nicht abgebrochen werden",
+      "try_again": "Bitte versuchen Sie es erneut."
+    },
+    "sidebar": {
+      "title": "KI-Agenten",
+      "open_run": "Lauf öffnen",
+      "no_run": "Noch kein Agent-Lauf",
+      "load_failed": "Agent-Läufe konnten nicht geladen werden.",
+      "retry": "Erneut versuchen"
+    }
   }
 }

@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agentes",
       "heading": "Agentes",
-      "description": "Atribua agentes a posições do projeto e escolha qual modelo cada um usa."
+      "description": "Atribua agentes a posições do projeto e escolha qual modelo cada um usa.",
+      "team_size": {
+        "title": "Tamanho da equipe",
+        "description": "Quantos agentes de cada função participam de uma execução.",
+        "pm_label": "PM / Líder técnico",
+        "pm_help": "Escreve planos independentes. O melhor é usado.",
+        "developer_label": "Desenvolvedores",
+        "developer_help": "Trabalham em paralelo. Cada agente faz suas subtarefas uma de cada vez, e o PM divide o trabalho em até max(3, developers) subtarefas.",
+        "qa_label": "QA",
+        "qa_help": "Revisores. Toda revisão precisa ser aprovada.",
+        "save": "Salvar tamanho da equipe",
+        "saving": "Salvando…",
+        "invalid_title": "Tamanho da equipe inválido",
+        "invalid_message": "Escolha um número entre {min} e {max}.",
+        "saved_title": "Salvo",
+        "saved_message": "Tamanho da equipe atualizado para execuções futuras.",
+        "save_failed_title": "Não foi possível salvar o tamanho da equipe"
+      },
+      "positions": {
+        "loading": "Carregando posições…",
+        "load_failed": "Não foi possível carregar as posições do projeto.",
+        "empty": "Nenhum agente foi atribuído a este projeto ainda. Os agentes são definidos uma vez nas configurações do workspace e depois colocados em uma posição aqui.",
+        "assign": "Atribuir agente",
+        "bench": "Banco (limite da equipe)",
+        "agent_inactive": "Agente inativo",
+        "seat_warning": "Apenas {filled} de {count} vagas de {role} estão preenchidas",
+        "model_override": "(substituição)",
+        "reviewer_heading": "Revisor (não usado pelas execuções)",
+        "removed_title": "Removido",
+        "removed_message": "Agente removido do projeto.",
+        "remove_failed_title": "Não foi possível remover o agente",
+        "delete_title": "Remover agente do projeto",
+        "delete_content": "Remover {name} da posição {role}? O agente do workspace não é excluído."
+      },
+      "roles": {
+        "project_manager": "Gerente de projeto",
+        "reviewer": "Revisor",
+        "qa": "QA",
+        "developer": "Desenvolvedor"
+      },
+      "assign": {
+        "title": "Atribuir agente",
+        "edit_title": "Editar posição",
+        "position": "Posição",
+        "agent": "Agente",
+        "select_agent": "Selecione um agente",
+        "no_agents": "Nenhum agente neste workspace ainda",
+        "model_override": "Substituição de modelo",
+        "model_override_placeholder": "Opcional — substitui o modelo do agente neste projeto",
+        "active": "Ativo",
+        "missing_agent_title": "Agente ausente",
+        "missing_agent_message": "Crie um agente nas configurações do workspace primeiro.",
+        "saved_title": "Salvo",
+        "saved_message": "Posição do projeto atualizada.",
+        "save_failed_title": "Não foi possível salvar a posição",
+        "saving": "Salvando…"
+      }
     }
   }
 }

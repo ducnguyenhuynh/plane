@@ -445,5 +445,64 @@
       "label": "Tiêu đề sử thi",
       "required": "Tiêu đề sử thi là bắt buộc"
     }
+  },
+  "agent_run": {
+    "title": "Lần chạy tác nhân",
+    "subtitle": "PM lập kế hoạch → lập trình viên triển khai → QA đánh giá → kết quả cuối cùng. Lịch sử và tạo tác được lưu lại.",
+    "empty_hint": "Bắt đầu một lần chạy để các tác nhân của dự án lập kế hoạch cho mục công việc này, tạo các công việc con, triển khai và đánh giá kết quả.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Đang bắt đầu…",
+    "start_new_run": "Bắt đầu lần chạy mới",
+    "retry_run": "Thử lại lần chạy",
+    "retrying": "Đang thử lại…",
+    "cancel_run": "Hủy lần chạy",
+    "cancelling": "Đang hủy…",
+    "cancel_title": "Hủy lần chạy này?",
+    "cancel_content": "Các tác nhân sẽ dừng ở giai đoạn hiện tại. Sau đó bạn có thể bắt đầu lần chạy mới.",
+    "run_history": "Lịch sử các lần chạy",
+    "run_option": "{status} · {date}",
+    "final_result": "Kết quả cuối cùng",
+    "subtasks": "Công việc con",
+    "artifacts": "Tạo tác",
+    "history": "Lịch sử",
+    "no_agent": "Không có tác nhân",
+    "team_pm": "PM: {names}",
+    "team_developers": "Lập trình viên: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Vòng làm lại {round}",
+    "active_hint": "Lần chạy này: {status}. Bảng điều khiển tự làm mới vài giây một lần.",
+    "status": {
+      "queued": "Đang chờ",
+      "running": "Đang chạy",
+      "completed": "Hoàn thành",
+      "failed": "Thất bại"
+    },
+    "stage": {
+      "pm": "Kế hoạch",
+      "developer": "Triển khai",
+      "qa": "QA",
+      "final": "Kết thúc",
+      "done": "Xong"
+    },
+    "toast": {
+      "started_title": "Đã đưa lần chạy tác nhân vào hàng đợi",
+      "started_message": "PM đang xem xét mục công việc.",
+      "start_failed_title": "Không thể bắt đầu lần chạy",
+      "start_failed_message": "Hãy gán tác nhân vào các vị trí của dự án trước.",
+      "retry_title": "Đã đưa lần thử lại vào hàng đợi",
+      "retry_message": "Lần chạy sẽ tiếp tục từ giai đoạn cuối cùng.",
+      "retry_failed_title": "Không thể thử lại",
+      "cancelled_title": "Đã hủy lần chạy",
+      "cancelled_message": "Các tác nhân đã dừng ở giai đoạn hiện tại.",
+      "cancel_failed_title": "Không thể hủy lần chạy",
+      "try_again": "Vui lòng thử lại."
+    },
+    "sidebar": {
+      "title": "Tác nhân AI",
+      "open_run": "Mở lần chạy",
+      "no_run": "Chưa có lần chạy tác nhân nào",
+      "load_failed": "Không thể tải lần chạy tác nhân.",
+      "retry": "Thử lại"
+    }
   }
 }

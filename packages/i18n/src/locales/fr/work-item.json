@@ -445,5 +445,64 @@
       "label": "Titre de l’Epic",
       "required": "Le titre de l’Epic est requis."
     }
+  },
+  "agent_run": {
+    "title": "Exécution de l'agent",
+    "subtitle": "Le PM planifie → les développeurs implémentent → QA vérifie → résultat final. L'historique et les artefacts sont conservés.",
+    "empty_hint": "Lancez une exécution pour que les agents du projet planifient cet élément de travail, créent des sous-tâches, les implémentent et vérifient le résultat.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Démarrage…",
+    "start_new_run": "Lancer une nouvelle exécution",
+    "retry_run": "Relancer l'exécution",
+    "retrying": "Relance…",
+    "cancel_run": "Annuler l'exécution",
+    "cancelling": "Annulation…",
+    "cancel_title": "Annuler cette exécution ?",
+    "cancel_content": "Les agents s'arrêtent à l'étape en cours. Vous pourrez ensuite lancer une nouvelle exécution.",
+    "run_history": "Historique des exécutions",
+    "run_option": "{status} · {date}",
+    "final_result": "Résultat final",
+    "subtasks": "Sous-tâches",
+    "artifacts": "Artefacts",
+    "history": "Historique",
+    "no_agent": "Aucun agent",
+    "team_pm": "PM : {names}",
+    "team_developers": "Développeurs : {names}",
+    "team_qa": "QA : {names}",
+    "rework_round": "Cycle de reprise {round}",
+    "active_hint": "Cette exécution est {status} ; le panneau s'actualise toutes les quelques secondes.",
+    "status": {
+      "queued": "En attente",
+      "running": "En cours",
+      "completed": "Terminée",
+      "failed": "Échouée"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Développement",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Terminé"
+    },
+    "toast": {
+      "started_title": "Exécution de l'agent en attente",
+      "started_message": "Le PM examine l'élément de travail.",
+      "start_failed_title": "Impossible de lancer l'exécution",
+      "start_failed_message": "Attribuez d'abord des agents aux postes du projet.",
+      "retry_title": "Relance en attente",
+      "retry_message": "L'exécution reprend à sa dernière étape.",
+      "retry_failed_title": "Impossible de relancer",
+      "cancelled_title": "Exécution annulée",
+      "cancelled_message": "Les agents se sont arrêtés à l'étape en cours.",
+      "cancel_failed_title": "Impossible d'annuler l'exécution",
+      "try_again": "Veuillez réessayer."
+    },
+    "sidebar": {
+      "title": "Agents IA",
+      "open_run": "Ouvrir l'exécution",
+      "no_run": "Aucune exécution pour l'instant",
+      "load_failed": "Impossible de charger les exécutions d'agents.",
+      "retry": "Réessayer"
+    }
   }
 }

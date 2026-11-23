@@ -17,6 +17,31 @@ class AgentRunAgentSerializer(BaseSerializer):
         fields = ["id", "name", "provider", "model"]
 
 
+class AgentRunTeamAgentSerializer(BaseSerializer):
+    bot_user_id = serializers.UUIDField(read_only=True)
+
+    class Meta:
+        model = AIAgent
+        fields = ["id", "name", "provider", "model", "bot_user_id"]
+
+
+def team_agents(run):
+    """The run's agents per role, in snapshot order; old runs fall back to the single agents."""
+    ids = list(run.pm_agents or []) + list(run.developer_agents or []) + list(run.qa_agents or [])
+    agents = {str(agent.id): agent for agent in AIAgent.objects.filter(id__in=ids)}
+
+    def pick(snapshot, fallback):
+        roles = [agents.get(str(agent_id)) for agent_id in snapshot or []]
+        roles = [agent for agent in roles if agent]
+        return roles or ([fallback] if fallback else [])
+
+    return {
+        "pm": pick(run.pm_agents, run.pm_agent),
+        "developer": pick(run.developer_agents, None),
+        "qa": pick(run.qa_agents, run.qa_agent),
+    }
+
+
 class AgentRunEventSerializer(BaseSerializer):
     agent = AgentRunAgentSerializer(read_only=True)
 
@@ -50,6 +75,7 @@ class AgentRunTaskSerializer(BaseSerializer):
 class AgentRunSerializer(BaseSerializer):
     pm_agent = AgentRunAgentSerializer(read_only=True)
     qa_agent = AgentRunAgentSerializer(read_only=True)
+    team = serializers.SerializerMethodField()
 
     class Meta:
         model = AgentRun
@@ -60,12 +86,17 @@ class AgentRunSerializer(BaseSerializer):
             "stage",
             "pm_agent",
             "qa_agent",
+            "team",
+            "rework_round",
             "result",
             "error",
             "created_at",
             "started_at",
             "completed_at",
         ]
+
+    def get_team(self, obj):
+        return {role: AgentRunTeamAgentSerializer(agents, many=True).data for role, agents in team_agents(obj).items()}
 
 
 class AgentRunDetailSerializer(AgentRunSerializer):

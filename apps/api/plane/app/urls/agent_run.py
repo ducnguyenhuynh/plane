@@ -5,6 +5,7 @@
 from django.urls import path
 
 from plane.app.views import (
+    AgentRunCancelEndpoint,
     AgentRunDetailEndpoint,
     AgentRunRetryEndpoint,
     IssueAgentRunEndpoint,
@@ -30,6 +31,11 @@ urlpatterns = [
     path(
         "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/<uuid:run_id>/retry/",
         AgentRunRetryEndpoint.as_view(),
+        name="agent-runs",
+    ),
+    path(
+        "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/<uuid:run_id>/cancel/",
+        AgentRunCancelEndpoint.as_view(),
         name="agent-runs",
     ),
 ]

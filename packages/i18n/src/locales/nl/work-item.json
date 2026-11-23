@@ -445,5 +445,64 @@
       "label": "Epic-titel",
       "required": "Epic-titel is verplicht."
     }
+  },
+  "agent_run": {
+    "title": "Agentuitvoering",
+    "subtitle": "PM plant → ontwikkelaars implementeren → QA beoordeelt → eindresultaat. Geschiedenis en artefacten blijven bewaard.",
+    "empty_hint": "Start een uitvoering zodat de projectagenten dit werkitem plannen, subtaken aanmaken, ze implementeren en het resultaat beoordelen.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Starten…",
+    "start_new_run": "Nieuwe uitvoering starten",
+    "retry_run": "Uitvoering opnieuw proberen",
+    "retrying": "Opnieuw proberen…",
+    "cancel_run": "Uitvoering annuleren",
+    "cancelling": "Annuleren…",
+    "cancel_title": "Deze uitvoering annuleren?",
+    "cancel_content": "De agenten stoppen bij de huidige fase. Daarna kunt u een nieuwe uitvoering starten.",
+    "run_history": "Uitvoeringsgeschiedenis",
+    "run_option": "{status} · {date}",
+    "final_result": "Eindresultaat",
+    "subtasks": "Subtaken",
+    "artifacts": "Artefacten",
+    "history": "Geschiedenis",
+    "no_agent": "Geen agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Ontwikkelaars: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Herwerkingsronde {round}",
+    "active_hint": "Deze uitvoering is {status}; het paneel ververst elke paar seconden.",
+    "status": {
+      "queued": "In wachtrij",
+      "running": "Bezig",
+      "completed": "Voltooid",
+      "failed": "Mislukt"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Implementatie",
+      "qa": "QA",
+      "final": "Eindfase",
+      "done": "Klaar"
+    },
+    "toast": {
+      "started_title": "Agentuitvoering in wachtrij",
+      "started_message": "De PM beoordeelt het werkitem.",
+      "start_failed_title": "Uitvoering kon niet worden gestart",
+      "start_failed_message": "Wijs eerst agenten toe aan de projectposities.",
+      "retry_title": "Herhaling in wachtrij",
+      "retry_message": "De uitvoering gaat verder vanaf de laatste fase.",
+      "retry_failed_title": "Opnieuw proberen is mislukt",
+      "cancelled_title": "Uitvoering geannuleerd",
+      "cancelled_message": "De agenten zijn gestopt bij de huidige fase.",
+      "cancel_failed_title": "Uitvoering kon niet worden geannuleerd",
+      "try_again": "Probeer het opnieuw."
+    },
+    "sidebar": {
+      "title": "AI-agenten",
+      "open_run": "Uitvoering openen",
+      "no_run": "Nog geen agentuitvoering",
+      "load_failed": "Agentuitvoeringen konden niet worden geladen.",
+      "retry": "Opnieuw proberen"
+    }
   }
 }

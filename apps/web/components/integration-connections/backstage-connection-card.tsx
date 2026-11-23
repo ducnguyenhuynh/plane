@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { Button } from "@makeplane/propel/components/button";
 import { InputField } from "@makeplane/propel/components/input-field";
 import { setToast } from "@plane/blocks/toast";
+import { useTranslation } from "@plane/i18n";
 // services
 import { IntegrationConnectionService } from "@/services/integrations";
 // local imports
@@ -18,6 +19,9 @@ import { getIntegrationErrorMessage } from "./utils";
 const integrationService = new IntegrationConnectionService();
 
 export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: string }) {
+  // translation
+  const { t } = useTranslation();
+  // states
   const { data, mutate, isLoading } = useSWR(`BACKSTAGE_CONNECTION_${workspaceSlug}`, () =>
     integrationService.fetchBackstageConnection(workspaceSlug)
   );
@@ -32,7 +36,11 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
 
   const handleSave = async () => {
     if (!baseUrl.trim()) {
-      setToast({ type: "error", title: "URL required", message: "Enter your Backstage base URL." });
+      setToast({
+        type: "error",
+        title: t("integrations.workspace.url_required_title"),
+        message: t("integrations.workspace.url_required_message"),
+      });
       return;
     }
     setIsSaving(true);
@@ -43,12 +51,16 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
       });
       setToken("");
       void mutate();
-      setToast({ type: "success", title: "Backstage saved", message: "Projects can now link a catalog entity." });
+      setToast({
+        type: "success",
+        title: t("integrations.workspace.backstage_saved_title"),
+        message: t("integrations.workspace.backstage_saved_message"),
+      });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not save Backstage",
-        message: getIntegrationErrorMessage(error, "Check the URL and token."),
+        title: t("integrations.workspace.backstage_save_failed_title"),
+        message: getIntegrationErrorMessage(error, t("integrations.workspace.backstage_save_failed_message")),
       });
     } finally {
       setIsSaving(false);
@@ -61,14 +73,14 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
       const result = await integrationService.testBackstage(workspaceSlug);
       setToast({
         type: result.ok ? "success" : "error",
-        title: result.ok ? "Connection works" : "Connection failed",
+        title: result.ok ? t("integrations.workspace.connection_works") : t("integrations.workspace.connection_failed"),
         message: result.message,
       });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Connection failed",
-        message: getIntegrationErrorMessage(error, "Could not reach Backstage."),
+        title: t("integrations.workspace.connection_failed"),
+        message: getIntegrationErrorMessage(error, t("integrations.workspace.backstage_unreachable")),
       });
     } finally {
       setIsTesting(false);
@@ -81,12 +93,16 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
       await integrationService.disconnectBackstage(workspaceSlug);
       setBaseUrl("");
       void mutate();
-      setToast({ type: "success", title: "Disconnected", message: "Backstage links were removed from projects." });
+      setToast({
+        type: "success",
+        title: t("integrations.workspace.disconnected_title"),
+        message: t("integrations.workspace.backstage_disconnected_message"),
+      });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not disconnect Backstage",
-        message: getIntegrationErrorMessage(error, "Please try again."),
+        title: t("integrations.workspace.backstage_disconnect_failed_title"),
+        message: getIntegrationErrorMessage(error, t("agent_run.toast.try_again")),
       });
     } finally {
       setIsSaving(false);
@@ -96,20 +112,18 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
   return (
     <div className="flex flex-col gap-4 rounded-md border border-subtle p-4">
       <div className="flex flex-col gap-1">
-        <h4 className="text-body-sm-medium text-primary">Backstage</h4>
-        <p className="text-body-xs-regular text-tertiary">
-          Point Plane at your Backstage developer portal so projects can link their catalog entity and documents.
-        </p>
+        <h4 className="text-body-sm-medium text-primary">{t("integrations.workspace.backstage_title")}</h4>
+        <p className="text-body-xs-regular text-tertiary">{t("integrations.workspace.backstage_description")}</p>
       </div>
 
-      {isLoading && <p className="text-body-xs-regular text-tertiary">Loading…</p>}
+      {isLoading && <p className="text-body-xs-regular text-tertiary">{t("common.loading")}</p>}
 
       <div className="grid gap-3 md:grid-cols-2">
         <InputField
           size="lg"
           orientation="vertical"
           name="backstage_url"
-          label="Backstage URL"
+          label={t("integrations.workspace.backstage_url")}
           value={baseUrl}
           onChange={(event) => setBaseUrl(event.target.value)}
           placeholder="https://backstage.example.com"
@@ -119,11 +133,15 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
           size="lg"
           orientation="vertical"
           name="backstage_token"
-          label="Token (optional)"
+          label={t("integrations.workspace.backstage_token")}
           type="password"
           value={token}
           onChange={(event) => setToken(event.target.value)}
-          placeholder={data?.has_token ? "Stored token — leave blank to keep" : "Backstage access token"}
+          placeholder={
+            data?.has_token
+              ? t("integrations.workspace.backstage_token_stored")
+              : t("integrations.workspace.backstage_token_placeholder")
+          }
           autoComplete="new-password"
         />
       </div>
@@ -133,7 +151,7 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
           variant="primary"
           size="md"
           stretch="auto"
-          label={isSaving ? "Saving…" : "Save"}
+          label={isSaving ? t("integrations.project.saving") : t("integrations.project.save")}
           loading={isSaving}
           onClick={() => void handleSave()}
         />
@@ -142,7 +160,7 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
             variant="secondary"
             size="md"
             stretch="auto"
-            label={isTesting ? "Testing…" : "Test connection"}
+            label={isTesting ? t("integrations.project.testing") : t("integrations.workspace.test_connection")}
             loading={isTesting}
             onClick={() => void handleTest()}
             disabled={!baseUrl.trim()}
@@ -153,7 +171,7 @@ export function BackstageConnectionCard({ workspaceSlug }: { workspaceSlug: stri
             variant="secondary"
             size="md"
             stretch="auto"
-            label="Disconnect"
+            label={t("integrations.workspace.disconnect")}
             onClick={() => void handleDisconnect()}
             disabled={isSaving}
           />

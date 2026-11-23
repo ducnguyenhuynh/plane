@@ -12,6 +12,14 @@ export type TAgentRunAgent = {
   name: string;
   provider: string;
   model: string;
+  bot_user_id: string | null;
+};
+
+/** The agents picked for the run, grouped by the role they play. */
+export type TAgentRunTeam = {
+  pm: TAgentRunAgent[];
+  developer: TAgentRunAgent[];
+  qa: TAgentRunAgent[];
 };
 
 export type TAgentRunEvent = {
@@ -24,9 +32,11 @@ export type TAgentRunEvent = {
   created_at: string;
 };
 
+export type TAgentRunArtifactKind = "plan" | "plan_candidate" | "subtask" | "review" | "final";
+
 export type TAgentRunArtifact = {
   id: string;
-  kind: string;
+  kind: TAgentRunArtifactKind | string;
   title: string;
   content: string;
   data: Record<string, unknown>;
@@ -51,6 +61,9 @@ export type TAgentRun = {
   stage: TAgentRunStage;
   pm_agent: TAgentRunAgent | null;
   qa_agent: TAgentRunAgent | null;
+  team: TAgentRunTeam;
+  /** 1 on the first pass; grows when QA sends the work back. */
+  rework_round: number;
   result: string;
   error: string;
   created_at: string;

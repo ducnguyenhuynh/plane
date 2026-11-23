@@ -531,7 +531,63 @@
     "agents": {
       "title": "Ajanlar",
       "heading": "Ajanlar",
-      "description": "Ajanları proje pozisyonlarına atayın ve her birinin kullanacağı modeli seçin."
+      "description": "Ajanları proje pozisyonlarına atayın ve her birinin kullanacağı modeli seçin.",
+      "team_size": {
+        "title": "Ekip boyutu",
+        "description": "Her rolden kaç aracının bir çalıştırmaya katılacağı.",
+        "pm_label": "PM / Teknik lider",
+        "pm_help": "Bağımsız planlar yazar. En iyisi kullanılır.",
+        "developer_label": "Geliştiriciler",
+        "developer_help": "Paralel çalışırlar. Her aracı kendi alt görevlerini tek tek yapar ve PM işi en fazla max(3, developers) alt göreve böler.",
+        "qa_label": "QA",
+        "qa_help": "İnceleyiciler. Her inceleme geçmelidir.",
+        "save": "Ekip boyutunu kaydet",
+        "saving": "Kaydediliyor…",
+        "invalid_title": "Geçersiz ekip boyutu",
+        "invalid_message": "{min} ile {max} arasında bir sayı seçin.",
+        "saved_title": "Kaydedildi",
+        "saved_message": "Ekip boyutu gelecekteki çalıştırmalar için güncellendi.",
+        "save_failed_title": "Ekip boyutu kaydedilemedi"
+      },
+      "positions": {
+        "loading": "Pozisyonlar yükleniyor…",
+        "load_failed": "Proje pozisyonları yüklenemedi.",
+        "empty": "Bu projeye henüz aracı atanmadı. Aracılar çalışma alanı ayarlarında bir kez tanımlanır, ardından burada bir pozisyona yerleştirilir.",
+        "assign": "Aracı ata",
+        "bench": "Yedek (ekip boyutu sınırı)",
+        "agent_inactive": "Aracı etkin değil",
+        "seat_warning": "{role} için {count} yerden yalnızca {filled} tanesi dolu",
+        "model_override": "(geçersiz kılma)",
+        "reviewer_heading": "İnceleyici (çalıştırmalarda kullanılmaz)",
+        "removed_title": "Kaldırıldı",
+        "removed_message": "Aracı projeden kaldırıldı.",
+        "remove_failed_title": "Aracı kaldırılamadı",
+        "delete_title": "Aracıyı projeden kaldır",
+        "delete_content": "{name} adlı aracı {role} pozisyonundan kaldırılsın mı? Çalışma alanındaki aracı silinmez."
+      },
+      "roles": {
+        "project_manager": "Proje yöneticisi",
+        "reviewer": "İnceleyici",
+        "qa": "QA",
+        "developer": "Geliştirici"
+      },
+      "assign": {
+        "title": "Aracı ata",
+        "edit_title": "Pozisyonu düzenle",
+        "position": "Pozisyon",
+        "agent": "Aracı",
+        "select_agent": "Bir aracı seçin",
+        "no_agents": "Bu çalışma alanında henüz aracı yok",
+        "model_override": "Model geçersiz kılma",
+        "model_override_placeholder": "İsteğe bağlı — bu proje için aracı modelini geçersiz kılar",
+        "active": "Etkin",
+        "missing_agent_title": "Aracı eksik",
+        "missing_agent_message": "Önce çalışma alanı ayarlarında bir aracı oluşturun.",
+        "saved_title": "Kaydedildi",
+        "saved_message": "Proje pozisyonu güncellendi.",
+        "save_failed_title": "Pozisyon kaydedilemedi",
+        "saving": "Kaydediliyor…"
+      }
     }
   }
 }

@@ -445,5 +445,64 @@
       "label": "Titolo Epic",
       "required": "Il titolo dell'Epic è obbligatorio."
     }
+  },
+  "agent_run": {
+    "title": "Esecuzione dell'agente",
+    "subtitle": "Il PM pianifica → gli sviluppatori implementano → QA verifica → risultato finale. Cronologia e artefatti vengono conservati.",
+    "empty_hint": "Avvia un'esecuzione per consentire agli agenti del progetto di pianificare questo elemento di lavoro, creare sottoattività, implementarle e verificare il risultato.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Avvio…",
+    "start_new_run": "Avvia nuova esecuzione",
+    "retry_run": "Riprova esecuzione",
+    "retrying": "Nuovo tentativo…",
+    "cancel_run": "Annulla esecuzione",
+    "cancelling": "Annullamento…",
+    "cancel_title": "Annullare questa esecuzione?",
+    "cancel_content": "Gli agenti si fermano alla fase corrente. Potrai avviare una nuova esecuzione in seguito.",
+    "run_history": "Cronologia esecuzioni",
+    "run_option": "{status} · {date}",
+    "final_result": "Risultato finale",
+    "subtasks": "Sottoattività",
+    "artifacts": "Artefatti",
+    "history": "Cronologia",
+    "no_agent": "Nessun agente",
+    "team_pm": "PM: {names}",
+    "team_developers": "Sviluppatori: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Ciclo di revisione {round}",
+    "active_hint": "Questa esecuzione è {status}; il pannello si aggiorna ogni pochi secondi.",
+    "status": {
+      "queued": "In coda",
+      "running": "In corso",
+      "completed": "Completata",
+      "failed": "Non riuscita"
+    },
+    "stage": {
+      "pm": "Piano",
+      "developer": "Sviluppo",
+      "qa": "QA",
+      "final": "Finale",
+      "done": "Fatto"
+    },
+    "toast": {
+      "started_title": "Esecuzione dell'agente in coda",
+      "started_message": "Il PM sta esaminando l'elemento di lavoro.",
+      "start_failed_title": "Impossibile avviare l'esecuzione",
+      "start_failed_message": "Assegna prima gli agenti alle posizioni del progetto.",
+      "retry_title": "Nuovo tentativo in coda",
+      "retry_message": "L'esecuzione riprende dall'ultima fase.",
+      "retry_failed_title": "Impossibile riprovare",
+      "cancelled_title": "Esecuzione annullata",
+      "cancelled_message": "Gli agenti si sono fermati alla fase corrente.",
+      "cancel_failed_title": "Impossibile annullare l'esecuzione",
+      "try_again": "Riprova."
+    },
+    "sidebar": {
+      "title": "Agenti IA",
+      "open_run": "Apri esecuzione",
+      "no_run": "Nessuna esecuzione dell'agente",
+      "load_failed": "Impossibile caricare le esecuzioni degli agenti.",
+      "retry": "Riprova"
+    }
   }
 }

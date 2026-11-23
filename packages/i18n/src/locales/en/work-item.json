@@ -445,5 +445,64 @@
       "label": "Epic Title",
       "required": "Epic title is required."
     }
+  },
+  "agent_run": {
+    "title": "Agent run",
+    "subtitle": "PM plans → developers implement → QA reviews → final result. History and artifacts are kept.",
+    "empty_hint": "Start a run to let the project agents plan this work item, create subtasks, implement them and review the result.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Starting…",
+    "start_new_run": "Start new run",
+    "retry_run": "Retry run",
+    "retrying": "Retrying…",
+    "cancel_run": "Cancel run",
+    "cancelling": "Cancelling…",
+    "cancel_title": "Cancel this run?",
+    "cancel_content": "The agents stop at the current stage. You can start a new run afterwards.",
+    "run_history": "Run history",
+    "run_option": "{status} · {date}",
+    "final_result": "Final result",
+    "subtasks": "Subtasks",
+    "artifacts": "Artifacts",
+    "history": "History",
+    "no_agent": "No agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Developers: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Rework round {round}",
+    "active_hint": "This run is {status}; the panel refreshes every few seconds.",
+    "status": {
+      "queued": "Queued",
+      "running": "Running",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Build",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Done"
+    },
+    "toast": {
+      "started_title": "Agent run queued",
+      "started_message": "The PM is reviewing the work item.",
+      "start_failed_title": "Could not start the run",
+      "start_failed_message": "Assign agents to the project positions first.",
+      "retry_title": "Retry queued",
+      "retry_message": "The run continues from its last stage.",
+      "retry_failed_title": "Could not retry",
+      "cancelled_title": "Run cancelled",
+      "cancelled_message": "The agents stopped at the current stage.",
+      "cancel_failed_title": "Could not cancel the run",
+      "try_again": "Please try again."
+    },
+    "sidebar": {
+      "title": "AI agents",
+      "open_run": "Open run",
+      "no_run": "No agent run yet",
+      "load_failed": "Could not load agent runs.",
+      "retry": "Retry"
+    }
   }
 }

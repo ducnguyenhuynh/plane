@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agenten",
       "heading": "Agenten",
-      "description": "Agenten Projektpositionen zuweisen und festlegen, welches Modell jeder verwendet."
+      "description": "Agenten Projektpositionen zuweisen und festlegen, welches Modell jeder verwendet.",
+      "team_size": {
+        "title": "Teamgröße",
+        "description": "Wie viele Agenten jeder Rolle an einem Lauf teilnehmen.",
+        "pm_label": "PM / Tech Lead",
+        "pm_help": "Schreibt unabhängige Pläne. Der beste wird verwendet.",
+        "developer_label": "Entwickler",
+        "developer_help": "Arbeiten parallel. Jeder Agent erledigt seine Unteraufgaben nacheinander, und der PM teilt die Arbeit in bis zu max(3, developers) Unteraufgaben auf.",
+        "qa_label": "QA",
+        "qa_help": "Prüfer. Jede Prüfung muss bestehen.",
+        "save": "Teamgröße speichern",
+        "saving": "Wird gespeichert…",
+        "invalid_title": "Ungültige Teamgröße",
+        "invalid_message": "Wählen Sie eine Zahl zwischen {min} und {max}.",
+        "saved_title": "Gespeichert",
+        "saved_message": "Teamgröße für zukünftige Läufe aktualisiert.",
+        "save_failed_title": "Teamgröße konnte nicht gespeichert werden"
+      },
+      "positions": {
+        "loading": "Positionen werden geladen…",
+        "load_failed": "Projektpositionen konnten nicht geladen werden.",
+        "empty": "Diesem Projekt sind noch keine Agenten zugewiesen. Agenten werden einmal in den Arbeitsbereichseinstellungen angelegt und dann hier auf eine Position gesetzt.",
+        "assign": "Agent zuweisen",
+        "bench": "Bank (Teamgrößenlimit)",
+        "agent_inactive": "Agent inaktiv",
+        "seat_warning": "Nur {filled} von {count} Plätzen für {role} sind besetzt",
+        "model_override": "(Überschreibung)",
+        "reviewer_heading": "Prüfer (wird nicht für Läufe verwendet)",
+        "removed_title": "Entfernt",
+        "removed_message": "Agent aus dem Projekt entfernt.",
+        "remove_failed_title": "Agent konnte nicht entfernt werden",
+        "delete_title": "Agent aus dem Projekt entfernen",
+        "delete_content": "{name} von der Position {role} entfernen? Der Agent im Arbeitsbereich selbst wird nicht gelöscht."
+      },
+      "roles": {
+        "project_manager": "Projektmanager",
+        "reviewer": "Prüfer",
+        "qa": "QA",
+        "developer": "Entwickler"
+      },
+      "assign": {
+        "title": "Agent zuweisen",
+        "edit_title": "Position bearbeiten",
+        "position": "Position",
+        "agent": "Agent",
+        "select_agent": "Agent auswählen",
+        "no_agents": "Noch keine Agenten in diesem Arbeitsbereich",
+        "model_override": "Modellüberschreibung",
+        "model_override_placeholder": "Optional — überschreibt das Agentmodell für dieses Projekt",
+        "active": "Aktiv",
+        "missing_agent_title": "Agent fehlt",
+        "missing_agent_message": "Legen Sie zuerst einen Agent in den Arbeitsbereichseinstellungen an.",
+        "saved_title": "Gespeichert",
+        "saved_message": "Projektposition aktualisiert.",
+        "save_failed_title": "Position konnte nicht gespeichert werden",
+        "saving": "Wird gespeichert…"
+      }
     }
   }
 }

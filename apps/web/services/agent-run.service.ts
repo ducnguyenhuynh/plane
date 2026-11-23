@@ -45,4 +45,13 @@ export class AgentRunService extends APIService {
         throw error?.response?.data;
       });
   }
+
+  /** Only queued/running runs can be cancelled; the API returns the run as `failed`. */
+  async cancelAgentRun(workspaceSlug: string, projectId: string, runId: string): Promise<TAgentRun> {
+    return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/cancel/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
 }

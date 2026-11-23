@@ -18,8 +18,10 @@ import {
   UserOutline,
 } from "@makeplane/propel/icons";
 import { useTranslation } from "@plane/i18n";
+import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
 import { calculateTimeAgo, cn, renderFormattedDate } from "@plane/utils";
 // components
+import { AgentRunSummary } from "@/components/agent-run";
 import { SidebarPropertyListItem } from "@/components/common/layout/sidebar/property-list-item";
 import { EstimateSelect } from "@/components/dropdowns/estimate/estimate-select";
 import { IssueParentSelectRoot } from "@/components/issues/parent-select-root";
@@ -28,6 +30,7 @@ import { useProjectEstimates } from "@/hooks/store/estimates";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useMember } from "@/hooks/store/use-member";
 import { useProject } from "@/hooks/store/use-project";
+import { useUserPermissions } from "@/hooks/store/user";
 // local imports
 import { IssueCycleSelect } from "./cycle-select";
 import { IssueLabel } from "./label";
@@ -64,9 +67,18 @@ export const IssueDetailSidebarSections = observer(function IssueDetailSidebarSe
     issue: { getIssueById },
   } = useIssueDetail();
   const { getUserDetails } = useMember();
+  const { allowPermissions } = useUserPermissions();
   // derived values
   const issue = getIssueById(issueId);
   if (!issue) return null;
+
+  // The agent-runs API only serves project admins and members, so guests must not mount the block.
+  const canViewAgentRuns = allowPermissions(
+    [EUserPermissions.ADMIN, EUserPermissions.MEMBER],
+    EUserPermissionsLevel.PROJECT,
+    workspaceSlug,
+    projectId
+  );
 
   const projectDetails = getProjectById(issue.project_id);
   const createdByDetails = getUserDetails(issue.created_by);
@@ -175,6 +187,13 @@ export const IssueDetailSidebarSections = observer(function IssueDetailSidebarSe
                 </SidebarPropertyListItem>
               )}
             </IssueDetailSidebarGroup>
+          </>
+        )}
+
+        {canViewAgentRuns && !issue.archived_at && (
+          <>
+            <div className="w-full border-t border-subtle" />
+            <AgentRunSummary workspaceSlug={workspaceSlug} projectId={projectId} issueId={issueId} />
           </>
         )}
       </div>

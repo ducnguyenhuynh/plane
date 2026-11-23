@@ -531,7 +531,63 @@
     "agents": {
       "title": "智能体",
       "heading": "智能体",
-      "description": "将智能体分配到项目角色，并为每个智能体选择要运行的模型。"
+      "description": "将智能体分配到项目角色，并为每个智能体选择要运行的模型。",
+      "team_size": {
+        "title": "团队规模",
+        "description": "每个角色有多少个 Agent 参与一次运行。",
+        "pm_label": "PM / 技术负责人",
+        "pm_help": "撰写独立计划，采用其中最好的一份。",
+        "developer_label": "开发者",
+        "developer_help": "并行工作。每个 Agent 一次处理一个自己的子任务，PM 会把工作拆分为最多 max(3, developers) 个子任务。",
+        "qa_label": "QA",
+        "qa_help": "评审者。每次评审都必须通过。",
+        "save": "保存团队规模",
+        "saving": "正在保存…",
+        "invalid_title": "团队规模无效",
+        "invalid_message": "请选择 {min} 到 {max} 之间的数字。",
+        "saved_title": "已保存",
+        "saved_message": "团队规模已更新，将用于后续运行。",
+        "save_failed_title": "无法保存团队规模"
+      },
+      "positions": {
+        "loading": "正在加载职位…",
+        "load_failed": "无法加载项目职位。",
+        "empty": "此项目尚未分配任何 Agent。Agent 在工作区设置中定义一次，然后在此处放入职位。",
+        "assign": "分配 Agent",
+        "bench": "替补（团队规模上限）",
+        "agent_inactive": "Agent 未启用",
+        "seat_warning": "{role} 的 {count} 个席位中仅 {filled} 个已填充",
+        "model_override": "（覆盖）",
+        "reviewer_heading": "评审者（不用于运行）",
+        "removed_title": "已移除",
+        "removed_message": "已从项目中移除 Agent。",
+        "remove_failed_title": "无法移除 Agent",
+        "delete_title": "从项目中移除 Agent",
+        "delete_content": "要将 {name} 从 {role} 职位移除吗？工作区中的 Agent 本身不会被删除。"
+      },
+      "roles": {
+        "project_manager": "项目经理",
+        "reviewer": "评审者",
+        "qa": "QA",
+        "developer": "开发者"
+      },
+      "assign": {
+        "title": "分配 Agent",
+        "edit_title": "编辑职位",
+        "position": "职位",
+        "agent": "Agent",
+        "select_agent": "选择一个 Agent",
+        "no_agents": "此工作区尚无 Agent",
+        "model_override": "模型覆盖",
+        "model_override_placeholder": "可选 — 为此项目覆盖 Agent 模型",
+        "active": "启用",
+        "missing_agent_title": "缺少 Agent",
+        "missing_agent_message": "请先在工作区设置中创建 Agent。",
+        "saved_title": "已保存",
+        "saved_message": "项目职位已更新。",
+        "save_failed_title": "无法保存职位",
+        "saving": "正在保存…"
+      }
     }
   }
 }

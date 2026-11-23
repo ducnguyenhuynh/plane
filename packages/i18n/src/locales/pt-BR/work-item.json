@@ -445,5 +445,64 @@
       "label": "Título do Épico",
       "required": "O título do épico é obrigatório."
     }
+  },
+  "agent_run": {
+    "title": "Execução do agente",
+    "subtitle": "O PM planeja → os desenvolvedores implementam → QA revisa → resultado final. O histórico e os artefatos são mantidos.",
+    "empty_hint": "Inicie uma execução para que os agentes do projeto planejem este item de trabalho, criem subtarefas, as implementem e revisem o resultado.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Iniciando…",
+    "start_new_run": "Iniciar nova execução",
+    "retry_run": "Repetir execução",
+    "retrying": "Repetindo…",
+    "cancel_run": "Cancelar execução",
+    "cancelling": "Cancelando…",
+    "cancel_title": "Cancelar esta execução?",
+    "cancel_content": "Os agentes param na etapa atual. Depois você pode iniciar uma nova execução.",
+    "run_history": "Histórico de execuções",
+    "run_option": "{status} · {date}",
+    "final_result": "Resultado final",
+    "subtasks": "Subtarefas",
+    "artifacts": "Artefatos",
+    "history": "Histórico",
+    "no_agent": "Nenhum agente",
+    "team_pm": "PM: {names}",
+    "team_developers": "Desenvolvedores: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Rodada de retrabalho {round}",
+    "active_hint": "Esta execução está {status}; o painel é atualizado a cada poucos segundos.",
+    "status": {
+      "queued": "Na fila",
+      "running": "Em execução",
+      "completed": "Concluída",
+      "failed": "Falhou"
+    },
+    "stage": {
+      "pm": "Plano",
+      "developer": "Implementação",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Concluído"
+    },
+    "toast": {
+      "started_title": "Execução do agente na fila",
+      "started_message": "O PM está revisando o item de trabalho.",
+      "start_failed_title": "Não foi possível iniciar a execução",
+      "start_failed_message": "Atribua agentes às posições do projeto primeiro.",
+      "retry_title": "Nova tentativa na fila",
+      "retry_message": "A execução continua da última etapa.",
+      "retry_failed_title": "Não foi possível repetir",
+      "cancelled_title": "Execução cancelada",
+      "cancelled_message": "Os agentes pararam na etapa atual.",
+      "cancel_failed_title": "Não foi possível cancelar a execução",
+      "try_again": "Tente novamente."
+    },
+    "sidebar": {
+      "title": "Agentes de IA",
+      "open_run": "Abrir execução",
+      "no_run": "Nenhuma execução de agente ainda",
+      "load_failed": "Não foi possível carregar as execuções de agentes.",
+      "retry": "Tentar novamente"
+    }
   }
 }

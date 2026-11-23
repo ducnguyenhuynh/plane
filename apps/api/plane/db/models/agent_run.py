@@ -4,6 +4,7 @@
 
 # Django imports
 from django.db import models
+from django.db.models import Q
 
 # Module imports
 from .base import BaseModel
@@ -37,6 +38,10 @@ class AgentRun(ProjectBaseModel):
     developer_agents = models.JSONField(default=list)
     qa_agent = models.ForeignKey("db.AIAgent", on_delete=models.SET_NULL, null=True, related_name="qa_runs")
     qa_agents = models.JSONField(default=list)
+    # Model resolved per agent at start (position model_override when set), {agent_id: model}
+    agent_models = models.JSONField(default=dict)
+    # Extra developer+QA rounds run after a QA rejection
+    rework_round = models.PositiveSmallIntegerField(default=0)
     result = models.TextField(blank=True)
     error = models.TextField(blank=True)
     started_at = models.DateTimeField(null=True)
@@ -46,6 +51,13 @@ class AgentRun(ProjectBaseModel):
         return f"{self.issue_id} <{self.status}>"
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["issue"],
+                condition=Q(status__in=["queued", "running"], deleted_at__isnull=True),
+                name="agent_run_one_active_per_issue",
+            )
+        ]
         verbose_name = "Agent Run"
         verbose_name_plural = "Agent Runs"
         db_table = "agent_runs"

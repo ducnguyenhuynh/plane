@@ -531,7 +531,63 @@
     "agents": {
       "title": "エージェント",
       "heading": "エージェント",
-      "description": "エージェントをプロジェクトの役割に配置し、それぞれが使用するモデルを選択します。"
+      "description": "エージェントをプロジェクトの役割に配置し、それぞれが使用するモデルを選択します。",
+      "team_size": {
+        "title": "チームサイズ",
+        "description": "実行に参加する各ロールのエージェント数です。",
+        "pm_label": "PM / テックリード",
+        "pm_help": "独立した計画を作成します。最も良いものが採用されます。",
+        "developer_label": "開発者",
+        "developer_help": "並行して作業します。各エージェントは自分のサブタスクを1つずつ実行し、PM は作業を最大 max(3, developers) 個のサブタスクに分割します。",
+        "qa_label": "QA",
+        "qa_help": "レビュアーです。すべてのレビューに合格する必要があります。",
+        "save": "チームサイズを保存",
+        "saving": "保存中…",
+        "invalid_title": "チームサイズが無効です",
+        "invalid_message": "{min} から {max} の間の数値を選択してください。",
+        "saved_title": "保存しました",
+        "saved_message": "今後の実行にチームサイズを反映しました。",
+        "save_failed_title": "チームサイズを保存できませんでした"
+      },
+      "positions": {
+        "loading": "ポジションを読み込み中…",
+        "load_failed": "プロジェクトのポジションを読み込めませんでした。",
+        "empty": "このプロジェクトにはまだエージェントが割り当てられていません。エージェントはワークスペース設定で一度定義し、ここでポジションに配置します。",
+        "assign": "エージェントを割り当て",
+        "bench": "ベンチ（チームサイズ上限）",
+        "agent_inactive": "エージェントは無効です",
+        "seat_warning": "{role} の席は {count} 席中 {filled} 席のみ埋まっています",
+        "model_override": "（上書き）",
+        "reviewer_heading": "レビュアー（実行では使用されません）",
+        "removed_title": "削除しました",
+        "removed_message": "エージェントをプロジェクトから削除しました。",
+        "remove_failed_title": "エージェントを削除できませんでした",
+        "delete_title": "プロジェクトからエージェントを削除",
+        "delete_content": "{name} を {role} のポジションから削除しますか？ワークスペースのエージェント自体は削除されません。"
+      },
+      "roles": {
+        "project_manager": "プロジェクトマネージャー",
+        "reviewer": "レビュアー",
+        "qa": "QA",
+        "developer": "開発者"
+      },
+      "assign": {
+        "title": "エージェントを割り当て",
+        "edit_title": "ポジションを編集",
+        "position": "ポジション",
+        "agent": "エージェント",
+        "select_agent": "エージェントを選択",
+        "no_agents": "このワークスペースにはまだエージェントがいません",
+        "model_override": "モデルの上書き",
+        "model_override_placeholder": "任意 — このプロジェクトでエージェントのモデルを上書きします",
+        "active": "有効",
+        "missing_agent_title": "エージェントがありません",
+        "missing_agent_message": "先にワークスペース設定でエージェントを作成してください。",
+        "saved_title": "保存しました",
+        "saved_message": "プロジェクトのポジションを更新しました。",
+        "save_failed_title": "ポジションを保存できませんでした",
+        "saving": "保存中…"
+      }
     }
   }
 }

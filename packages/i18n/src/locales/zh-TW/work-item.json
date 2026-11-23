@@ -445,5 +445,64 @@
       "label": "Epic 標題",
       "required": "Epic 標題為必填。"
     }
+  },
+  "agent_run": {
+    "title": "Agent 執行",
+    "subtitle": "PM 制定計畫 → 開發者實作 → QA 審查 → 最終結果。歷史記錄與產物都會保留。",
+    "empty_hint": "開始一次執行，讓專案 Agent 規劃此工作項目、建立子任務、實作這些子任務並審查結果。",
+    "cook_with_ai": "Cook with AI",
+    "starting": "正在開始…",
+    "start_new_run": "開始新的執行",
+    "retry_run": "重試執行",
+    "retrying": "正在重試…",
+    "cancel_run": "取消執行",
+    "cancelling": "正在取消…",
+    "cancel_title": "取消此執行？",
+    "cancel_content": "Agent 會停在目前階段。之後您可以開始新的執行。",
+    "run_history": "執行歷史",
+    "run_option": "{status} · {date}",
+    "final_result": "最終結果",
+    "subtasks": "子任務",
+    "artifacts": "產物",
+    "history": "歷史記錄",
+    "no_agent": "無 Agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "開發者: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "重工輪次 {round}",
+    "active_hint": "此執行處於{status}狀態；面板每隔幾秒重新整理。",
+    "status": {
+      "queued": "排隊中",
+      "running": "執行中",
+      "completed": "已完成",
+      "failed": "失敗"
+    },
+    "stage": {
+      "pm": "計畫",
+      "developer": "實作",
+      "qa": "QA",
+      "final": "最終",
+      "done": "完成"
+    },
+    "toast": {
+      "started_title": "Agent 執行已排入佇列",
+      "started_message": "PM 正在審查此工作項目。",
+      "start_failed_title": "無法開始執行",
+      "start_failed_message": "請先將 Agent 指派到專案職位。",
+      "retry_title": "重試已排入佇列",
+      "retry_message": "執行將從上一個階段繼續。",
+      "retry_failed_title": "無法重試",
+      "cancelled_title": "執行已取消",
+      "cancelled_message": "Agent 已在目前階段停止。",
+      "cancel_failed_title": "無法取消執行",
+      "try_again": "請再試一次。"
+    },
+    "sidebar": {
+      "title": "AI Agent",
+      "open_run": "開啟執行",
+      "no_run": "尚無 Agent 執行",
+      "load_failed": "無法載入 Agent 執行。",
+      "retry": "重試"
+    }
   }
 }

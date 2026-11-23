@@ -445,5 +445,64 @@
       "label": "エピックのタイトル",
       "required": "エピックのタイトルは必須です。"
     }
+  },
+  "agent_run": {
+    "title": "エージェント実行",
+    "subtitle": "PM が計画 → 開発者が実装 → QA がレビュー → 最終結果。履歴と成果物は保持されます。",
+    "empty_hint": "実行を開始すると、プロジェクトのエージェントがこの作業項目を計画し、サブタスクを作成して実装し、結果をレビューします。",
+    "cook_with_ai": "Cook with AI",
+    "starting": "開始中…",
+    "start_new_run": "新しい実行を開始",
+    "retry_run": "実行を再試行",
+    "retrying": "再試行中…",
+    "cancel_run": "実行をキャンセル",
+    "cancelling": "キャンセル中…",
+    "cancel_title": "この実行をキャンセルしますか？",
+    "cancel_content": "エージェントは現在のステージで停止します。その後、新しい実行を開始できます。",
+    "run_history": "実行履歴",
+    "run_option": "{status} · {date}",
+    "final_result": "最終結果",
+    "subtasks": "サブタスク",
+    "artifacts": "成果物",
+    "history": "履歴",
+    "no_agent": "エージェントなし",
+    "team_pm": "PM: {names}",
+    "team_developers": "開発者: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "再作業ラウンド {round}",
+    "active_hint": "この実行は{status}です。パネルは数秒ごとに更新されます。",
+    "status": {
+      "queued": "待機中",
+      "running": "実行中",
+      "completed": "完了",
+      "failed": "失敗"
+    },
+    "stage": {
+      "pm": "計画",
+      "developer": "実装",
+      "qa": "QA",
+      "final": "最終",
+      "done": "完了"
+    },
+    "toast": {
+      "started_title": "エージェント実行をキューに追加しました",
+      "started_message": "PM が作業項目をレビューしています。",
+      "start_failed_title": "実行を開始できませんでした",
+      "start_failed_message": "先にプロジェクトのポジションにエージェントを割り当ててください。",
+      "retry_title": "再試行をキューに追加しました",
+      "retry_message": "実行は最後のステージから続行されます。",
+      "retry_failed_title": "再試行できませんでした",
+      "cancelled_title": "実行をキャンセルしました",
+      "cancelled_message": "エージェントは現在のステージで停止しました。",
+      "cancel_failed_title": "実行をキャンセルできませんでした",
+      "try_again": "もう一度お試しください。"
+    },
+    "sidebar": {
+      "title": "AI エージェント",
+      "open_run": "実行を開く",
+      "no_run": "エージェント実行はまだありません",
+      "load_failed": "エージェント実行を読み込めませんでした。",
+      "retry": "再試行"
+    }
   }
 }

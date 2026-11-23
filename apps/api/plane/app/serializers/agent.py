@@ -6,7 +6,7 @@
 from rest_framework import serializers
 
 # Module imports
-from plane.db.models import AIAgent, AgentProvider, ProjectAgentTeam, ProjectAIAgent
+from plane.db.models import MAX_TEAM_COUNT, AIAgent, AgentProvider, AgentRole, ProjectAgentTeam, ProjectAIAgent
 from plane.license.utils.encryption import encrypt_data
 
 from .base import BaseSerializer
@@ -15,6 +15,7 @@ from .base import BaseSerializer
 class AIAgentSerializer(BaseSerializer):
     api_key = serializers.CharField(write_only=True, required=False, allow_blank=True)
     has_api_key = serializers.SerializerMethodField()
+    bot_user_id = serializers.UUIDField(read_only=True)
 
     class Meta:
         model = AIAgent
@@ -30,6 +31,7 @@ class AIAgentSerializer(BaseSerializer):
             "is_active",
             "api_key",
             "has_api_key",
+            "bot_user_id",
             "created_at",
             "updated_at",
         ]
@@ -62,9 +64,20 @@ class AIAgentSerializer(BaseSerializer):
         return super().update(instance, validated_data)
 
 
+class AIAgentLiteSerializer(BaseSerializer):
+    """What a non-admin member may see: no prompt, base URL or key material."""
+
+    bot_user_id = serializers.UUIDField(read_only=True)
+
+    class Meta:
+        model = AIAgent
+        fields = ["id", "name", "provider", "model", "is_active", "bot_user_id"]
+
+
 class ProjectAIAgentSerializer(BaseSerializer):
-    agent = AIAgentSerializer(read_only=True)
+    agent = serializers.SerializerMethodField()
     agent_id = serializers.PrimaryKeyRelatedField(queryset=AIAgent.objects.all(), source="agent", write_only=True)
+    in_team = serializers.SerializerMethodField()
 
     class Meta:
         model = ProjectAIAgent
@@ -77,16 +90,26 @@ class ProjectAIAgentSerializer(BaseSerializer):
             "role",
             "model_override",
             "is_active",
+            "in_team",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["project_id", "workspace_id", "created_at", "updated_at"]
+
+    def get_agent(self, obj):
+        serializer = AIAgentSerializer if self.context.get("is_admin") else AIAgentLiteSerializer
+        return serializer(obj.agent).data
+
+    def get_in_team(self, obj):
+        return getattr(obj, "in_team", False)
 
     def validate(self, data):
         project = self.context["project"]
         agent = data.get("agent", getattr(self.instance, "agent", None))
         role = data.get("role", getattr(self.instance, "role", None))
 
+        if role == AgentRole.REVIEWER:
+            raise serializers.ValidationError({"role": "The reviewer position is not used by agent runs yet."})
         if agent and agent.workspace_id != project.workspace_id:
             raise serializers.ValidationError({"agent_id": "Agent does not belong to this workspace."})
 
@@ -114,8 +137,7 @@ class ProjectAgentTeamSerializer(BaseSerializer):
         return self._validate_count(value)
 
     @staticmethod
-    def _validate_count(value, allow_zero=False):
-        minimum = 0 if allow_zero else 1
-        if value < minimum or value > 10:
-            raise serializers.ValidationError(f"Choose between {minimum} and 10.")
+    def _validate_count(value):
+        if value < 1 or value > MAX_TEAM_COUNT:
+            raise serializers.ValidationError(f"Choose between 1 and {MAX_TEAM_COUNT}.")
         return value

@@ -26,6 +26,8 @@ from .base import BaseAPIView
 
 GITHUB_API = "https://api.github.com"
 GITHUB_TIMEOUT = 15
+GITHUB_PAGE_SIZE = 100
+GITHUB_MAX_PAGES = 10
 
 
 def github_headers(token: str) -> dict:
@@ -97,41 +99,48 @@ class GitHubConnectionEndpoint(BaseAPIView):
 
 
 class GitHubRepositoriesEndpoint(BaseAPIView):
-    @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER], level="WORKSPACE")
+    @allow_permission(allowed_roles=[ROLE.ADMIN], level="WORKSPACE")
     def get(self, request, slug):
         _, token = get_github_connection(slug)
         if not token:
             return Response({"error": "Connect GitHub first."}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            response = requests.get(
-                f"{GITHUB_API}/user/repos",
-                headers=github_headers(token),
-                params={
-                    "per_page": 100,
-                    "sort": "updated",
-                    "affiliation": "owner,collaborator,organization_member",
-                },
-                timeout=GITHUB_TIMEOUT,
-            )
-        except requests.RequestException:
-            return Response({"error": "Could not reach GitHub."}, status=status.HTTP_400_BAD_REQUEST)
-        if response.status_code != 200:
-            return Response(
-                {"error": f"GitHub returned HTTP {response.status_code}."}, status=status.HTTP_400_BAD_REQUEST
-            )
-
         query = request.GET.get("search", "").strip().lower()
-        repositories = [
-            {
-                "full_name": repo.get("full_name", ""),
-                "html_url": repo.get("html_url", ""),
-                "default_branch": repo.get("default_branch", ""),
-                "private": bool(repo.get("private")),
-            }
-            for repo in response.json()
-            if not query or query in repo.get("full_name", "").lower()
-        ]
+        repositories = []
+        # GitHub caps the repo list at 100 per page; ten pages is enough for any team
+        for page in range(1, GITHUB_MAX_PAGES + 1):
+            try:
+                response = requests.get(
+                    f"{GITHUB_API}/user/repos",
+                    headers=github_headers(token),
+                    params={
+                        "per_page": GITHUB_PAGE_SIZE,
+                        "page": page,
+                        "sort": "updated",
+                        "affiliation": "owner,collaborator,organization_member",
+                    },
+                    timeout=GITHUB_TIMEOUT,
+                )
+            except requests.RequestException:
+                return Response({"error": "Could not reach GitHub."}, status=status.HTTP_400_BAD_REQUEST)
+            if response.status_code != 200:
+                return Response(
+                    {"error": f"GitHub returned HTTP {response.status_code}."}, status=status.HTTP_400_BAD_REQUEST
+                )
+
+            batch = response.json() or []
+            repositories.extend(
+                {
+                    "full_name": repo.get("full_name", ""),
+                    "html_url": repo.get("html_url", ""),
+                    "default_branch": repo.get("default_branch", ""),
+                    "private": bool(repo.get("private")),
+                }
+                for repo in batch
+                if not query or query in repo.get("full_name", "").lower()
+            )
+            if len(batch) < GITHUB_PAGE_SIZE:
+                break
         return Response(repositories, status=status.HTTP_200_OK)
 
 
@@ -184,13 +193,16 @@ class BackstageTestEndpoint(BaseAPIView):
             headers["Authorization"] = f"Bearer {token}"
 
         try:
-            response = requests.get(
+            response = pinned_fetch(
+                "GET",
                 f"{connection.base_url.rstrip('/')}/api/catalog/entities",
+                allowed_ips=settings.WEBHOOK_ALLOWED_IPS,
+                allowed_hosts=settings.WEBHOOK_ALLOWED_HOSTS,
                 headers=headers,
                 params={"limit": 1},
                 timeout=GITHUB_TIMEOUT,
             )
-        except requests.RequestException:
+        except (requests.RequestException, ValueError):
             return Response(
                 {"ok": False, "message": "Could not reach Backstage. Check the URL and network access."},
                 status=status.HTTP_200_OK,

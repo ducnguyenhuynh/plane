@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agen",
       "heading": "Agen",
-      "description": "Tempatkan agen pada posisi proyek dan pilih model yang dijalankan setiap agen."
+      "description": "Tempatkan agen pada posisi proyek dan pilih model yang dijalankan setiap agen.",
+      "team_size": {
+        "title": "Ukuran tim",
+        "description": "Berapa banyak agen dari setiap peran yang ikut dalam satu proses.",
+        "pm_label": "PM / Tech lead",
+        "pm_help": "Menyusun rencana independen. Rencana terbaik yang dipakai.",
+        "developer_label": "Developer",
+        "developer_help": "Bekerja paralel. Setiap agen mengerjakan subtugasnya satu per satu, dan PM membagi pekerjaan menjadi maksimal max(3, developers) subtugas.",
+        "qa_label": "QA",
+        "qa_help": "Peninjau. Setiap peninjauan harus lulus.",
+        "save": "Simpan ukuran tim",
+        "saving": "Menyimpan…",
+        "invalid_title": "Ukuran tim tidak valid",
+        "invalid_message": "Pilih angka antara {min} dan {max}.",
+        "saved_title": "Tersimpan",
+        "saved_message": "Ukuran tim diperbarui untuk proses berikutnya.",
+        "save_failed_title": "Tidak dapat menyimpan ukuran tim"
+      },
+      "positions": {
+        "loading": "Memuat posisi…",
+        "load_failed": "Tidak dapat memuat posisi proyek.",
+        "empty": "Belum ada agen yang ditetapkan ke proyek ini. Agen didefinisikan sekali di pengaturan ruang kerja, lalu ditempatkan pada posisi di sini.",
+        "assign": "Tetapkan agen",
+        "bench": "Cadangan (batas ukuran tim)",
+        "agent_inactive": "Agen tidak aktif",
+        "seat_warning": "Hanya {filled} dari {count} kursi {role} yang terisi",
+        "model_override": "(penggantian)",
+        "reviewer_heading": "Peninjau (tidak dipakai oleh proses)",
+        "removed_title": "Dihapus",
+        "removed_message": "Agen dihapus dari proyek.",
+        "remove_failed_title": "Tidak dapat menghapus agen",
+        "delete_title": "Hapus agen dari proyek",
+        "delete_content": "Hapus {name} dari posisi {role}? Agen di ruang kerja tidak dihapus."
+      },
+      "roles": {
+        "project_manager": "Manajer proyek",
+        "reviewer": "Peninjau",
+        "qa": "QA",
+        "developer": "Developer"
+      },
+      "assign": {
+        "title": "Tetapkan agen",
+        "edit_title": "Edit posisi",
+        "position": "Posisi",
+        "agent": "Agen",
+        "select_agent": "Pilih agen",
+        "no_agents": "Belum ada agen di ruang kerja ini",
+        "model_override": "Penggantian model",
+        "model_override_placeholder": "Opsional — mengganti model agen untuk proyek ini",
+        "active": "Aktif",
+        "missing_agent_title": "Agen tidak ada",
+        "missing_agent_message": "Buat agen di pengaturan ruang kerja terlebih dahulu.",
+        "saved_title": "Tersimpan",
+        "saved_message": "Posisi proyek diperbarui.",
+        "save_failed_title": "Tidak dapat menyimpan posisi",
+        "saving": "Menyimpan…"
+      }
     }
   }
 }

@@ -4,6 +4,7 @@
 
 # Django imports
 from django.db import models
+from django.db.models import Q
 
 # Module imports
 from plane.db.models.base import BaseModel
@@ -11,13 +12,15 @@ from plane.db.models.project import ProjectBaseModel
 
 
 def default_slack_events():
-    return {"issue_created": True, "issue_updated": False, "comment_created": True}
+    return {"issue_created": True, "issue_updated": False, "comment_created": True, "agent_run": True}
 
 
 class GitHubConnection(BaseModel):
     """Workspace level GitHub personal access token used to browse repositories."""
 
-    workspace = models.OneToOneField("db.Workspace", on_delete=models.CASCADE, related_name="github_connection")
+    # A ForeignKey (not OneToOne) so a deleted connection can be replaced: the
+    # uniqueness is enforced only over rows that are not soft-deleted.
+    workspace = models.ForeignKey("db.Workspace", on_delete=models.CASCADE, related_name="github_connection")
     # Encrypted with plane.license.utils.encryption, never serialized back
     token = models.TextField(blank=True)
     login = models.CharField(max_length=255, blank=True)
@@ -27,6 +30,13 @@ class GitHubConnection(BaseModel):
         return f"{self.workspace.name} <{self.login}>"
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["workspace"],
+                condition=Q(deleted_at__isnull=True),
+                name="github_connection_unique_workspace_when_deleted_at_null",
+            )
+        ]
         verbose_name = "GitHub Connection"
         verbose_name_plural = "GitHub Connections"
         db_table = "github_connections"
@@ -35,7 +45,7 @@ class GitHubConnection(BaseModel):
 class BackstageConnection(BaseModel):
     """Workspace level Backstage developer portal connection."""
 
-    workspace = models.OneToOneField("db.Workspace", on_delete=models.CASCADE, related_name="backstage_connection")
+    workspace = models.ForeignKey("db.Workspace", on_delete=models.CASCADE, related_name="backstage_connection")
     base_url = models.URLField(max_length=1000, blank=True)
     # Encrypted with plane.license.utils.encryption, never serialized back
     token = models.TextField(blank=True)
@@ -45,6 +55,13 @@ class BackstageConnection(BaseModel):
         return f"{self.workspace.name} <{self.base_url}>"
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["workspace"],
+                condition=Q(deleted_at__isnull=True),
+                name="backstage_connection_unique_workspace_when_deleted_at_null",
+            )
+        ]
         verbose_name = "Backstage Connection"
         verbose_name_plural = "Backstage Connections"
         db_table = "backstage_connections"
@@ -70,7 +87,13 @@ class ProjectIntegration(ProjectBaseModel):
         return f"{self.project.name} integrations"
 
     class Meta:
-        unique_together = ["project"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project"],
+                condition=Q(deleted_at__isnull=True),
+                name="project_integration_unique_project_when_deleted_at_null",
+            )
+        ]
         verbose_name = "Project Integration"
         verbose_name_plural = "Project Integrations"
         db_table = "project_integrations"

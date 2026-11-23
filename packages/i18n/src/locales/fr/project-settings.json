@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agents",
       "heading": "Agents",
-      "description": "Affectez des agents à des postes de projet et choisissez le modèle utilisé par chacun."
+      "description": "Affectez des agents à des postes de projet et choisissez le modèle utilisé par chacun.",
+      "team_size": {
+        "title": "Taille de l'équipe",
+        "description": "Combien d'agents de chaque rôle participent à une exécution.",
+        "pm_label": "PM / Responsable technique",
+        "pm_help": "Rédige des plans indépendants. Le meilleur est utilisé.",
+        "developer_label": "Développeurs",
+        "developer_help": "Travaillent en parallèle. Chaque agent traite ses sous-tâches une par une, et le PM découpe le travail en un maximum de max(3, developers) sous-tâches.",
+        "qa_label": "QA",
+        "qa_help": "Relecteurs. Chaque relecture doit être validée.",
+        "save": "Enregistrer la taille de l'équipe",
+        "saving": "Enregistrement…",
+        "invalid_title": "Taille d'équipe invalide",
+        "invalid_message": "Choisissez un nombre entre {min} et {max}.",
+        "saved_title": "Enregistré",
+        "saved_message": "Taille de l'équipe mise à jour pour les prochaines exécutions.",
+        "save_failed_title": "Impossible d'enregistrer la taille de l'équipe"
+      },
+      "positions": {
+        "loading": "Chargement des postes…",
+        "load_failed": "Impossible de charger les postes du projet.",
+        "empty": "Aucun agent n'est encore affecté à ce projet. Les agents sont définis une fois dans les paramètres de l'espace de travail, puis placés sur un poste ici.",
+        "assign": "Affecter un agent",
+        "bench": "Banc (limite de l'équipe)",
+        "agent_inactive": "Agent inactif",
+        "seat_warning": "Seuls {filled} des {count} postes {role} sont pourvus",
+        "model_override": "(remplacement)",
+        "reviewer_heading": "Relecteur (non utilisé par les exécutions)",
+        "removed_title": "Supprimé",
+        "removed_message": "Agent retiré du projet.",
+        "remove_failed_title": "Impossible de retirer l'agent",
+        "delete_title": "Retirer l'agent du projet",
+        "delete_content": "Retirer {name} du poste {role} ? L'agent de l'espace de travail n'est pas supprimé."
+      },
+      "roles": {
+        "project_manager": "Chef de projet",
+        "reviewer": "Relecteur",
+        "qa": "QA",
+        "developer": "Développeur"
+      },
+      "assign": {
+        "title": "Affecter un agent",
+        "edit_title": "Modifier le poste",
+        "position": "Poste",
+        "agent": "Agent",
+        "select_agent": "Sélectionnez un agent",
+        "no_agents": "Aucun agent dans cet espace de travail pour l'instant",
+        "model_override": "Remplacement du modèle",
+        "model_override_placeholder": "Facultatif — remplace le modèle de l'agent pour ce projet",
+        "active": "Actif",
+        "missing_agent_title": "Agent manquant",
+        "missing_agent_message": "Créez d'abord un agent dans les paramètres de l'espace de travail.",
+        "saved_title": "Enregistré",
+        "saved_message": "Poste du projet mis à jour.",
+        "save_failed_title": "Impossible d'enregistrer le poste",
+        "saving": "Enregistrement…"
+      }
     }
   }
 }

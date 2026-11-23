@@ -445,5 +445,64 @@
       "label": "Judul Epik",
       "required": "Judul epik wajib diisi."
     }
+  },
+  "agent_run": {
+    "title": "Proses agen",
+    "subtitle": "PM merencanakan → developer mengimplementasikan → QA meninjau → hasil akhir. Riwayat dan artefak disimpan.",
+    "empty_hint": "Mulai proses agar agen proyek merencanakan item kerja ini, membuat subtugas, mengimplementasikannya, dan meninjau hasilnya.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Memulai…",
+    "start_new_run": "Mulai proses baru",
+    "retry_run": "Ulangi proses",
+    "retrying": "Mengulangi…",
+    "cancel_run": "Batalkan proses",
+    "cancelling": "Membatalkan…",
+    "cancel_title": "Batalkan proses ini?",
+    "cancel_content": "Agen berhenti pada tahap saat ini. Anda dapat memulai proses baru setelahnya.",
+    "run_history": "Riwayat proses",
+    "run_option": "{status} · {date}",
+    "final_result": "Hasil akhir",
+    "subtasks": "Subtugas",
+    "artifacts": "Artefak",
+    "history": "Riwayat",
+    "no_agent": "Tanpa agen",
+    "team_pm": "PM: {names}",
+    "team_developers": "Developer: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Putaran pengerjaan ulang {round}",
+    "active_hint": "Proses ini {status}; panel diperbarui setiap beberapa detik.",
+    "status": {
+      "queued": "Dalam antrean",
+      "running": "Berjalan",
+      "completed": "Selesai",
+      "failed": "Gagal"
+    },
+    "stage": {
+      "pm": "Rencana",
+      "developer": "Implementasi",
+      "qa": "QA",
+      "final": "Akhir",
+      "done": "Selesai"
+    },
+    "toast": {
+      "started_title": "Proses agen masuk antrean",
+      "started_message": "PM sedang meninjau item kerja.",
+      "start_failed_title": "Tidak dapat memulai proses",
+      "start_failed_message": "Tetapkan agen ke posisi proyek terlebih dahulu.",
+      "retry_title": "Pengulangan masuk antrean",
+      "retry_message": "Proses berlanjut dari tahap terakhirnya.",
+      "retry_failed_title": "Tidak dapat mengulangi",
+      "cancelled_title": "Proses dibatalkan",
+      "cancelled_message": "Agen berhenti pada tahap saat ini.",
+      "cancel_failed_title": "Tidak dapat membatalkan proses",
+      "try_again": "Silakan coba lagi."
+    },
+    "sidebar": {
+      "title": "Agen AI",
+      "open_run": "Buka proses",
+      "no_run": "Belum ada proses agen",
+      "load_failed": "Tidak dapat memuat proses agen.",
+      "retry": "Coba lagi"
+    }
   }
 }

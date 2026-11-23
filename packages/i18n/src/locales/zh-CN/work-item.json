@@ -445,5 +445,64 @@
       "label": "史诗标题",
       "required": "史诗标题为必填项"
     }
+  },
+  "agent_run": {
+    "title": "Agent 运行",
+    "subtitle": "PM 制定计划 → 开发者实现 → QA 评审 → 最终结果。历史记录和产物都会保留。",
+    "empty_hint": "开始一次运行，让项目 Agent 规划此工作项、创建子任务、实现这些子任务并评审结果。",
+    "cook_with_ai": "Cook with AI",
+    "starting": "正在开始…",
+    "start_new_run": "开始新的运行",
+    "retry_run": "重试运行",
+    "retrying": "正在重试…",
+    "cancel_run": "取消运行",
+    "cancelling": "正在取消…",
+    "cancel_title": "取消此运行？",
+    "cancel_content": "Agent 会在当前阶段停止。之后您可以开始新的运行。",
+    "run_history": "运行历史",
+    "run_option": "{status} · {date}",
+    "final_result": "最终结果",
+    "subtasks": "子任务",
+    "artifacts": "产物",
+    "history": "历史记录",
+    "no_agent": "无 Agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "开发者: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "返工轮次 {round}",
+    "active_hint": "此运行处于{status}状态；面板每几秒刷新一次。",
+    "status": {
+      "queued": "排队中",
+      "running": "运行中",
+      "completed": "已完成",
+      "failed": "失败"
+    },
+    "stage": {
+      "pm": "计划",
+      "developer": "实现",
+      "qa": "QA",
+      "final": "最终",
+      "done": "完成"
+    },
+    "toast": {
+      "started_title": "Agent 运行已排队",
+      "started_message": "PM 正在评审此工作项。",
+      "start_failed_title": "无法开始运行",
+      "start_failed_message": "请先将 Agent 分配到项目职位。",
+      "retry_title": "重试已排队",
+      "retry_message": "运行将从上一阶段继续。",
+      "retry_failed_title": "无法重试",
+      "cancelled_title": "运行已取消",
+      "cancelled_message": "Agent 已在当前阶段停止。",
+      "cancel_failed_title": "无法取消运行",
+      "try_again": "请重试。"
+    },
+    "sidebar": {
+      "title": "AI Agent",
+      "open_run": "打开运行",
+      "no_run": "暂无 Agent 运行",
+      "load_failed": "无法加载 Agent 运行。",
+      "retry": "重试"
+    }
   }
 }

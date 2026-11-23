@@ -445,5 +445,64 @@
       "label": "Názov epiky",
       "required": "Názov epiky je povinný."
     }
+  },
+  "agent_run": {
+    "title": "Spustenie agenta",
+    "subtitle": "PM plánuje → vývojári implementujú → QA kontroluje → konečný výsledok. História a artefakty sa uchovávajú.",
+    "empty_hint": "Spustite beh, aby agenti projektu naplánovali túto pracovnú položku, vytvorili podúlohy, implementovali ich a skontrolovali výsledok.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Spúšťa sa…",
+    "start_new_run": "Spustiť nový beh",
+    "retry_run": "Zopakovať beh",
+    "retrying": "Opakovanie…",
+    "cancel_run": "Zrušiť beh",
+    "cancelling": "Ruší sa…",
+    "cancel_title": "Zrušiť tento beh?",
+    "cancel_content": "Agenti sa zastavia v aktuálnej fáze. Potom môžete spustiť nový beh.",
+    "run_history": "História behov",
+    "run_option": "{status} · {date}",
+    "final_result": "Konečný výsledok",
+    "subtasks": "Podúlohy",
+    "artifacts": "Artefakty",
+    "history": "História",
+    "no_agent": "Žiadny agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Vývojári: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Kolo prepracovania {round}",
+    "active_hint": "Tento beh je {status}; panel sa obnovuje každých pár sekúnd.",
+    "status": {
+      "queued": "V poradí",
+      "running": "Prebieha",
+      "completed": "Dokončené",
+      "failed": "Zlyhalo"
+    },
+    "stage": {
+      "pm": "Plán",
+      "developer": "Implementácia",
+      "qa": "QA",
+      "final": "Finále",
+      "done": "Hotovo"
+    },
+    "toast": {
+      "started_title": "Beh agenta zaradený do poradia",
+      "started_message": "PM kontroluje pracovnú položku.",
+      "start_failed_title": "Beh sa nepodarilo spustiť",
+      "start_failed_message": "Najprv priraďte agentov na pozície v projekte.",
+      "retry_title": "Opakovanie zaradené do poradia",
+      "retry_message": "Beh pokračuje od poslednej fázy.",
+      "retry_failed_title": "Opakovanie zlyhalo",
+      "cancelled_title": "Beh zrušený",
+      "cancelled_message": "Agenti sa zastavili v aktuálnej fáze.",
+      "cancel_failed_title": "Beh sa nepodarilo zrušiť",
+      "try_again": "Skúste to znova."
+    },
+    "sidebar": {
+      "title": "AI agenti",
+      "open_run": "Otvoriť beh",
+      "no_run": "Zatiaľ žiadny beh agenta",
+      "load_failed": "Behy agentov sa nepodarilo načítať.",
+      "retry": "Skúsiť znova"
+    }
   }
 }

@@ -34,7 +34,13 @@ from .user.base import (
 
 from .agent import AIAgentEndpoint, AIAgentTestEndpoint, ProjectAIAgentEndpoint
 
-from .agent_run import AgentRunDetailEndpoint, AgentRunRetryEndpoint, IssueAgentRunEndpoint, ProjectAgentTeamEndpoint
+from .agent_run import (
+    AgentRunCancelEndpoint,
+    AgentRunDetailEndpoint,
+    AgentRunRetryEndpoint,
+    IssueAgentRunEndpoint,
+    ProjectAgentTeamEndpoint,
+)
 
 from .integration_connection import (
     BackstageConnectionEndpoint,

@@ -42,6 +42,7 @@ from plane.db.models import (
     Module,
     ModuleIssue,
     Project,
+    ProjectIntegration,
     User,
     Webhook,
     WebhookLog,
@@ -433,17 +434,19 @@ def webhook_activity(
     """
     try:
         # Slack runs alongside webhooks; a Slack failure must never break webhook delivery
-        try:
-            send_slack_notification.delay(
-                event=event,
-                verb=verb,
-                field=field,
-                event_id=str(event_id),
-                slug=slug,
-                origin=current_site,
-            )
-        except Exception as e:
-            log_exception(e)
+        # Only enqueue when some project in the workspace actually has Slack enabled
+        if ProjectIntegration.objects.filter(workspace__slug=slug, is_slack_enabled=True).exists():
+            try:
+                send_slack_notification.delay(
+                    event=event,
+                    verb=verb,
+                    field=field,
+                    event_id=str(event_id),
+                    slug=slug,
+                    origin=current_site,
+                )
+            except Exception as e:
+                log_exception(e)
 
         webhooks = Webhook.objects.filter(workspace__slug=slug, is_active=True)
 

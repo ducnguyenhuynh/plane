@@ -4,9 +4,10 @@
  * See the LICENSE file for details.
  */
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { observer } from "mobx-react";
 import Link from "next/link";
+import { Button } from "@makeplane/propel/components/button";
 import { IconButton as IconButtonElement } from "@makeplane/propel/elements/icon-button";
 import {
   ArrowExpandOutline,
@@ -18,6 +19,7 @@ import {
 } from "@makeplane/propel/icons";
 // plane imports
 import { useTranslation } from "@plane/i18n";
+import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
 import { setToast } from "@plane/blocks/toast";
 import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { TNameDescriptionLoader } from "@plane/types";
@@ -28,8 +30,10 @@ import { copyUrlToClipboard, generateWorkItemLink } from "@plane/utils";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";
 import { useProject } from "@/hooks/store/use-project";
-import { useUser } from "@/hooks/store/user";
+import { useUser, useUserPermissions } from "@/hooks/store/user";
 import { usePlatformOS } from "@/hooks/use-platform-os";
+// components
+import { AgentRunModal } from "@/components/agent-run";
 // local imports
 import { IssueSubscription } from "../issue-detail/subscription";
 import { WorkItemDetailQuickActions } from "../issue-layouts/quick-action-dropdowns";
@@ -98,8 +102,11 @@ export const IssuePeekOverviewHeader = observer(function IssuePeekOverviewHeader
   // ref
   const parentRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  // states
+  const [isAgentRunOpen, setIsAgentRunOpen] = useState(false);
   // store hooks
   const { data: currentUser } = useUser();
+  const { allowPermissions } = useUserPermissions();
   const {
     issue: { getIssueById },
     setPeekIssue,
@@ -111,6 +118,12 @@ export const IssuePeekOverviewHeader = observer(function IssuePeekOverviewHeader
   const { getProjectIdentifierById } = useProject();
   // derived values
   const issueDetails = getIssueById(issueId);
+  const canRunAgents = allowPermissions(
+    [EUserPermissions.ADMIN, EUserPermissions.MEMBER],
+    EUserPermissionsLevel.PROJECT,
+    workspaceSlug,
+    projectId
+  );
   const currentMode = PEEK_OPTIONS.find((m) => m.key === peekMode);
   const projectIdentifier = getProjectIdentifierById(issueDetails?.project_id);
   const {
@@ -214,6 +227,15 @@ export const IssuePeekOverviewHeader = observer(function IssuePeekOverviewHeader
       <div className="flex items-center gap-x-4">
         <NameDescriptionUpdateStatus isSubmitting={isSubmitting} />
         <div className="flex items-center gap-2">
+          {canRunAgents && !isArchived && !disabled && (
+            <Button
+              variant="secondary"
+              size="sm"
+              stretch="auto"
+              label={t("agent_run.cook_with_ai")}
+              onClick={() => setIsAgentRunOpen(true)}
+            />
+          )}
           {currentUser && !isArchived && (
             <IssueSubscription workspaceSlug={workspaceSlug} projectId={projectId} issueId={issueId} />
           )}
@@ -244,6 +266,14 @@ export const IssuePeekOverviewHeader = observer(function IssuePeekOverviewHeader
           )}
         </div>
       </div>
+
+      <AgentRunModal
+        workspaceSlug={workspaceSlug}
+        projectId={projectId}
+        issueId={issueId}
+        isOpen={isAgentRunOpen}
+        onClose={() => setIsAgentRunOpen(false)}
+      />
     </div>
   );
 });

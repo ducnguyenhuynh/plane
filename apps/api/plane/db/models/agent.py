@@ -4,6 +4,7 @@
 
 # Django imports
 from django.db import models
+from django.db.models import Q
 
 # Module imports
 from .base import BaseModel
@@ -32,6 +33,12 @@ class ReasoningEffort(models.TextChoices):
     MAX = "max", "Max"
 
 
+# Single source of defaults for a project's agent team, shared by the model,
+# the serializer and the view.
+DEFAULT_AGENT_TEAM = {"pm_count": 1, "qa_count": 1, "developer_count": 3}
+MAX_TEAM_COUNT = 10
+
+
 class AIAgent(BaseModel):
     """A workspace level AI agent: which provider/model it talks to and how."""
 
@@ -46,12 +53,26 @@ class AIAgent(BaseModel):
     # Empty means "use the provider/model default"
     reasoning_effort = models.CharField(max_length=20, blank=True, choices=ReasoningEffort.choices, default="")
     is_active = models.BooleanField(default=True)
+    # The Plane member this agent acts as; see plane.utils.agent_bot.ensure_agent_bot
+    bot_user = models.ForeignKey(
+        "db.User",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="ai_agent_profiles",
+    )
 
     def __str__(self):
         return f"{self.name} <{self.model}>"
 
     class Meta:
-        unique_together = ["workspace", "name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["workspace", "name"],
+                condition=Q(deleted_at__isnull=True),
+                name="ai_agent_unique_workspace_name_when_deleted_at_null",
+            )
+        ]
         verbose_name = "AI Agent"
         verbose_name_plural = "AI Agents"
         db_table = "ai_agents"
@@ -70,7 +91,13 @@ class ProjectAIAgent(ProjectBaseModel):
         return f"{self.project.name} - {self.role}: {self.agent.name}"
 
     class Meta:
-        unique_together = ["project", "agent", "role"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project", "agent", "role"],
+                condition=Q(deleted_at__isnull=True),
+                name="project_ai_agent_unique_position_when_deleted_at_null",
+            )
+        ]
         verbose_name = "Project AI Agent"
         verbose_name_plural = "Project AI Agents"
         db_table = "project_ai_agents"
@@ -80,15 +107,21 @@ class ProjectAIAgent(ProjectBaseModel):
 class ProjectAgentTeam(ProjectBaseModel):
     """How many agents of each role can work in parallel on this project."""
 
-    pm_count = models.PositiveSmallIntegerField(default=1)
-    qa_count = models.PositiveSmallIntegerField(default=1)
-    developer_count = models.PositiveSmallIntegerField(default=3)
+    pm_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["pm_count"])
+    qa_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["qa_count"])
+    developer_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["developer_count"])
 
     def __str__(self):
         return f"{self.project.name} team"
 
     class Meta:
-        unique_together = ["project"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project"],
+                condition=Q(deleted_at__isnull=True),
+                name="project_agent_team_unique_project_when_deleted_at_null",
+            )
+        ]
         verbose_name = "Project Agent Team"
         verbose_name_plural = "Project Agent Teams"
         db_table = "project_agent_teams"

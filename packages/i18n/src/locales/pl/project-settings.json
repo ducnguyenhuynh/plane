@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agenci",
       "heading": "Agenci",
-      "description": "Przypisz agentów do stanowisk w projekcie i wybierz model używany przez każdego z nich."
+      "description": "Przypisz agentów do stanowisk w projekcie i wybierz model używany przez każdego z nich.",
+      "team_size": {
+        "title": "Rozmiar zespołu",
+        "description": "Ilu agentów każdej roli bierze udział w uruchomieniu.",
+        "pm_label": "PM / Lider techniczny",
+        "pm_help": "Tworzy niezależne plany. Wykorzystywany jest najlepszy.",
+        "developer_label": "Programiści",
+        "developer_help": "Pracują równolegle. Każdy agent wykonuje swoje podzadania pojedynczo, a PM dzieli pracę na maksymalnie max(3, developers) podzadań.",
+        "qa_label": "QA",
+        "qa_help": "Recenzenci. Każda recenzja musi zostać zaliczona.",
+        "save": "Zapisz rozmiar zespołu",
+        "saving": "Zapisywanie…",
+        "invalid_title": "Nieprawidłowy rozmiar zespołu",
+        "invalid_message": "Wybierz liczbę od {min} do {max}.",
+        "saved_title": "Zapisano",
+        "saved_message": "Rozmiar zespołu zaktualizowany dla przyszłych uruchomień.",
+        "save_failed_title": "Nie udało się zapisać rozmiaru zespołu"
+      },
+      "positions": {
+        "loading": "Wczytywanie stanowisk…",
+        "load_failed": "Nie udało się wczytać stanowisk projektu.",
+        "empty": "Do tego projektu nie przypisano jeszcze żadnych agentów. Agenci są definiowani raz w ustawieniach przestrzeni roboczej, a następnie umieszczani tutaj na stanowisku.",
+        "assign": "Przypisz agenta",
+        "bench": "Ławka (limit rozmiaru zespołu)",
+        "agent_inactive": "Agent nieaktywny",
+        "seat_warning": "Obsadzone są tylko {filled} z {count} miejsc roli {role}",
+        "model_override": "(nadpisanie)",
+        "reviewer_heading": "Recenzent (nieużywany w uruchomieniach)",
+        "removed_title": "Usunięto",
+        "removed_message": "Agent usunięty z projektu.",
+        "remove_failed_title": "Nie udało się usunąć agenta",
+        "delete_title": "Usuń agenta z projektu",
+        "delete_content": "Usunąć {name} ze stanowiska {role}? Sam agent w przestrzeni roboczej nie zostanie usunięty."
+      },
+      "roles": {
+        "project_manager": "Menedżer projektu",
+        "reviewer": "Recenzent",
+        "qa": "QA",
+        "developer": "Programista"
+      },
+      "assign": {
+        "title": "Przypisz agenta",
+        "edit_title": "Edytuj stanowisko",
+        "position": "Stanowisko",
+        "agent": "Agent",
+        "select_agent": "Wybierz agenta",
+        "no_agents": "Brak agentów w tej przestrzeni roboczej",
+        "model_override": "Nadpisanie modelu",
+        "model_override_placeholder": "Opcjonalne — nadpisuje model agenta w tym projekcie",
+        "active": "Aktywny",
+        "missing_agent_title": "Brak agenta",
+        "missing_agent_message": "Najpierw utwórz agenta w ustawieniach przestrzeni roboczej.",
+        "saved_title": "Zapisano",
+        "saved_message": "Zaktualizowano stanowisko w projekcie.",
+        "save_failed_title": "Nie udało się zapisać stanowiska",
+        "saving": "Zapisywanie…"
+      }
     }
   }
 }

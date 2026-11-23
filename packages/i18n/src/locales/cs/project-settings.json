@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agenti",
       "heading": "Agenti",
-      "description": "Přiřaďte agenty na pozice v projektu a zvolte, který model každý z nich používá."
+      "description": "Přiřaďte agenty na pozice v projektu a zvolte, který model každý z nich používá.",
+      "team_size": {
+        "title": "Velikost týmu",
+        "description": "Kolik agentů každé role se účastní běhu.",
+        "pm_label": "PM / Tech lead",
+        "pm_help": "Píše nezávislé plány. Použije se nejlepší.",
+        "developer_label": "Vývojáři",
+        "developer_help": "Pracují paralelně. Každý agent dělá své dílčí úkoly jeden po druhém a PM rozdělí práci na nejvýše max(3, developers) dílčích úkolů.",
+        "qa_label": "QA",
+        "qa_help": "Recenzenti. Každá recenze musí projít.",
+        "save": "Uložit velikost týmu",
+        "saving": "Ukládání…",
+        "invalid_title": "Neplatná velikost týmu",
+        "invalid_message": "Zvolte číslo mezi {min} a {max}.",
+        "saved_title": "Uloženo",
+        "saved_message": "Velikost týmu byla aktualizována pro budoucí běhy.",
+        "save_failed_title": "Velikost týmu se nepodařilo uložit"
+      },
+      "positions": {
+        "loading": "Načítání pozic…",
+        "load_failed": "Pozice v projektu se nepodařilo načíst.",
+        "empty": "V tomto projektu zatím nejsou přiřazeni žádní agenti. Agenti se definují jednou v nastavení pracovního prostoru a poté se sem umístí na pozici.",
+        "assign": "Přiřadit agenta",
+        "bench": "Lavička (limit velikosti týmu)",
+        "agent_inactive": "Agent je neaktivní",
+        "seat_warning": "Obsazeno je pouze {filled} z {count} míst pro roli {role}",
+        "model_override": "(přepis)",
+        "reviewer_heading": "Recenzent (nepoužívá se při bězích)",
+        "removed_title": "Odebráno",
+        "removed_message": "Agent byl z projektu odebrán.",
+        "remove_failed_title": "Agenta se nepodařilo odebrat",
+        "delete_title": "Odebrat agenta z projektu",
+        "delete_content": "Odebrat {name} z pozice {role}? Agent v pracovním prostoru se nesmaže."
+      },
+      "roles": {
+        "project_manager": "Projektový manažer",
+        "reviewer": "Recenzent",
+        "qa": "QA",
+        "developer": "Vývojář"
+      },
+      "assign": {
+        "title": "Přiřadit agenta",
+        "edit_title": "Upravit pozici",
+        "position": "Pozice",
+        "agent": "Agent",
+        "select_agent": "Vyberte agenta",
+        "no_agents": "V tomto pracovním prostoru zatím nejsou žádní agenti",
+        "model_override": "Přepis modelu",
+        "model_override_placeholder": "Volitelné — přepíše model agenta pro tento projekt",
+        "active": "Aktivní",
+        "missing_agent_title": "Chybí agent",
+        "missing_agent_message": "Nejprve vytvořte agenta v nastavení pracovního prostoru.",
+        "saved_title": "Uloženo",
+        "saved_message": "Pozice v projektu byla aktualizována.",
+        "save_failed_title": "Pozici se nepodařilo uložit",
+        "saving": "Ukládání…"
+      }
     }
   }
 }

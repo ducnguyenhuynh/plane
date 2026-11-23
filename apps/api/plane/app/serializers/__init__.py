@@ -120,7 +120,7 @@ from .intake import (
     IntakeIssueDetailSerializer,
 )
 
-from .agent import AIAgentSerializer, ProjectAgentTeamSerializer, ProjectAIAgentSerializer
+from .agent import AIAgentLiteSerializer, AIAgentSerializer, ProjectAgentTeamSerializer, ProjectAIAgentSerializer
 from .agent_run import AgentRunDetailSerializer, AgentRunSerializer
 
 from .integration_connection import (

@@ -445,5 +445,64 @@
       "label": "Titlu sarcină majoră",
       "required": "Titlul sarcinii majore este obligatoriu."
     }
+  },
+  "agent_run": {
+    "title": "Execuție agent",
+    "subtitle": "PM planifică → dezvoltatorii implementează → QA verifică → rezultat final. Istoricul și artefactele sunt păstrate.",
+    "empty_hint": "Porniți o execuție pentru ca agenții proiectului să planifice acest element de lucru, să creeze subsarcini, să le implementeze și să verifice rezultatul.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Se pornește…",
+    "start_new_run": "Pornește o execuție nouă",
+    "retry_run": "Reîncearcă execuția",
+    "retrying": "Se reîncearcă…",
+    "cancel_run": "Anulează execuția",
+    "cancelling": "Se anulează…",
+    "cancel_title": "Anulați această execuție?",
+    "cancel_content": "Agenții se opresc la etapa curentă. Puteți porni apoi o execuție nouă.",
+    "run_history": "Istoric execuții",
+    "run_option": "{status} · {date}",
+    "final_result": "Rezultat final",
+    "subtasks": "Subsarcini",
+    "artifacts": "Artefacte",
+    "history": "Istoric",
+    "no_agent": "Fără agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Dezvoltatori: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Runda de reluare {round}",
+    "active_hint": "Această execuție este {status}; panoul se actualizează la câteva secunde.",
+    "status": {
+      "queued": "În coadă",
+      "running": "În curs",
+      "completed": "Finalizată",
+      "failed": "Eșuată"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Implementare",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Gata"
+    },
+    "toast": {
+      "started_title": "Execuția agentului a fost adăugată în coadă",
+      "started_message": "PM analizează elementul de lucru.",
+      "start_failed_title": "Execuția nu a putut fi pornită",
+      "start_failed_message": "Atribuiți mai întâi agenți pozițiilor din proiect.",
+      "retry_title": "Reîncercarea a fost adăugată în coadă",
+      "retry_message": "Execuția continuă de la ultima etapă.",
+      "retry_failed_title": "Reîncercarea a eșuat",
+      "cancelled_title": "Execuție anulată",
+      "cancelled_message": "Agenții s-au oprit la etapa curentă.",
+      "cancel_failed_title": "Execuția nu a putut fi anulată",
+      "try_again": "Încercați din nou."
+    },
+    "sidebar": {
+      "title": "Agenți AI",
+      "open_run": "Deschide execuția",
+      "no_run": "Încă nicio execuție a agentului",
+      "load_failed": "Execuțiile agenților nu au putut fi încărcate.",
+      "retry": "Reîncearcă"
+    }
   }
 }

@@ -11,7 +11,7 @@ from plane.license.utils.encryption import encrypt_data
 
 from .base import BaseSerializer
 
-SLACK_EVENT_KEYS = ("issue_created", "issue_updated", "comment_created")
+SLACK_EVENT_KEYS = ("issue_created", "issue_updated", "comment_created", "agent_run")
 
 
 class GitHubConnectionSerializer(BaseSerializer):

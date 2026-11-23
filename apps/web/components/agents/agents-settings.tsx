@@ -11,6 +11,7 @@ import { AGENT_PROVIDERS } from "@plane/constants";
 import { Button } from "@makeplane/propel/components/button";
 import { ConfirmDialog } from "@plane/blocks/dialog";
 import { setToast } from "@plane/blocks/toast";
+import { useTranslation } from "@plane/i18n";
 import type { TAgent } from "@plane/types";
 // services
 import { AgentService } from "@/services/agent.service";
@@ -21,6 +22,9 @@ import { getAgentErrorMessage } from "./utils";
 const agentService = new AgentService();
 
 export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
+  // translation
+  const { t } = useTranslation();
+  // states
   const {
     data: agents,
     mutate,
@@ -37,14 +41,19 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
       const result = await agentService.testAgent(workspaceSlug, agent.id);
       setToast({
         type: result.ok ? "success" : "error",
-        title: result.ok ? "Connection works" : "Connection failed",
+        title: result.ok
+          ? t("workspace_settings.settings.ai_agents.connection_works")
+          : t("workspace_settings.settings.ai_agents.connection_failed"),
         message: result.message,
       });
     } catch (requestError) {
       setToast({
         type: "error",
-        title: "Connection failed",
-        message: getAgentErrorMessage(requestError, "Could not reach the provider."),
+        title: t("workspace_settings.settings.ai_agents.connection_failed"),
+        message: getAgentErrorMessage(
+          requestError,
+          t("workspace_settings.settings.ai_agents.connection_failed_message")
+        ),
       });
     } finally {
       setTestingId(null);
@@ -58,12 +67,16 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
       await agentService.deleteAgent(workspaceSlug, deleteTarget.id);
       setDeleteTarget(null);
       void mutate();
-      setToast({ type: "success", title: "Deleted", message: "Agent deleted." });
+      setToast({
+        type: "success",
+        title: t("workspace_settings.settings.ai_agents.deleted_title"),
+        message: t("workspace_settings.settings.ai_agents.deleted_message"),
+      });
     } catch (requestError) {
       setToast({
         type: "error",
-        title: "Could not delete the agent",
-        message: getAgentErrorMessage(requestError, "Please try again."),
+        title: t("workspace_settings.settings.ai_agents.delete_failed_title"),
+        message: getAgentErrorMessage(requestError, t("agent_run.toast.try_again")),
       });
     } finally {
       setIsDeleting(false);
@@ -73,15 +86,25 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-end">
-        <Button variant="primary" size="md" stretch="auto" label="Add agent" onClick={() => setFormAgent(null)} />
+        <Button
+          variant="primary"
+          size="md"
+          stretch="auto"
+          label={t("workspace_settings.settings.ai_agents.add_agent")}
+          onClick={() => setFormAgent(null)}
+        />
       </div>
 
-      {!agents && !error && <p className="text-body-sm-regular text-tertiary">Loading agents…</p>}
-      {error && <p className="text-body-sm-regular text-danger-primary">Could not load agents.</p>}
-      {agents && agents.length === 0 && (
-        <p className="text-body-sm-regular text-tertiary">
-          No agents yet. Add one to connect a model you can assign to projects.
+      {!agents && !error && (
+        <p className="text-body-sm-regular text-tertiary">{t("workspace_settings.settings.ai_agents.loading")}</p>
+      )}
+      {error && (
+        <p className="text-body-sm-regular text-danger-primary">
+          {t("workspace_settings.settings.ai_agents.load_failed")}
         </p>
+      )}
+      {agents && agents.length === 0 && (
+        <p className="text-body-sm-regular text-tertiary">{t("workspace_settings.settings.ai_agents.empty")}</p>
       )}
 
       {agents?.map((agent) => {
@@ -99,11 +122,20 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
                 </span>
                 <span className="text-body-xs-regular text-tertiary">{agent.model}</span>
                 {agent.reasoning_effort && (
-                  <span className="text-body-xs-regular text-tertiary">effort: {agent.reasoning_effort}</span>
+                  <span className="text-body-xs-regular text-tertiary">
+                    {t("workspace_settings.settings.ai_agents.effort", { value: agent.reasoning_effort })}
+                  </span>
                 )}
-                {!agent.is_active && <span className="text-body-xs-regular text-danger-primary">Inactive</span>}
-                {!agent.has_api_key && (
-                  <span className="text-body-xs-regular text-danger-primary">Missing API key</span>
+                {!agent.is_active && (
+                  <span className="text-body-xs-regular text-danger-primary">
+                    {t("workspace_settings.settings.ai_agents.inactive")}
+                  </span>
+                )}
+                {/* Absent for non-admins: the API only reports the key to admins. */}
+                {agent.has_api_key === false && (
+                  <span className="text-body-xs-regular text-danger-primary">
+                    {t("workspace_settings.settings.ai_agents.missing_api_key")}
+                  </span>
                 )}
               </div>
               {agent.base_url && <span className="truncate text-body-xs-regular text-tertiary">{agent.base_url}</span>}
@@ -113,16 +145,26 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
                 variant="secondary"
                 size="sm"
                 stretch="auto"
-                label={testingId === agent.id ? "Testing…" : "Test"}
+                label={
+                  testingId === agent.id
+                    ? t("workspace_settings.settings.ai_agents.testing")
+                    : t("workspace_settings.settings.ai_agents.test")
+                }
                 loading={testingId === agent.id}
                 onClick={() => void handleTest(agent)}
               />
-              <Button variant="secondary" size="sm" stretch="auto" label="Edit" onClick={() => setFormAgent(agent)} />
               <Button
                 variant="secondary"
                 size="sm"
                 stretch="auto"
-                label="Delete"
+                label={t("common.edit")}
+                onClick={() => setFormAgent(agent)}
+              />
+              <Button
+                variant="secondary"
+                size="sm"
+                stretch="auto"
+                label={t("common.delete")}
                 onClick={() => setDeleteTarget(agent)}
               />
             </div>
@@ -143,13 +185,8 @@ export function AgentsSettings({ workspaceSlug }: { workspaceSlug: string }) {
       <ConfirmDialog
         isOpen={Boolean(deleteTarget)}
         isSubmitting={isDeleting}
-        title="Delete agent"
-        content={
-          <>
-            Delete {deleteTarget?.name}? It will be removed from every project position it holds. This action cannot be
-            undone.
-          </>
-        }
+        title={t("workspace_settings.settings.ai_agents.delete_title")}
+        content={t("workspace_settings.settings.ai_agents.delete_content", { name: deleteTarget?.name ?? "" })}
         handleClose={() => setDeleteTarget(null)}
         handleSubmit={handleDelete}
       />

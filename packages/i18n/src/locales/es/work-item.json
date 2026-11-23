@@ -445,5 +445,64 @@
       "label": "Título del Epic",
       "required": "El título del epic es obligatorio."
     }
+  },
+  "agent_run": {
+    "title": "Ejecución del agente",
+    "subtitle": "El PM planifica → los desarrolladores implementan → QA revisa → resultado final. El historial y los artefactos se conservan.",
+    "empty_hint": "Inicie una ejecución para que los agentes del proyecto planifiquen este elemento de trabajo, creen subtareas, las implementen y revisen el resultado.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Iniciando…",
+    "start_new_run": "Iniciar nueva ejecución",
+    "retry_run": "Reintentar ejecución",
+    "retrying": "Reintentando…",
+    "cancel_run": "Cancelar ejecución",
+    "cancelling": "Cancelando…",
+    "cancel_title": "¿Cancelar esta ejecución?",
+    "cancel_content": "Los agentes se detienen en la etapa actual. Después puede iniciar una nueva ejecución.",
+    "run_history": "Historial de ejecuciones",
+    "run_option": "{status} · {date}",
+    "final_result": "Resultado final",
+    "subtasks": "Subtareas",
+    "artifacts": "Artefactos",
+    "history": "Historial",
+    "no_agent": "Sin agente",
+    "team_pm": "PM: {names}",
+    "team_developers": "Desarrolladores: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Ronda de retrabajo {round}",
+    "active_hint": "Esta ejecución está {status}; el panel se actualiza cada pocos segundos.",
+    "status": {
+      "queued": "En cola",
+      "running": "En curso",
+      "completed": "Completada",
+      "failed": "Fallida"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Desarrollo",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Hecho"
+    },
+    "toast": {
+      "started_title": "Ejecución del agente en cola",
+      "started_message": "El PM está revisando el elemento de trabajo.",
+      "start_failed_title": "No se pudo iniciar la ejecución",
+      "start_failed_message": "Asigne primero agentes a las posiciones del proyecto.",
+      "retry_title": "Reintento en cola",
+      "retry_message": "La ejecución continúa desde su última etapa.",
+      "retry_failed_title": "No se pudo reintentar",
+      "cancelled_title": "Ejecución cancelada",
+      "cancelled_message": "Los agentes se detuvieron en la etapa actual.",
+      "cancel_failed_title": "No se pudo cancelar la ejecución",
+      "try_again": "Inténtelo de nuevo."
+    },
+    "sidebar": {
+      "title": "Agentes de IA",
+      "open_run": "Abrir ejecución",
+      "no_run": "Aún no hay ejecuciones",
+      "load_failed": "No se pudieron cargar las ejecuciones de agentes.",
+      "retry": "Reintentar"
+    }
   }
 }

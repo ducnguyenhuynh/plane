@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agents",
       "heading": "Agents",
-      "description": "Place agents in project positions and choose which model each one runs."
+      "description": "Place agents in project positions and choose which model each one runs.",
+      "team_size": {
+        "title": "Team size",
+        "description": "How many agents of each role join a run.",
+        "pm_label": "PM / Tech lead",
+        "pm_help": "Writes independent plans. The best one is used.",
+        "developer_label": "Developers",
+        "developer_help": "Work in parallel. Each agent does its own subtasks one at a time, and the PM splits the work into up to max(3, developers) subtasks.",
+        "qa_label": "QA",
+        "qa_help": "Reviewers. Every review must pass.",
+        "save": "Save team size",
+        "saving": "Saving…",
+        "invalid_title": "Invalid team size",
+        "invalid_message": "Choose a number between {min} and {max}.",
+        "saved_title": "Saved",
+        "saved_message": "Team size updated for future runs.",
+        "save_failed_title": "Could not save team size"
+      },
+      "positions": {
+        "loading": "Loading positions…",
+        "load_failed": "Could not load project positions.",
+        "empty": "No agents are assigned to this project yet. Agents are defined once in workspace settings, then placed in a position here.",
+        "assign": "Assign agent",
+        "bench": "Bench (team size limit)",
+        "agent_inactive": "Agent inactive",
+        "seat_warning": "Only {filled} of {count} {role} seats are filled",
+        "model_override": "(override)",
+        "reviewer_heading": "Reviewer (not used by runs)",
+        "removed_title": "Removed",
+        "removed_message": "Agent removed from the project.",
+        "remove_failed_title": "Could not remove the agent",
+        "delete_title": "Remove agent from project",
+        "delete_content": "Remove {name} from the {role} position? The workspace agent itself is not deleted."
+      },
+      "roles": {
+        "project_manager": "Project manager",
+        "reviewer": "Reviewer",
+        "qa": "QA",
+        "developer": "Developer"
+      },
+      "assign": {
+        "title": "Assign agent",
+        "edit_title": "Edit position",
+        "position": "Position",
+        "agent": "Agent",
+        "select_agent": "Select an agent",
+        "no_agents": "No agents in this workspace yet",
+        "model_override": "Model override",
+        "model_override_placeholder": "Optional — overrides the agent model for this project",
+        "active": "Active",
+        "missing_agent_title": "Missing agent",
+        "missing_agent_message": "Create an agent in workspace settings first.",
+        "saved_title": "Saved",
+        "saved_message": "Project position updated.",
+        "save_failed_title": "Could not save the position",
+        "saving": "Saving…"
+      }
     }
   }
 }

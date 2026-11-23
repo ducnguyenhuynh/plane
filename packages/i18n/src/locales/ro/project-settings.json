@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agenți",
       "heading": "Agenți",
-      "description": "Atribuiți agenți pe poziții de proiect și alegeți ce model folosește fiecare."
+      "description": "Atribuiți agenți pe poziții de proiect și alegeți ce model folosește fiecare.",
+      "team_size": {
+        "title": "Dimensiunea echipei",
+        "description": "Câți agenți din fiecare rol participă la o execuție.",
+        "pm_label": "PM / Lead tehnic",
+        "pm_help": "Scrie planuri independente. Se folosește cel mai bun.",
+        "developer_label": "Dezvoltatori",
+        "developer_help": "Lucrează în paralel. Fiecare agent își face subsarcinile pe rând, iar PM-ul împarte munca în cel mult max(3, developers) subsarcini.",
+        "qa_label": "QA",
+        "qa_help": "Recenzori. Fiecare recenzie trebuie să treacă.",
+        "save": "Salvează dimensiunea echipei",
+        "saving": "Se salvează…",
+        "invalid_title": "Dimensiunea echipei este invalidă",
+        "invalid_message": "Alegeți un număr între {min} și {max}.",
+        "saved_title": "Salvat",
+        "saved_message": "Dimensiunea echipei a fost actualizată pentru execuțiile viitoare.",
+        "save_failed_title": "Dimensiunea echipei nu a putut fi salvată"
+      },
+      "positions": {
+        "loading": "Se încarcă pozițiile…",
+        "load_failed": "Pozițiile proiectului nu au putut fi încărcate.",
+        "empty": "Niciun agent nu este încă atribuit acestui proiect. Agenții se definesc o dată în setările spațiului de lucru, apoi se plasează aici pe o poziție.",
+        "assign": "Atribuie agent",
+        "bench": "Bancă (limita echipei)",
+        "agent_inactive": "Agent inactiv",
+        "seat_warning": "Doar {filled} din {count} locuri de {role} sunt ocupate",
+        "model_override": "(suprascriere)",
+        "reviewer_heading": "Recenzor (nefolosit de execuții)",
+        "removed_title": "Eliminat",
+        "removed_message": "Agent eliminat din proiect.",
+        "remove_failed_title": "Agentul nu a putut fi eliminat",
+        "delete_title": "Elimină agentul din proiect",
+        "delete_content": "Eliminați {name} din poziția {role}? Agentul din spațiul de lucru nu este șters."
+      },
+      "roles": {
+        "project_manager": "Manager de proiect",
+        "reviewer": "Recenzor",
+        "qa": "QA",
+        "developer": "Dezvoltator"
+      },
+      "assign": {
+        "title": "Atribuie agent",
+        "edit_title": "Editează poziția",
+        "position": "Poziție",
+        "agent": "Agent",
+        "select_agent": "Selectați un agent",
+        "no_agents": "Încă nu există agenți în acest spațiu de lucru",
+        "model_override": "Suprascriere model",
+        "model_override_placeholder": "Opțional — suprascrie modelul agentului pentru acest proiect",
+        "active": "Activ",
+        "missing_agent_title": "Lipsește agentul",
+        "missing_agent_message": "Creați mai întâi un agent în setările spațiului de lucru.",
+        "saved_title": "Salvat",
+        "saved_message": "Poziția din proiect a fost actualizată.",
+        "save_failed_title": "Poziția nu a putut fi salvată",
+        "saving": "Se salvează…"
+      }
     }
   }
 }

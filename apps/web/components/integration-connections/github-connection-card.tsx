@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { Button } from "@makeplane/propel/components/button";
 import { InputField } from "@makeplane/propel/components/input-field";
 import { setToast } from "@plane/blocks/toast";
+import { useTranslation } from "@plane/i18n";
 // services
 import { IntegrationConnectionService } from "@/services/integrations";
 // local imports
@@ -18,6 +19,9 @@ import { getIntegrationErrorMessage } from "./utils";
 const integrationService = new IntegrationConnectionService();
 
 export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string }) {
+  // translation
+  const { t } = useTranslation();
+  // states
   const { data, mutate, isLoading } = useSWR(`GITHUB_CONNECTION_${workspaceSlug}`, () =>
     integrationService.fetchGitHubConnection(workspaceSlug)
   );
@@ -26,7 +30,11 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
 
   const handleConnect = async () => {
     if (!token.trim()) {
-      setToast({ type: "error", title: "Token required", message: "Paste a GitHub personal access token." });
+      setToast({
+        type: "error",
+        title: t("integrations.workspace.token_required_title"),
+        message: t("integrations.workspace.token_required_message"),
+      });
       return;
     }
     setIsSaving(true);
@@ -34,12 +42,16 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
       await integrationService.connectGitHub(workspaceSlug, token.trim());
       setToken("");
       void mutate();
-      setToast({ type: "success", title: "GitHub connected", message: "Repositories can now be linked to projects." });
+      setToast({
+        type: "success",
+        title: t("integrations.workspace.github_connected_title"),
+        message: t("integrations.workspace.github_connected_message"),
+      });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not connect GitHub",
-        message: getIntegrationErrorMessage(error, "Check the token and try again."),
+        title: t("integrations.workspace.github_connect_failed_title"),
+        message: getIntegrationErrorMessage(error, t("integrations.workspace.github_connect_failed_message")),
       });
     } finally {
       setIsSaving(false);
@@ -51,12 +63,16 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
     try {
       await integrationService.disconnectGitHub(workspaceSlug);
       void mutate();
-      setToast({ type: "success", title: "Disconnected", message: "GitHub repositories were unlinked from projects." });
+      setToast({
+        type: "success",
+        title: t("integrations.workspace.disconnected_title"),
+        message: t("integrations.workspace.github_disconnected_message"),
+      });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not disconnect GitHub",
-        message: getIntegrationErrorMessage(error, "Please try again."),
+        title: t("integrations.workspace.github_disconnect_failed_title"),
+        message: getIntegrationErrorMessage(error, t("agent_run.toast.try_again")),
       });
     } finally {
       setIsSaving(false);
@@ -66,25 +82,22 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
   return (
     <div className="flex flex-col gap-4 rounded-md border border-subtle p-4">
       <div className="flex flex-col gap-1">
-        <h4 className="text-body-sm-medium text-primary">GitHub</h4>
-        <p className="text-body-xs-regular text-tertiary">
-          Connect with a personal access token (classic) that has the <code>repo</code> scope to link repositories to
-          projects.
-        </p>
+        <h4 className="text-body-sm-medium text-primary">{t("integrations.workspace.github_title")}</h4>
+        <p className="text-body-xs-regular text-tertiary">{t("integrations.workspace.github_description")}</p>
       </div>
 
-      {isLoading && <p className="text-body-xs-regular text-tertiary">Loading…</p>}
+      {isLoading && <p className="text-body-xs-regular text-tertiary">{t("common.loading")}</p>}
 
       {data?.has_token ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className="text-body-sm-regular text-secondary">
-            Connected as <span className="text-primary">@{data.login}</span>
+            {t("integrations.workspace.connected_as", { login: data.login })}
           </span>
           <Button
             variant="secondary"
             size="sm"
             stretch="auto"
-            label={isSaving ? "Disconnecting…" : "Disconnect"}
+            label={isSaving ? t("integrations.workspace.disconnecting") : t("integrations.workspace.disconnect")}
             loading={isSaving}
             onClick={() => void handleDisconnect()}
           />
@@ -96,11 +109,11 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
               size="lg"
               orientation="vertical"
               name="github_token"
-              label="Personal access token"
+              label={t("integrations.workspace.token")}
               type="password"
               value={token}
               onChange={(event) => setToken(event.target.value)}
-              placeholder="ghp_..."
+              placeholder={t("integrations.workspace.token_placeholder")}
               autoComplete="new-password"
             />
           </div>
@@ -108,7 +121,7 @@ export function GitHubConnectionCard({ workspaceSlug }: { workspaceSlug: string 
             variant="primary"
             size="md"
             stretch="auto"
-            label={isSaving ? "Connecting…" : "Connect"}
+            label={isSaving ? t("integrations.workspace.connecting") : t("integrations.workspace.connect")}
             loading={isSaving}
             onClick={() => void handleConnect()}
           />

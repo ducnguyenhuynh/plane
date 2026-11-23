@@ -12,6 +12,7 @@ import { WorkItemsOutline } from "@makeplane/propel/icons";
 import { Button } from "@makeplane/propel/components/button";
 import { Breadcrumbs } from "@plane/blocks/breadcrumb";
 import { Header } from "@plane/blocks/layout";
+import { useTranslation } from "@plane/i18n";
 // components
 import { AgentRunModal } from "@/components/agent-run";
 import { BreadcrumbLink } from "@/components/common/breadcrumb-link";
@@ -26,6 +27,8 @@ import { useProjectCrumbProps } from "@/components/breadcrumbs/use-project-crumb
 export const WorkItemDetailsHeader = observer(function WorkItemDetailsHeader() {
   // router
   const { workspaceSlug, workItem } = useParams();
+  // translation
+  const { t } = useTranslation();
   // states
   const [isAgentRunOpen, setIsAgentRunOpen] = useState(false);
   // store hooks
@@ -75,7 +78,7 @@ export const WorkItemDetailsHeader = observer(function WorkItemDetailsHeader() {
               variant="secondary"
               size="sm"
               stretch="auto"
-              label="Cook with AI"
+              label={t("agent_run.cook_with_ai")}
               onClick={() => setIsAgentRunOpen(true)}
             />
             <IssueDetailQuickActions

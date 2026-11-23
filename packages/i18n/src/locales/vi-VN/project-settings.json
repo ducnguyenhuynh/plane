@@ -531,7 +531,63 @@
     "agents": {
       "title": "Tác nhân",
       "heading": "Tác nhân",
-      "description": "Gán tác nhân vào các vị trí trong dự án và chọn mô hình mà mỗi tác nhân sử dụng."
+      "description": "Gán tác nhân vào các vị trí trong dự án và chọn mô hình mà mỗi tác nhân sử dụng.",
+      "team_size": {
+        "title": "Quy mô nhóm",
+        "description": "Số lượng tác nhân của mỗi vai trò tham gia một lần chạy.",
+        "pm_label": "PM / Trưởng nhóm kỹ thuật",
+        "pm_help": "Tạo các kế hoạch độc lập. Kế hoạch tốt nhất sẽ được dùng.",
+        "developer_label": "Lập trình viên",
+        "developer_help": "Làm việc song song. Mỗi tác nhân xử lý lần lượt từng công việc con của mình, và PM chia công việc thành tối đa max(3, developers) công việc con.",
+        "qa_label": "QA",
+        "qa_help": "Người đánh giá. Mọi đánh giá phải đạt yêu cầu.",
+        "save": "Lưu quy mô nhóm",
+        "saving": "Đang lưu…",
+        "invalid_title": "Quy mô nhóm không hợp lệ",
+        "invalid_message": "Chọn một số từ {min} đến {max}.",
+        "saved_title": "Đã lưu",
+        "saved_message": "Đã cập nhật quy mô nhóm cho các lần chạy sau.",
+        "save_failed_title": "Không thể lưu quy mô nhóm"
+      },
+      "positions": {
+        "loading": "Đang tải vị trí…",
+        "load_failed": "Không thể tải vị trí của dự án.",
+        "empty": "Chưa có tác nhân nào được gán cho dự án này. Tác nhân được định nghĩa một lần trong cài đặt không gian làm việc, sau đó được đặt vào vị trí tại đây.",
+        "assign": "Gán tác nhân",
+        "bench": "Dự bị (giới hạn quy mô nhóm)",
+        "agent_inactive": "Tác nhân không hoạt động",
+        "seat_warning": "Chỉ {filled} trên {count} chỗ của {role} đã có người",
+        "model_override": "(ghi đè)",
+        "reviewer_heading": "Người đánh giá (không dùng cho lần chạy)",
+        "removed_title": "Đã xóa",
+        "removed_message": "Đã xóa tác nhân khỏi dự án.",
+        "remove_failed_title": "Không thể xóa tác nhân",
+        "delete_title": "Xóa tác nhân khỏi dự án",
+        "delete_content": "Xóa {name} khỏi vị trí {role}? Bản thân tác nhân trong không gian làm việc không bị xóa."
+      },
+      "roles": {
+        "project_manager": "Quản lý dự án",
+        "reviewer": "Người đánh giá",
+        "qa": "QA",
+        "developer": "Lập trình viên"
+      },
+      "assign": {
+        "title": "Gán tác nhân",
+        "edit_title": "Sửa vị trí",
+        "position": "Vị trí",
+        "agent": "Tác nhân",
+        "select_agent": "Chọn một tác nhân",
+        "no_agents": "Chưa có tác nhân nào trong không gian làm việc này",
+        "model_override": "Ghi đè mô hình",
+        "model_override_placeholder": "Tùy chọn — ghi đè mô hình của tác nhân cho dự án này",
+        "active": "Hoạt động",
+        "missing_agent_title": "Thiếu tác nhân",
+        "missing_agent_message": "Hãy tạo tác nhân trong cài đặt không gian làm việc trước.",
+        "saved_title": "Đã lưu",
+        "saved_message": "Đã cập nhật vị trí trong dự án.",
+        "save_failed_title": "Không thể lưu vị trí",
+        "saving": "Đang lưu…"
+      }
     }
   }
 }

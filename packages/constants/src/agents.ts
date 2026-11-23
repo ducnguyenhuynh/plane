@@ -15,10 +15,20 @@ export const AGENT_PROVIDERS: { value: TAgentProvider; label: string; defaultBas
 
 export const AGENT_ROLES: { value: TAgentRole; label: string }[] = [
   { value: "project_manager", label: "Project manager" },
-  { value: "reviewer", label: "Reviewer" },
   { value: "qa", label: "QA" },
   { value: "developer", label: "Developer" },
 ];
+
+/**
+ * Labels for every role the API can return, including `reviewer` rows created before the role was
+ * retired. `AGENT_ROLES` drives the assignment options; this map keeps every row renderable.
+ */
+export const AGENT_ROLE_LABELS: Record<TAgentRole, string> = {
+  project_manager: "Project manager",
+  reviewer: "Reviewer",
+  qa: "QA",
+  developer: "Developer",
+};
 
 export const AGENT_EFFORT_LEVELS: { value: TAgentReasoningEffort | ""; label: string }[] = [
   { value: "", label: "Default" },

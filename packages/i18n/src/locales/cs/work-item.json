@@ -445,5 +445,64 @@
       "label": "Název epiku",
       "required": "Název epiku je povinný."
     }
+  },
+  "agent_run": {
+    "title": "Běh agenta",
+    "subtitle": "PM plánuje → vývojáři implementují → QA kontroluje → konečný výsledek. Historie a artefakty se uchovávají.",
+    "empty_hint": "Spusťte běh, aby agenti projektu naplánovali tuto pracovní položku, vytvořili dílčí úkoly, implementovali je a zkontrolovali výsledek.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Spouštění…",
+    "start_new_run": "Spustit nový běh",
+    "retry_run": "Zopakovat běh",
+    "retrying": "Opakování…",
+    "cancel_run": "Zrušit běh",
+    "cancelling": "Rušení…",
+    "cancel_title": "Zrušit tento běh?",
+    "cancel_content": "Agenti se zastaví v aktuální fázi. Poté můžete spustit nový běh.",
+    "run_history": "Historie běhů",
+    "run_option": "{status} · {date}",
+    "final_result": "Konečný výsledek",
+    "subtasks": "Dílčí úkoly",
+    "artifacts": "Artefakty",
+    "history": "Historie",
+    "no_agent": "Žádný agent",
+    "team_pm": "PM: {names}",
+    "team_developers": "Vývojáři: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Kolo přepracování {round}",
+    "active_hint": "Tento běh je {status}; panel se obnovuje každých několik sekund.",
+    "status": {
+      "queued": "Ve frontě",
+      "running": "Probíhá",
+      "completed": "Dokončeno",
+      "failed": "Selhalo"
+    },
+    "stage": {
+      "pm": "Plán",
+      "developer": "Implementace",
+      "qa": "QA",
+      "final": "Finále",
+      "done": "Hotovo"
+    },
+    "toast": {
+      "started_title": "Běh agenta zařazen do fronty",
+      "started_message": "PM kontroluje pracovní položku.",
+      "start_failed_title": "Běh se nepodařilo spustit",
+      "start_failed_message": "Nejprve přiřaďte agenty na pozice v projektu.",
+      "retry_title": "Opakování zařazeno do fronty",
+      "retry_message": "Běh pokračuje od poslední fáze.",
+      "retry_failed_title": "Opakování se nezdařilo",
+      "cancelled_title": "Běh zrušen",
+      "cancelled_message": "Agenti se zastavili v aktuální fázi.",
+      "cancel_failed_title": "Běh se nepodařilo zrušit",
+      "try_again": "Zkuste to prosím znovu."
+    },
+    "sidebar": {
+      "title": "AI agenti",
+      "open_run": "Otevřít běh",
+      "no_run": "Zatím žádný běh agenta",
+      "load_failed": "Běhy agentů se nepodařilo načíst.",
+      "retry": "Zkusit znovu"
+    }
   }
 }

@@ -445,5 +445,64 @@
       "label": "Epik Başlığı",
       "required": "Epik başlığı gereklidir."
     }
+  },
+  "agent_run": {
+    "title": "Aracı çalıştırması",
+    "subtitle": "PM planlar → geliştiriciler uygular → QA inceler → nihai sonuç. Geçmiş ve çıktılar saklanır.",
+    "empty_hint": "Proje aracılarının bu iş öğesini planlaması, alt görevler oluşturması, bunları uygulaması ve sonucu incelemesi için bir çalıştırma başlatın.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Başlatılıyor…",
+    "start_new_run": "Yeni çalıştırma başlat",
+    "retry_run": "Çalıştırmayı yeniden dene",
+    "retrying": "Yeniden deneniyor…",
+    "cancel_run": "Çalıştırmayı iptal et",
+    "cancelling": "İptal ediliyor…",
+    "cancel_title": "Bu çalıştırma iptal edilsin mi?",
+    "cancel_content": "Aracılar geçerli aşamada durur. Ardından yeni bir çalıştırma başlatabilirsiniz.",
+    "run_history": "Çalıştırma geçmişi",
+    "run_option": "{status} · {date}",
+    "final_result": "Nihai sonuç",
+    "subtasks": "Alt görevler",
+    "artifacts": "Çıktılar",
+    "history": "Geçmiş",
+    "no_agent": "Aracı yok",
+    "team_pm": "PM: {names}",
+    "team_developers": "Geliştiriciler: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Yeniden çalışma turu {round}",
+    "active_hint": "Bu çalıştırma {status}; panel birkaç saniyede bir yenilenir.",
+    "status": {
+      "queued": "Sırada",
+      "running": "Çalışıyor",
+      "completed": "Tamamlandı",
+      "failed": "Başarısız"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Uygulama",
+      "qa": "QA",
+      "final": "Final",
+      "done": "Bitti"
+    },
+    "toast": {
+      "started_title": "Aracı çalıştırması sıraya alındı",
+      "started_message": "PM iş öğesini inceliyor.",
+      "start_failed_title": "Çalıştırma başlatılamadı",
+      "start_failed_message": "Önce proje pozisyonlarına aracı atayın.",
+      "retry_title": "Yeniden deneme sıraya alındı",
+      "retry_message": "Çalıştırma son aşamadan devam eder.",
+      "retry_failed_title": "Yeniden denenemedi",
+      "cancelled_title": "Çalıştırma iptal edildi",
+      "cancelled_message": "Aracılar geçerli aşamada durdu.",
+      "cancel_failed_title": "Çalıştırma iptal edilemedi",
+      "try_again": "Lütfen tekrar deneyin."
+    },
+    "sidebar": {
+      "title": "AI aracıları",
+      "open_run": "Çalıştırmayı aç",
+      "no_run": "Henüz aracı çalıştırması yok",
+      "load_failed": "Aracı çalıştırmaları yüklenemedi.",
+      "retry": "Yeniden dene"
+    }
   }
 }

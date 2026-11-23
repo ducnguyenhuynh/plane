@@ -105,6 +105,7 @@ export type TSlackEvents = {
   issue_created: boolean;
   issue_updated: boolean;
   comment_created: boolean;
+  agent_run: boolean;
 };
 
 export type TProjectIntegration = {

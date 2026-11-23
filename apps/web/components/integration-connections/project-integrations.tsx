@@ -7,12 +7,16 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 // plane imports
+import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
 import { Button } from "@makeplane/propel/components/button";
 import { InputField } from "@makeplane/propel/components/input-field";
 import { SelectField } from "@makeplane/propel/components/select-field";
 import { Switch } from "@makeplane/propel/components/switch";
 import { setToast } from "@plane/blocks/toast";
+import { useTranslation } from "@plane/i18n";
 import type { TProjectIntegrationPayload, TSlackEvents } from "@plane/types";
+// hooks
+import { useUserPermissions } from "@/hooks/store/user";
 // services
 import { IntegrationConnectionService } from "@/services/integrations";
 // local imports
@@ -20,7 +24,12 @@ import { backstageEntityUrl, getIntegrationErrorMessage } from "./utils";
 
 const integrationService = new IntegrationConnectionService();
 
-const DEFAULT_EVENTS: TSlackEvents = { issue_created: true, issue_updated: false, comment_created: true };
+const DEFAULT_EVENTS: TSlackEvents = {
+  issue_created: true,
+  issue_updated: false,
+  comment_created: true,
+  agent_run: true,
+};
 
 type Props = {
   workspaceSlug: string;
@@ -29,6 +38,13 @@ type Props = {
 };
 
 export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Props) {
+  // translation
+  const { t } = useTranslation();
+  // store hooks
+  const { allowPermissions } = useUserPermissions();
+  // derived values
+  // The repositories endpoint is workspace-admin only, so members must not call it.
+  const isWorkspaceAdmin = allowPermissions([EUserPermissions.ADMIN], EUserPermissionsLevel.WORKSPACE);
   const { data: integration, mutate } = useSWR(`PROJECT_INTEGRATION_${projectId}`, () =>
     integrationService.fetchProjectIntegration(workspaceSlug, projectId)
   );
@@ -38,8 +54,9 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
   const { data: backstage } = useSWR(`BACKSTAGE_CONNECTION_${workspaceSlug}`, () =>
     integrationService.fetchBackstageConnection(workspaceSlug)
   );
-  const { data: repositories } = useSWR(github?.has_token ? `GITHUB_REPOS_${workspaceSlug}` : null, () =>
-    integrationService.fetchGitHubRepositories(workspaceSlug)
+  const { data: repositories } = useSWR(
+    isWorkspaceAdmin && github?.has_token ? `GITHUB_REPOS_${workspaceSlug}` : null,
+    () => integrationService.fetchGitHubRepositories(workspaceSlug)
   );
 
   const [repository, setRepository] = useState("");
@@ -54,7 +71,8 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
     if (!integration) return;
     setRepository(integration.github_repository ?? "");
     setBranch(integration.github_default_branch ?? "");
-    setSlackEvents(integration.slack_events ?? DEFAULT_EVENTS);
+    // A stored row may predate `agent_run`; the backend treats a missing value as on, so mirror that.
+    setSlackEvents({ ...DEFAULT_EVENTS, ...integration.slack_events });
     setEntityRef(integration.backstage_entity_ref ?? "");
     setIsBackstageEnabled(integration.is_backstage_enabled ?? false);
   }, [integration]);
@@ -64,12 +82,12 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
     try {
       await integrationService.updateProjectIntegration(workspaceSlug, projectId, data);
       await mutate();
-      setToast({ type: "success", title: "Saved", message });
+      setToast({ type: "success", title: t("integrations.project.saved_title"), message });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not save",
-        message: getIntegrationErrorMessage(error, "Please try again."),
+        title: t("integrations.project.save_failed_title"),
+        message: getIntegrationErrorMessage(error, t("agent_run.toast.try_again")),
       });
     } finally {
       setBusy(null);
@@ -82,14 +100,14 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
       const result = await integrationService.testSlack(workspaceSlug, projectId);
       setToast({
         type: result.ok ? "success" : "error",
-        title: result.ok ? "Slack test sent" : "Slack test failed",
+        title: result.ok ? t("integrations.project.slack_test_sent") : t("integrations.project.slack_test_failed"),
         message: result.message,
       });
     } catch (error) {
       setToast({
         type: "error",
-        title: "Slack test failed",
-        message: getIntegrationErrorMessage(error, "Could not reach the webhook."),
+        title: t("integrations.project.slack_test_failed"),
+        message: getIntegrationErrorMessage(error, t("integrations.project.slack_test_failed_message")),
       });
     } finally {
       setBusy(null);
@@ -103,21 +121,24 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
       {/* GitHub */}
       <div className="flex flex-col gap-4 rounded-md border border-subtle p-4">
         <div className="flex flex-col gap-1">
-          <h4 className="text-body-sm-medium text-primary">GitHub repository</h4>
-          <p className="text-body-xs-regular text-tertiary">
-            Link this project to a GitHub repository so work items and branches share one home.
-          </p>
+          <h4 className="text-body-sm-medium text-primary">{t("integrations.project.github_title")}</h4>
+          <p className="text-body-xs-regular text-tertiary">{t("integrations.project.github_description")}</p>
         </div>
         {!github?.has_token ? (
-          <p className="text-body-xs-regular text-tertiary">
-            Connect GitHub in workspace settings to pick a repository.
-          </p>
+          <p className="text-body-xs-regular text-tertiary">{t("integrations.project.github_not_connected")}</p>
+        ) : !isWorkspaceAdmin ? (
+          <div className="flex flex-col gap-1">
+            <span className="text-body-sm-regular text-secondary">{integration?.github_repository || "—"}</span>
+            {integration?.github_default_branch && (
+              <span className="text-body-xs-regular text-tertiary">{integration.github_default_branch}</span>
+            )}
+          </div>
         ) : (
           <div className="grid gap-3 md:grid-cols-2">
             <SelectField<string>
               size="lg"
-              aria-label="Repository"
-              label="Repository"
+              aria-label={t("integrations.project.repository")}
+              label={t("integrations.project.repository")}
               value={repository}
               onValueChange={(value) => {
                 if (!value) return;
@@ -127,15 +148,19 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               }}
               options={(repositories ?? []).map((repo) => ({
                 value: repo.full_name,
-                label: `${repo.full_name}${repo.private ? " (private)" : ""}`,
+                label: repo.private ? `${repo.full_name} ${t("integrations.project.private_repo")}` : repo.full_name,
               }))}
-              placeholder={repositories ? "Select a repository" : "Loading repositories…"}
+              placeholder={
+                repositories
+                  ? t("integrations.project.repository_placeholder")
+                  : t("integrations.project.repository_loading")
+              }
             />
             <InputField
               size="lg"
               orientation="vertical"
               name="github_branch"
-              label="Default branch"
+              label={t("integrations.project.default_branch")}
               value={branch}
               onChange={(event) => setBranch(event.target.value)}
               placeholder="main"
@@ -149,7 +174,7 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="primary"
               size="md"
               stretch="auto"
-              label={busy === "github" ? "Saving…" : "Save"}
+              label={busy === "github" ? t("integrations.project.saving") : t("integrations.project.save")}
               loading={busy === "github"}
               disabled={!repository}
               onClick={() =>
@@ -160,7 +185,7 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
                     is_github_enabled: true,
                   },
                   "github",
-                  "Repository linked."
+                  t("integrations.project.repository_linked")
                 )
               }
             />
@@ -170,9 +195,13 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="secondary"
               size="md"
               stretch="auto"
-              label="Unlink"
+              label={t("integrations.project.unlink")}
               onClick={() =>
-                void save({ is_github_enabled: false, github_default_branch: "" }, "github", "Repository unlinked.")
+                void save(
+                  { is_github_enabled: false, github_default_branch: "" },
+                  "github",
+                  t("integrations.project.repository_unlinked")
+                )
               }
               disabled={busy === "github"}
             />
@@ -193,30 +222,31 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
       {/* Slack */}
       <div className="flex flex-col gap-4 rounded-md border border-subtle p-4">
         <div className="flex flex-col gap-1">
-          <h4 className="text-body-sm-medium text-primary">Slack notifications</h4>
-          <p className="text-body-xs-regular text-tertiary">
-            Post work item activity to a Slack channel webhook. Create one in Slack under Incoming Webhooks.
-          </p>
+          <h4 className="text-body-sm-medium text-primary">{t("integrations.project.slack_title")}</h4>
+          <p className="text-body-xs-regular text-tertiary">{t("integrations.project.slack_description")}</p>
         </div>
         <InputField
           size="lg"
           orientation="vertical"
           name="slack_webhook"
-          label="Webhook URL"
+          label={t("integrations.project.webhook_url")}
           type="password"
           value={webhookUrl}
           onChange={(event) => setWebhookUrl(event.target.value)}
           placeholder={
-            integration?.has_slack_webhook ? "Stored webhook — leave blank to keep" : "https://hooks.slack.com/..."
+            integration?.has_slack_webhook
+              ? t("integrations.project.webhook_stored")
+              : t("integrations.project.webhook_placeholder")
           }
           autoComplete="new-password"
           disabled={!canManage}
         />
         <div className="flex flex-col gap-2">
           {[
-            { key: "issue_created" as const, label: "Work item created" },
-            { key: "issue_updated" as const, label: "Work item state changed" },
-            { key: "comment_created" as const, label: "Comment added" },
+            { key: "issue_created" as const, label: t("integrations.project.event_issue_created") },
+            { key: "issue_updated" as const, label: t("integrations.project.event_issue_updated") },
+            { key: "comment_created" as const, label: t("integrations.project.event_comment_created") },
+            { key: "agent_run" as const, label: t("integrations.project.event_agent_run") },
           ].map(({ key, label }) => (
             <div key={key} className="flex items-center justify-between gap-4">
               <span className="text-body-sm-regular text-secondary">{label}</span>
@@ -236,11 +266,15 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="primary"
               size="md"
               stretch="auto"
-              label={busy === "slack" ? "Saving…" : "Save"}
+              label={busy === "slack" ? t("integrations.project.saving") : t("integrations.project.save")}
               loading={busy === "slack"}
               onClick={() => {
                 if (!webhookUrl.trim() && !integration?.has_slack_webhook) {
-                  setToast({ type: "error", title: "Webhook required", message: "Paste a Slack webhook URL." });
+                  setToast({
+                    type: "error",
+                    title: t("integrations.project.webhook_required_title"),
+                    message: t("integrations.project.webhook_required_message"),
+                  });
                   return;
                 }
                 void save(
@@ -250,7 +284,7 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
                     is_slack_enabled: true,
                   },
                   "slack",
-                  "Slack notifications saved."
+                  t("integrations.project.slack_saved")
                 );
                 setWebhookUrl("");
               }}
@@ -261,7 +295,7 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="secondary"
               size="md"
               stretch="auto"
-              label={busy === "slack-test" ? "Testing…" : "Send test"}
+              label={busy === "slack-test" ? t("integrations.project.testing") : t("integrations.project.send_test")}
               loading={busy === "slack-test"}
               onClick={() => void handleTestSlack()}
             />
@@ -271,9 +305,9 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="secondary"
               size="md"
               stretch="auto"
-              label="Disable"
+              label={t("integrations.project.disable")}
               disabled={busy === "slack"}
-              onClick={() => void save({ is_slack_enabled: false }, "slack", "Slack notifications disabled.")}
+              onClick={() => void save({ is_slack_enabled: false }, "slack", t("integrations.project.slack_disabled"))}
             />
           )}
         </div>
@@ -282,24 +316,20 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
       {/* Backstage */}
       <div className="flex flex-col gap-4 rounded-md border border-subtle p-4">
         <div className="flex flex-col gap-1">
-          <h4 className="text-body-sm-medium text-primary">Backstage entity</h4>
-          <p className="text-body-xs-regular text-tertiary">
-            Reference the catalog entity that owns this project, for example <code>component:default/my-service</code>.
-          </p>
+          <h4 className="text-body-sm-medium text-primary">{t("integrations.project.backstage_title")}</h4>
+          <p className="text-body-xs-regular text-tertiary">{t("integrations.project.backstage_description")}</p>
         </div>
         {!backstage?.base_url ? (
-          <p className="text-body-xs-regular text-tertiary">
-            Configure Backstage in workspace settings to link a catalog entity.
-          </p>
+          <p className="text-body-xs-regular text-tertiary">{t("integrations.project.backstage_not_configured")}</p>
         ) : (
           <InputField
             size="lg"
             orientation="vertical"
             name="backstage_entity"
-            label="Entity reference"
+            label={t("integrations.project.entity_ref")}
             value={entityRef}
             onChange={(event) => setEntityRef(event.target.value)}
-            placeholder="component:default/my-service"
+            placeholder={t("integrations.project.entity_placeholder")}
             autoComplete="off"
             disabled={!canManage}
           />
@@ -310,14 +340,14 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               variant="primary"
               size="md"
               stretch="auto"
-              label={busy === "backstage" ? "Saving…" : "Save"}
+              label={busy === "backstage" ? t("integrations.project.saving") : t("integrations.project.save")}
               loading={busy === "backstage"}
               disabled={!entityRef.trim()}
               onClick={() =>
                 void save(
                   { backstage_entity_ref: entityRef.trim(), is_backstage_enabled: true },
                   "backstage",
-                  "Backstage entity linked."
+                  t("integrations.project.backstage_linked")
                 )
               }
             />
@@ -329,7 +359,7 @@ export function ProjectIntegrations({ workspaceSlug, projectId, canManage }: Pro
               target="_blank"
               rel="noreferrer"
             >
-              Open in Backstage
+              {t("integrations.project.open_in_backstage")}
             </a>
           )}
         </div>

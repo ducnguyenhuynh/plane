@@ -531,7 +531,63 @@
     "agents": {
       "title": "Agenten",
       "heading": "Agenten",
-      "description": "Wijs agenten toe aan projectposities en kies welk model elk gebruikt."
+      "description": "Wijs agenten toe aan projectposities en kies welk model elk gebruikt.",
+      "team_size": {
+        "title": "Teamgrootte",
+        "description": "Hoeveel agenten van elke rol aan een uitvoering deelnemen.",
+        "pm_label": "PM / Tech lead",
+        "pm_help": "Schrijft onafhankelijke plannen. Het beste plan wordt gebruikt.",
+        "developer_label": "Ontwikkelaars",
+        "developer_help": "Werken parallel. Elke agent doet zijn eigen subtaken één voor één, en de PM splitst het werk in maximaal max(3, developers) subtaken.",
+        "qa_label": "QA",
+        "qa_help": "Beoordelaars. Elke beoordeling moet slagen.",
+        "save": "Teamgrootte opslaan",
+        "saving": "Opslaan…",
+        "invalid_title": "Ongeldige teamgrootte",
+        "invalid_message": "Kies een getal tussen {min} en {max}.",
+        "saved_title": "Opgeslagen",
+        "saved_message": "Teamgrootte bijgewerkt voor toekomstige uitvoeringen.",
+        "save_failed_title": "Teamgrootte kon niet worden opgeslagen"
+      },
+      "positions": {
+        "loading": "Posities laden…",
+        "load_failed": "Projectposities konden niet worden geladen.",
+        "empty": "Er zijn nog geen agenten aan dit project toegewezen. Agenten worden één keer in de werkruimte-instellingen gedefinieerd en hier vervolgens op een positie geplaatst.",
+        "assign": "Agent toewijzen",
+        "bench": "Bank (teamgroottelimiet)",
+        "agent_inactive": "Agent inactief",
+        "seat_warning": "Slechts {filled} van {count} {role}-plaatsen zijn bezet",
+        "model_override": "(overschrijving)",
+        "reviewer_heading": "Beoordelaar (niet gebruikt door uitvoeringen)",
+        "removed_title": "Verwijderd",
+        "removed_message": "Agent uit het project verwijderd.",
+        "remove_failed_title": "Agent kon niet worden verwijderd",
+        "delete_title": "Agent uit project verwijderen",
+        "delete_content": "{name} van de positie {role} verwijderen? De agent in de werkruimte zelf wordt niet verwijderd."
+      },
+      "roles": {
+        "project_manager": "Projectmanager",
+        "reviewer": "Beoordelaar",
+        "qa": "QA",
+        "developer": "Ontwikkelaar"
+      },
+      "assign": {
+        "title": "Agent toewijzen",
+        "edit_title": "Positie bewerken",
+        "position": "Positie",
+        "agent": "Agent",
+        "select_agent": "Selecteer een agent",
+        "no_agents": "Nog geen agenten in deze werkruimte",
+        "model_override": "Modeloverschrijving",
+        "model_override_placeholder": "Optioneel — overschrijft het agentmodel voor dit project",
+        "active": "Actief",
+        "missing_agent_title": "Agent ontbreekt",
+        "missing_agent_message": "Maak eerst een agent aan in de werkruimte-instellingen.",
+        "saved_title": "Opgeslagen",
+        "saved_message": "Projectpositie bijgewerkt.",
+        "save_failed_title": "Positie kon niet worden opgeslagen",
+        "saving": "Opslaan…"
+      }
     }
   }
 }

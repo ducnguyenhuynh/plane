@@ -445,5 +445,64 @@
       "label": "Tytuł epiku",
       "required": "Tytuł epiku jest wymagany."
     }
+  },
+  "agent_run": {
+    "title": "Uruchomienie agenta",
+    "subtitle": "PM planuje → programiści wdrażają → QA weryfikuje → wynik końcowy. Historia i artefakty są zachowywane.",
+    "empty_hint": "Uruchom proces, aby agenci projektu zaplanowali to zadanie, utworzyli podzadania, wdrożyli je i zweryfikowali wynik.",
+    "cook_with_ai": "Cook with AI",
+    "starting": "Uruchamianie…",
+    "start_new_run": "Uruchom nowy przebieg",
+    "retry_run": "Ponów uruchomienie",
+    "retrying": "Ponawianie…",
+    "cancel_run": "Anuluj uruchomienie",
+    "cancelling": "Anulowanie…",
+    "cancel_title": "Anulować to uruchomienie?",
+    "cancel_content": "Agenci zatrzymają się na bieżącym etapie. Następnie można uruchomić nowy przebieg.",
+    "run_history": "Historia uruchomień",
+    "run_option": "{status} · {date}",
+    "final_result": "Wynik końcowy",
+    "subtasks": "Podzadania",
+    "artifacts": "Artefakty",
+    "history": "Historia",
+    "no_agent": "Brak agenta",
+    "team_pm": "PM: {names}",
+    "team_developers": "Programiści: {names}",
+    "team_qa": "QA: {names}",
+    "rework_round": "Runda poprawek {round}",
+    "active_hint": "To uruchomienie jest {status}; panel odświeża się co kilka sekund.",
+    "status": {
+      "queued": "W kolejce",
+      "running": "W toku",
+      "completed": "Zakończone",
+      "failed": "Niepowodzenie"
+    },
+    "stage": {
+      "pm": "Plan",
+      "developer": "Wdrożenie",
+      "qa": "QA",
+      "final": "Finał",
+      "done": "Gotowe"
+    },
+    "toast": {
+      "started_title": "Uruchomienie agenta w kolejce",
+      "started_message": "PM analizuje zadanie.",
+      "start_failed_title": "Nie udało się uruchomić",
+      "start_failed_message": "Najpierw przypisz agentów do stanowisk w projekcie.",
+      "retry_title": "Ponowienie w kolejce",
+      "retry_message": "Uruchomienie kontynuuje od ostatniego etapu.",
+      "retry_failed_title": "Nie udało się ponowić",
+      "cancelled_title": "Uruchomienie anulowane",
+      "cancelled_message": "Agenci zatrzymali się na bieżącym etapie.",
+      "cancel_failed_title": "Nie udało się anulować uruchomienia",
+      "try_again": "Spróbuj ponownie."
+    },
+    "sidebar": {
+      "title": "Agenci AI",
+      "open_run": "Otwórz uruchomienie",
+      "no_run": "Brak uruchomień agenta",
+      "load_failed": "Nie udało się wczytać uruchomień agentów.",
+      "retry": "Spróbuj ponownie"
+    }
   }
 }

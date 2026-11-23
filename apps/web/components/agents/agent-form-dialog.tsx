@@ -14,6 +14,7 @@ import { SelectField } from "@makeplane/propel/components/select-field";
 import { Switch } from "@makeplane/propel/components/switch";
 import { TextAreaField } from "@makeplane/propel/components/text-area-field";
 import { setToast } from "@plane/blocks/toast";
+import { useTranslation } from "@plane/i18n";
 import type { TAgent, TAgentPayload, TAgentProvider } from "@plane/types";
 // services
 import { AgentService } from "@/services/agent.service";
@@ -42,6 +43,9 @@ const EMPTY_FORM: TAgentPayload = {
 };
 
 export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props) {
+  // translation
+  const { t } = useTranslation();
+  // states
   const [form, setForm] = useState<TAgentPayload>(EMPTY_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,9 +57,9 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
         provider: agent.provider,
         model: agent.model,
         api_key: "",
-        base_url: agent.base_url,
-        system_prompt: agent.system_prompt,
-        reasoning_effort: agent.reasoning_effort,
+        base_url: agent.base_url ?? "",
+        system_prompt: agent.system_prompt ?? "",
+        reasoning_effort: agent.reasoning_effort ?? "",
         is_active: agent.is_active,
       });
     } else {
@@ -75,15 +79,27 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!form.name.trim() || !form.model.trim()) {
-      setToast({ type: "error", title: "Missing fields", message: "Name and model are required." });
+      setToast({
+        type: "error",
+        title: t("workspace_settings.settings.ai_agents.form.missing_fields_title"),
+        message: t("workspace_settings.settings.ai_agents.form.missing_fields_message"),
+      });
       return;
     }
     if ((form.provider === "opencode" || form.provider === "custom") && !form.base_url?.trim()) {
-      setToast({ type: "error", title: "Missing base URL", message: "This provider needs a base URL." });
+      setToast({
+        type: "error",
+        title: t("workspace_settings.settings.ai_agents.form.missing_base_url_title"),
+        message: t("workspace_settings.settings.ai_agents.form.missing_base_url_message"),
+      });
       return;
     }
     if (!agent && !form.api_key?.trim()) {
-      setToast({ type: "error", title: "Missing API key", message: "An API key is required." });
+      setToast({
+        type: "error",
+        title: t("workspace_settings.settings.ai_agents.form.missing_api_key_title"),
+        message: t("workspace_settings.settings.ai_agents.form.missing_api_key_message"),
+      });
       return;
     }
 
@@ -95,15 +111,17 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
       else await agentService.createAgent(workspaceSlug, payload);
       setToast({
         type: "success",
-        title: "Saved",
-        message: agent ? "Agent updated." : "Agent created.",
+        title: t("workspace_settings.settings.ai_agents.form.saved_title"),
+        message: agent
+          ? t("workspace_settings.settings.ai_agents.form.updated_message")
+          : t("workspace_settings.settings.ai_agents.form.created_message"),
       });
       onClose();
     } catch (error) {
       setToast({
         type: "error",
-        title: "Could not save the agent",
-        message: getAgentErrorMessage(error, "Please try again."),
+        title: t("workspace_settings.settings.ai_agents.form.save_failed_title"),
+        message: getAgentErrorMessage(error, t("agent_run.toast.try_again")),
       });
     } finally {
       setIsSubmitting(false);
@@ -117,15 +135,26 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
         if (!open) onClose();
       }}
     >
-      <DialogContent size="md" aria-label={agent ? "Edit agent" : "Add agent"}>
+      <DialogContent
+        size="md"
+        aria-label={
+          agent
+            ? t("workspace_settings.settings.ai_agents.form.edit_title")
+            : t("workspace_settings.settings.ai_agents.form.add_title")
+        }
+      >
         <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
           <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
-            <h2 className="text-h5-medium text-secondary">{agent ? "Edit agent" : "Add agent"}</h2>
+            <h2 className="text-h5-medium text-secondary">
+              {agent
+                ? t("workspace_settings.settings.ai_agents.form.edit_title")
+                : t("workspace_settings.settings.ai_agents.form.add_title")}
+            </h2>
             <InputField
               size="lg"
               orientation="vertical"
               name="name"
-              label="Name"
+              label={t("workspace_settings.settings.ai_agents.form.name")}
               required
               value={form.name}
               onChange={(e) => setField("name", e.target.value)}
@@ -134,8 +163,8 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
             />
             <SelectField<TAgentProvider>
               size="lg"
-              aria-label="Provider"
-              label="Provider"
+              aria-label={t("workspace_settings.settings.ai_agents.form.provider")}
+              label={t("workspace_settings.settings.ai_agents.form.provider")}
               value={form.provider}
               onValueChange={handleProviderChange}
               options={AGENT_PROVIDERS.map(({ value, label }) => ({ value, label }))}
@@ -144,7 +173,7 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               size="lg"
               orientation="vertical"
               name="model"
-              label="Model"
+              label={t("workspace_settings.settings.ai_agents.form.model")}
               required
               value={form.model}
               onChange={(e) => setField("model", e.target.value)}
@@ -155,19 +184,23 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               size="lg"
               orientation="vertical"
               name="api_key"
-              label="API key"
+              label={t("workspace_settings.settings.ai_agents.form.api_key")}
               type="password"
               required={!agent}
               value={form.api_key}
               onChange={(e) => setField("api_key", e.target.value)}
-              placeholder={agent?.has_api_key ? "Stored key — leave blank to keep" : "sk-..."}
+              placeholder={
+                agent?.has_api_key
+                  ? t("workspace_settings.settings.ai_agents.form.api_key_stored")
+                  : t("workspace_settings.settings.ai_agents.form.api_key_placeholder")
+              }
               autoComplete="new-password"
             />
             <InputField
               size="lg"
               orientation="vertical"
               name="base_url"
-              label="Base URL"
+              label={t("workspace_settings.settings.ai_agents.form.base_url")}
               value={form.base_url}
               onChange={(e) => setField("base_url", e.target.value)}
               placeholder="https://api.anthropic.com"
@@ -175,9 +208,9 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
             />
             <SelectField<string>
               size="lg"
-              aria-label="Reasoning effort"
-              label="Reasoning effort"
-              description="How much the model should think before answering. Default uses the provider's setting."
+              aria-label={t("workspace_settings.settings.ai_agents.form.reasoning_effort")}
+              label={t("workspace_settings.settings.ai_agents.form.reasoning_effort")}
+              description={t("workspace_settings.settings.ai_agents.form.reasoning_effort_description")}
               value={form.reasoning_effort ?? ""}
               onValueChange={(value) =>
                 setField("reasoning_effort", (value ?? "") as TAgentPayload["reasoning_effort"])
@@ -187,29 +220,31 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
             <TextAreaField
               size="lg"
               name="system_prompt"
-              label="System prompt"
+              label={t("workspace_settings.settings.ai_agents.form.system_prompt")}
               value={form.system_prompt}
               onChange={(e) => setField("system_prompt", e.target.value)}
-              placeholder="How this agent should behave"
+              placeholder={t("workspace_settings.settings.ai_agents.form.system_prompt_placeholder")}
             />
             <div className="flex items-center justify-between">
-              <span className="text-body-sm-medium text-secondary">Active</span>
+              <span className="text-body-sm-medium text-secondary">
+                {t("workspace_settings.settings.ai_agents.form.active")}
+              </span>
               <Switch
                 size="sm"
                 checked={Boolean(form.is_active)}
                 onCheckedChange={(checked) => setField("is_active", checked)}
-                aria-label="Active"
+                aria-label={t("workspace_settings.settings.ai_agents.form.active")}
               />
             </div>
           </div>
           <div className="flex items-center justify-end gap-3 border-t-[0.5px] border-subtle px-5 py-4">
-            <Button variant="secondary" size="md" stretch="auto" label="Cancel" onClick={onClose} />
+            <Button variant="secondary" size="md" stretch="auto" label={t("common.cancel")} onClick={onClose} />
             <Button
               type="submit"
               variant="primary"
               size="md"
               stretch="auto"
-              label={isSubmitting ? "Saving..." : "Save"}
+              label={isSubmitting ? t("workspace_settings.settings.ai_agents.form.saving") : t("common.save")}
               loading={isSubmitting}
             />
           </div>
