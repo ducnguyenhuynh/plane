@@ -503,6 +503,17 @@
       "no_run": "아직 에이전트 실행이 없습니다",
       "load_failed": "에이전트 실행을 불러올 수 없습니다.",
       "retry": "다시 시도"
+    },
+    "session_logs": {
+      "title": "세션 로그",
+      "empty": "이 실행에는 아직 기록된 모델 호출이 없습니다.",
+      "load_failed": "세션 로그를 불러올 수 없습니다.",
+      "prompt": "프롬프트",
+      "reasoning": "추론",
+      "response": "응답",
+      "error": "오류",
+      "tokens": "입력 {input, number} · 출력 {output, number} 토큰",
+      "duration": "{seconds, number}초"
     }
   }
 }

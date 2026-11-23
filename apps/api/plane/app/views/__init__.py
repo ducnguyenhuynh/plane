@@ -38,6 +38,8 @@ from .agent_run import (
     AgentRunCancelEndpoint,
     AgentRunDetailEndpoint,
     AgentRunRetryEndpoint,
+    AgentRunSessionDetailEndpoint,
+    AgentRunSessionListEndpoint,
     IssueAgentRunEndpoint,
     ProjectAgentTeamEndpoint,
 )

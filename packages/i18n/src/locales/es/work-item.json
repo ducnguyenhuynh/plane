@@ -503,6 +503,17 @@
       "no_run": "Aún no hay ejecuciones",
       "load_failed": "No se pudieron cargar las ejecuciones de agentes.",
       "retry": "Reintentar"
+    },
+    "session_logs": {
+      "title": "Registros de sesión",
+      "empty": "Todavía no hay llamadas al modelo registradas para esta ejecución.",
+      "load_failed": "No se pudieron cargar los registros de sesión.",
+      "prompt": "Prompt",
+      "reasoning": "Razonamiento",
+      "response": "Respuesta",
+      "error": "Error",
+      "tokens": "{input, number} tokens de entrada · {output, number} de salida",
+      "duration": "{seconds, number} s"
     }
   }
 }

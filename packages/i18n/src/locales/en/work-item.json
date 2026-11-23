@@ -503,6 +503,17 @@
       "no_run": "No agent run yet",
       "load_failed": "Could not load agent runs.",
       "retry": "Retry"
+    },
+    "session_logs": {
+      "title": "Session logs",
+      "empty": "No model calls have been logged for this run yet.",
+      "load_failed": "Session logs could not be loaded.",
+      "prompt": "Prompt",
+      "reasoning": "Reasoning",
+      "response": "Response",
+      "error": "Error",
+      "tokens": "{input, number} input · {output, number} output tokens",
+      "duration": "{seconds, number} s"
     }
   }
 }

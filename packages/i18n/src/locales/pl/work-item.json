@@ -503,6 +503,17 @@
       "no_run": "Brak uruchomień agenta",
       "load_failed": "Nie udało się wczytać uruchomień agentów.",
       "retry": "Spróbuj ponownie"
+    },
+    "session_logs": {
+      "title": "Dzienniki sesji",
+      "empty": "Dla tego uruchomienia nie zapisano jeszcze żadnych wywołań modelu.",
+      "load_failed": "Nie udało się wczytać dzienników sesji.",
+      "prompt": "Polecenie",
+      "reasoning": "Rozumowanie",
+      "response": "Odpowiedź",
+      "error": "Błąd",
+      "tokens": "{input, number} tokenów wejściowych · {output, number} wyjściowych",
+      "duration": "{seconds, number} s"
     }
   }
 }

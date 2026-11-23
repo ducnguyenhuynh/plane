@@ -15,7 +15,6 @@ from django.utils.html import escape
 
 # Third party imports
 from celery import shared_task
-from celery.exceptions import SoftTimeLimitExceeded
 
 # Module imports
 from plane.app.serializers import IssueDetailSerializer
@@ -26,6 +25,8 @@ from plane.db.models import (
     AgentRun,
     AgentRunArtifact,
     AgentRunEvent,
+    AgentRunSession,
+    AgentRunSessionStatus,
     AgentRunStage,
     AgentRunStatus,
     AgentRunTask,
@@ -37,15 +38,19 @@ from plane.db.models import (
     StateGroup,
 )
 from plane.utils.agent_bot import ensure_agent_bot, ensure_project_member
-from plane.utils.agent_runtime import AgentRuntimeError, extract_json, invoke_agent, markdown_to_html
+from plane.utils.agent_runtime import (
+    AgentCallTrace,
+    AgentRuntimeError,
+    extract_json,
+    invoke_agent,
+    markdown_to_html,
+)
 from plane.utils.exception_logger import log_exception
 
 MAX_TASKS = 10
 MAX_REWORK_ROUNDS = 1
 STALE_RUN_MINUTES = 35
 STALE_RUN_ERROR = "Run timed out or the worker stopped."
-PIPELINE_SOFT_TIME_LIMIT = 1800
-PIPELINE_TIME_LIMIT = 1900
 
 
 class QaRejectedError(AgentRuntimeError):
@@ -72,7 +77,7 @@ def issue_context(issue) -> str:
     return (
         f"Work item: {issue.project.identifier}-{issue.sequence_id} {issue.name}\n"
         f"Priority: {issue.priority}\n"
-        f"Description:\n{description[:6000] or '(no description)'}"
+        f"Description:\n{description or '(no description)'}"
     )
 
 
@@ -128,10 +133,133 @@ def agent_model(run, agent) -> str | None:
     return (run.agent_models or {}).get(str(agent.id)) or None
 
 
-def invoke(run, agent, messages, max_tokens=4096, effort_override=None):
-    return invoke_agent(
-        agent, messages, max_tokens=max_tokens, effort_override=effort_override, model=agent_model(run, agent)
-    )
+def strip_nuls(value):
+    """PostgreSQL rejects NUL characters, so drop them from every string before saving."""
+    if isinstance(value, str):
+        return value.replace("\x00", "")
+    if isinstance(value, dict):
+        return {key: strip_nuls(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [strip_nuls(item) for item in value]
+    return value
+
+
+def token_count(usage, *keys):
+    for key in keys:
+        value = (usage or {}).get(key)
+        if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+            return value
+    return None
+
+
+def heartbeat(run, required=False):
+    """Keep the run from being marked stale. Only a progress callback needs the run to be alive."""
+    try:
+        updated = AgentRun.objects.filter(pk=run.pk, status=AgentRunStatus.RUNNING).update(updated_at=timezone.now())
+    except Exception as e:
+        log_exception(e)
+        return
+    if required and not updated:
+        # Cancelled or marked stale: stop the stream so no more tokens are spent
+        raise AgentRuntimeError("The agent run is no longer active.")
+
+
+def start_session(run, agent, effort, purpose, task, messages):
+    try:
+        return AgentRunSession.objects.create(
+            run=run,
+            task=task,
+            agent=agent,
+            agent_name=agent.name or "",
+            stage=run.stage,
+            rework_round=run.rework_round,
+            provider=agent.provider or "",
+            model=agent_model(run, agent) or agent.model or "",
+            effort=effort or "",
+            purpose=purpose,
+            status=AgentRunSessionStatus.RUNNING,
+            started_at=timezone.now(),
+            request={"messages": strip_nuls(messages)},
+        )
+    except Exception as e:
+        # Tracing must never fail or slow the run
+        log_exception(e)
+        return None
+
+
+def progress_callback(run, session, trace):
+    flushed = False
+
+    def on_progress():
+        nonlocal flushed
+        heartbeat(run, required=True)
+        if session is None:
+            return
+        fields = {
+            "response": strip_nuls(trace.text),
+            "reasoning": strip_nuls(trace.reasoning),
+            "usage": strip_nuls(trace.usage),
+        }
+        # The first flush keeps the request too, so a dead worker still leaves the prompt behind
+        if not flushed and trace.request:
+            fields["request"] = strip_nuls(trace.request)
+            fields["max_tokens"] = trace.max_tokens
+        try:
+            AgentRunSession.objects.filter(pk=session.pk).update(**fields)
+            flushed = True
+        except Exception as e:
+            log_exception(e)
+
+    return on_progress
+
+
+def finish_session(session, trace, status, error=""):
+    if session is None:
+        return
+    try:
+        now = timezone.now()
+        duration_ms = None
+        if session.started_at:
+            duration_ms = max(0, int((now - session.started_at).total_seconds() * 1000))
+        AgentRunSession.objects.filter(pk=session.pk).update(
+            request=strip_nuls(trace.request),
+            max_tokens=trace.max_tokens,
+            response=strip_nuls(trace.text),
+            reasoning=strip_nuls(trace.reasoning),
+            stop_reason=strip_nuls(trace.stop_reason)[:50],
+            usage=strip_nuls(trace.usage),
+            input_tokens=token_count(trace.usage, "input_tokens", "prompt_tokens"),
+            output_tokens=token_count(trace.usage, "output_tokens", "completion_tokens"),
+            error=strip_nuls(error),
+            status=status,
+            completed_at=now,
+            duration_ms=duration_ms,
+        )
+    except Exception as e:
+        log_exception(e)
+
+
+def invoke(run, agent, messages, effort_override=None, allow_empty=False, purpose="", task=None):
+    """One model call, logged as a session so a run can be traced later."""
+    effort = effort_override if effort_override is not None else agent.reasoning_effort
+    heartbeat(run)
+    session = start_session(run, agent, effort, purpose, task, messages)
+    trace = AgentCallTrace()
+    try:
+        text = invoke_agent(
+            agent,
+            messages,
+            effort_override=effort,
+            model=agent_model(run, agent),
+            allow_empty=allow_empty,
+            trace=trace,
+            on_progress=progress_callback(run, session, trace),
+        )
+    except Exception as e:
+        finish_session(session, trace, AgentRunSessionStatus.FAILED, error=str(e))
+        raise
+    finish_session(session, trace, AgentRunSessionStatus.COMPLETED)
+    return text
 
 
 def max_plan_tasks(run) -> int:
@@ -313,11 +441,11 @@ def plan_with_pm(run):
 
     @in_thread
     def ask(agent):
-        return invoke(run, agent, user_message(prompt))
+        return invoke(run, agent, user_message(prompt), purpose="plan")
 
     texts = {}
     if len(agents) == 1:
-        texts[str(agents[0].id)] = invoke(run, agents[0], user_message(prompt))
+        texts[str(agents[0].id)] = invoke(run, agents[0], user_message(prompt), purpose="plan")
     else:
         with ThreadPoolExecutor(max_workers=len(agents)) as executor:
             futures = {executor.submit(ask, agent): agent for agent in agents}
@@ -354,7 +482,7 @@ def plan_tasks(run, plan, agents, pm_bot):
     created = []
     for index, item in enumerate(plan or []):
         title = str(item.get("title") or f"Subtask {index + 1}")[:255]
-        description = str(item.get("description") or item.get("details") or "")[:4000]
+        description = str(item.get("description") or item.get("details") or "")
         agent = agents[index % len(agents)]
         assignee = ensure_agent_bot(agent)
         ensure_project_member(assignee, run.project)
@@ -371,11 +499,11 @@ def plan_tasks(run, plan, agents, pm_bot):
 
 
 def developer_prompt(run, task, qa_notes=""):
-    notes = f"\n\nQA notes from the previous review (address these):\n{qa_notes[:4000]}" if qa_notes else ""
+    notes = f"\n\nQA notes from the previous review (address these):\n{qa_notes}" if qa_notes else ""
     return (
         f"{issue_context(run.issue)}\n\n"
         f"Subtask: {task.issue.name}\n"
-        f"Subtask details: {(task.issue.description_stripped or '')[:4000]}{notes}\n\n"
+        f"Subtask details: {task.issue.description_stripped or ''}{notes}\n\n"
         "Implement this subtask. Return the complete, concrete implementation (code changes, a patch, or "
         "a technical design) in Markdown, with closed code fences. Keep it under 150 lines; do not ask "
         "questions."
@@ -404,7 +532,14 @@ def work_task(run, task, qa_notes=""):
     bot = ensure_agent_bot(task.agent)
     move_task_state(run, task, StateGroup.STARTED, bot)
 
-    output = invoke(run, task.agent, user_message(developer_prompt(run, task, qa_notes)), max_tokens=16384)
+    output = invoke(
+        run,
+        task.agent,
+        user_message(developer_prompt(run, task, qa_notes)),
+        allow_empty=True,
+        purpose="develop",
+        task=task,
+    )
     retried = False
     if not output.strip():
         # Reasoning models can spend the whole budget thinking and return no text
@@ -414,11 +549,13 @@ def work_task(run, task, qa_notes=""):
             task.agent,
             user_message(
                 f"Subtask: {task.issue.name}\n"
-                f"Details: {(task.issue.description_stripped or '')[:2000]}\n\n"
+                f"Details: {task.issue.description_stripped or ''}\n\n"
                 "Return the concrete implementation in Markdown now."
             ),
-            max_tokens=16384,
             effort_override="low",
+            allow_empty=True,
+            purpose="develop_retry",
+            task=task,
         )
     return output, retried
 
@@ -527,10 +664,10 @@ def run_developer_stage(run, qa_notes="", rework=False):
 
 
 def review_prompt(run, developer_outputs, qa_notes=""):
-    previous = f"\n\nNotes from the previous review round:\n{qa_notes[:4000]}" if qa_notes else ""
+    previous = f"\n\nNotes from the previous review round:\n{qa_notes}" if qa_notes else ""
     return (
         f"{issue_context(run.issue)}\n\n"
-        f"Developer outputs:\n{'\n\n'.join(developer_outputs)[:14000]}{previous}\n\n"
+        f"Developer outputs:\n{'\n\n'.join(developer_outputs)}{previous}\n\n"
         "Review the outputs against the work item. The outputs are implementation proposals, not code already "
         "merged in a repository. Approve when they contain a concrete, plausible implementation of the core "
         "requirement; minor gaps are acceptable. Reject only when the core implementation is missing, empty, "
@@ -554,12 +691,12 @@ def run_qa_stage(run, developer_outputs, qa_notes=""):
 
     @in_thread
     def review(agent):
-        return agent, invoke(run, agent, user_message(prompt), max_tokens=2048)
+        return agent, invoke(run, agent, user_message(prompt), purpose="review")
 
     reviews = []
     if len(agents) == 1:
         try:
-            reviews.append((agents[0], invoke(run, agents[0], user_message(prompt), max_tokens=2048)))
+            reviews.append((agents[0], invoke(run, agents[0], user_message(prompt), purpose="review")))
         except Exception as e:
             log_exception(e)
             log_event(run, "error", f"{agents[0].name} failed to review: {e}", stage=AgentRunStage.QA, agent=agents[0])
@@ -594,12 +731,12 @@ def run_qa_stage(run, developer_outputs, qa_notes=""):
             run.issue,
             ensure_agent_bot(agent),
             f"**QA verdict from {agent.name}: {'approved' if passed else 'changes requested'}**\n\n"
-            f"{str(verdict.get('notes') or '')[:4000]}",
+            f"{str(verdict.get('notes') or '')}",
             kind=f"review:{agent.id}",
         )
         if not passed:
             rejections.append(f"{agent.name}: {str(verdict.get('notes') or '')[:800]}")
-            notes.append(f"{agent.name}: {str(verdict.get('notes') or '')[:1500]}")
+            notes.append(f"{agent.name}: {str(verdict.get('notes') or '')}")
 
     if rejections:
         if not notes:
@@ -615,9 +752,7 @@ def run_qa_stage(run, developer_outputs, qa_notes=""):
 def latest_review_notes(run) -> str:
     """QA notes of the current round, newest first."""
     reviews = run.artifacts.filter(kind="review").order_by("-created_at")[:10]
-    return "\n\n".join(review.content[:1500] for review in reviews if review.data.get("round") == run.rework_round)[
-        :4000
-    ]
+    return "\n\n".join(review.content for review in reviews if review.data.get("round") == run.rework_round)
 
 
 def planned_by(run):
@@ -639,19 +774,19 @@ def run_final_stage(run, developer_outputs, pm_agent):
     plan = run.artifacts.filter(kind="plan").order_by("-created_at").first()
     reviews = list(run.artifacts.filter(kind="review").order_by("-created_at")[:10])
     latest = [review for review in reviews if review.data.get("round") == run.rework_round] or reviews[:1]
-    review_text = "\n\n".join(review.content[:2000] for review in latest) or "QA approved the outputs."
+    review_text = "\n\n".join(review.content for review in latest) or "QA approved the outputs."
     final_text = invoke(
         run,
         pm_agent,
         user_message(
             f"{issue_context(run.issue)}\n\n"
-            f"Project plan:\n{(plan.content if plan else '')[:4000]}\n\n"
-            f"Implementation outputs:\n{'\n\n'.join(developer_outputs)[:12000]}\n\n"
+            f"Project plan:\n{plan.content if plan else ''}\n\n"
+            f"Implementation outputs:\n{'\n\n'.join(developer_outputs)}\n\n"
             f"QA reviews:\n{review_text}\n\n"
             "Write the final result for this work item: what was done, key decisions, and remaining risks. "
             "Use Markdown and do not use placeholders."
         ),
-        max_tokens=4096,
+        purpose="final",
     )
     run.result = final_text
     AgentRunArtifact.objects.create(run=run, kind="final", title="Final result", content=final_text)
@@ -746,7 +881,7 @@ def pipeline(run):
     run_final_stage(run, developer_outputs, pm_agent)
 
 
-@shared_task(soft_time_limit=PIPELINE_SOFT_TIME_LIMIT, time_limit=PIPELINE_TIME_LIMIT)
+@shared_task
 def run_agent_pipeline(run_id):
     """PM plan -> child work items -> developer output per task -> QA -> final summary."""
     try:
@@ -774,9 +909,6 @@ def run_agent_pipeline(run_id):
         if not is_cancelled(run):
             log_event(run, "status", "Agent run completed.")
             notify_slack(run, "completed", f"Agent run completed on {run.issue.name}.")
-    except SoftTimeLimitExceeded:
-        fail_run(run, "The agent run was stopped: it exceeded the worker time limit.")
-        notify_slack(run, "failed", "The agent run was stopped: it exceeded the worker time limit.")
     except Exception as e:
         if is_cancelled(run):
             return
@@ -795,8 +927,15 @@ def run_agent_pipeline(run_id):
 def mark_stale_runs_failed(project):
     """Close runs whose worker died, so the work item is not blocked forever."""
     cutoff = timezone.now() - timedelta(minutes=STALE_RUN_MINUTES)
-    return AgentRun.objects.filter(
+    updated = AgentRun.objects.filter(
         project=project,
         status__in=[AgentRunStatus.QUEUED, AgentRunStatus.RUNNING],
         updated_at__lt=cutoff,
     ).update(status=AgentRunStatus.FAILED, error=STALE_RUN_ERROR, completed_at=timezone.now())
+    # The sessions of those runs are dead too, or they would stay "running" forever
+    AgentRunSession.objects.filter(
+        run__project=project,
+        status=AgentRunSessionStatus.RUNNING,
+        run__status=AgentRunStatus.FAILED,
+    ).update(status=AgentRunSessionStatus.FAILED, error=STALE_RUN_ERROR, completed_at=timezone.now())
+    return updated

@@ -503,6 +503,17 @@
       "no_run": "Zatím žádný běh agenta",
       "load_failed": "Běhy agentů se nepodařilo načíst.",
       "retry": "Zkusit znovu"
+    },
+    "session_logs": {
+      "title": "Logy relací",
+      "empty": "Pro tento běh zatím nejsou zaznamenána žádná volání modelu.",
+      "load_failed": "Logy relací se nepodařilo načíst.",
+      "prompt": "Prompt",
+      "reasoning": "Uvažování",
+      "response": "Odpověď",
+      "error": "Chyba",
+      "tokens": "{input, number} vstupních · {output, number} výstupních tokenů",
+      "duration": "{seconds, number} s"
     }
   }
 }

@@ -11,7 +11,16 @@ from .agent import (
     ProjectAgentTeam,
     ProjectAIAgent,
 )
-from .agent_run import AgentRun, AgentRunArtifact, AgentRunEvent, AgentRunStage, AgentRunStatus, AgentRunTask
+from .agent_run import (
+    AgentRun,
+    AgentRunArtifact,
+    AgentRunEvent,
+    AgentRunSession,
+    AgentRunSessionStatus,
+    AgentRunStage,
+    AgentRunStatus,
+    AgentRunTask,
+)
 from .analytic import AnalyticView
 from .api import APIActivityLog, APIToken
 from .asset import FileAsset

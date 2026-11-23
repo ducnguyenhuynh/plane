@@ -503,6 +503,17 @@
       "no_run": "Nessuna esecuzione dell'agente",
       "load_failed": "Impossibile caricare le esecuzioni degli agenti.",
       "retry": "Riprova"
+    },
+    "session_logs": {
+      "title": "Log delle sessioni",
+      "empty": "Per questa esecuzione non è ancora stata registrata alcuna chiamata al modello.",
+      "load_failed": "Impossibile caricare i log delle sessioni.",
+      "prompt": "Prompt",
+      "reasoning": "Ragionamento",
+      "response": "Risposta",
+      "error": "Errore",
+      "tokens": "{input, number} token in ingresso · {output, number} in uscita",
+      "duration": "{seconds, number} s"
     }
   }
 }

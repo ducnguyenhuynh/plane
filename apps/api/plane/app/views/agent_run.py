@@ -12,12 +12,18 @@ from rest_framework.response import Response
 # Module imports
 from plane.app.permissions import ROLE, allow_permission
 from plane.app.serializers.agent import ProjectAgentTeamSerializer
-from plane.app.serializers.agent_run import AgentRunDetailSerializer, AgentRunSerializer
+from plane.app.serializers.agent_run import (
+    AgentRunDetailSerializer,
+    AgentRunSerializer,
+    AgentRunSessionDetailSerializer,
+    AgentRunSessionSerializer,
+)
 from plane.bgtasks.agent_pipeline_task import log_event, mark_stale_runs_failed, run_agent_pipeline
 from plane.db.models import (
     DEFAULT_AGENT_TEAM,
     AgentRole,
     AgentRun,
+    AgentRunSession,
     AgentRunStage,
     AgentRunStatus,
     Issue,
@@ -167,6 +173,28 @@ class AgentRunDetailEndpoint(BaseAPIView):
             pk=run_id,
         )
         return Response(AgentRunDetailSerializer(run).data, status=status.HTTP_200_OK)
+
+
+class AgentRunSessionListEndpoint(BaseAPIView):
+    @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
+    def get(self, request, slug, project_id, run_id):
+        run = get_object_or_404(
+            AgentRun.objects.filter(project__workspace__slug=slug, project_id=project_id), pk=run_id
+        )
+        sessions = run.sessions.defer("request", "response", "reasoning", "usage").order_by("created_at")
+        return Response(AgentRunSessionSerializer(sessions, many=True).data, status=status.HTTP_200_OK)
+
+
+class AgentRunSessionDetailEndpoint(BaseAPIView):
+    @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
+    def get(self, request, slug, project_id, run_id, session_id):
+        session = get_object_or_404(
+            AgentRunSession.objects.filter(
+                run_id=run_id, run__project__workspace__slug=slug, run__project_id=project_id
+            ),
+            pk=session_id,
+        )
+        return Response(AgentRunSessionDetailSerializer(session).data, status=status.HTTP_200_OK)
 
 
 class AgentRunRetryEndpoint(BaseAPIView):

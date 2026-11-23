@@ -54,6 +54,41 @@ export type TAgentRunTask = {
   created_at: string;
 };
 
+export type TAgentRunSessionStatus = "running" | "completed" | "failed";
+
+/** One call to an AI model made during a run. */
+export type TAgentRunSession = {
+  id: string;
+  run_id: string;
+  task_id: string;
+  agent_id: string;
+  agent_name: string;
+  stage: string;
+  purpose: string;
+  rework_round: number;
+  provider: string;
+  model: string;
+  effort: string;
+  status: TAgentRunSessionStatus;
+  stop_reason: string;
+  max_tokens: number | null;
+  input_tokens: number | null;
+  output_tokens: number | null;
+  error: string;
+  started_at: string | null;
+  completed_at: string | null;
+  duration_ms: number | null;
+  created_at: string;
+};
+
+export type TAgentRunSessionDetail = TAgentRunSession & {
+  /** The exact JSON sent to the provider. */
+  request: Record<string, unknown>;
+  response: string;
+  reasoning: string;
+  usage: Record<string, unknown>;
+};
+
 export type TAgentRun = {
   id: string;
   issue_id: string;

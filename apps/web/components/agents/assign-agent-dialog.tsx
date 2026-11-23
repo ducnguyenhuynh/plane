@@ -158,7 +158,7 @@ export function AssignAgentDialog({ workspaceSlug, projectId, agents, assignment
               variant="primary"
               size="md"
               stretch="auto"
-              label={isSubmitting ? t("project_settings.agents.assign.saving") : t("common.save")}
+              label={isSubmitting ? t("project_settings.agents.assign.saving") : t("save")}
               loading={isSubmitting}
             />
           </div>

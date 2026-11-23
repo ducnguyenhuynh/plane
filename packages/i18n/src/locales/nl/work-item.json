@@ -503,6 +503,17 @@
       "no_run": "Nog geen agentuitvoering",
       "load_failed": "Agentuitvoeringen konden niet worden geladen.",
       "retry": "Opnieuw proberen"
+    },
+    "session_logs": {
+      "title": "Sessielogs",
+      "empty": "Voor deze uitvoering zijn nog geen modelaanroepen vastgelegd.",
+      "load_failed": "Sessielogs konden niet worden geladen.",
+      "prompt": "Prompt",
+      "reasoning": "Redenering",
+      "response": "Antwoord",
+      "error": "Fout",
+      "tokens": "{input, number} invoer · {output, number} uitvoer tokens",
+      "duration": "{seconds, number} s"
     }
   }
 }

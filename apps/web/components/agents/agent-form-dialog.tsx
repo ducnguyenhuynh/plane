@@ -244,7 +244,7 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               variant="primary"
               size="md"
               stretch="auto"
-              label={isSubmitting ? t("workspace_settings.settings.ai_agents.form.saving") : t("common.save")}
+              label={isSubmitting ? t("workspace_settings.settings.ai_agents.form.saving") : t("save")}
               loading={isSubmitting}
             />
           </div>

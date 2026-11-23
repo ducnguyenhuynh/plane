@@ -503,6 +503,17 @@
       "no_run": "Chưa có lần chạy tác nhân nào",
       "load_failed": "Không thể tải lần chạy tác nhân.",
       "retry": "Thử lại"
+    },
+    "session_logs": {
+      "title": "Nhật ký phiên",
+      "empty": "Chưa có lệnh gọi mô hình nào được ghi lại cho lần chạy này.",
+      "load_failed": "Không thể tải nhật ký phiên.",
+      "prompt": "Lời nhắc",
+      "reasoning": "Suy luận",
+      "response": "Phản hồi",
+      "error": "Lỗi",
+      "tokens": "{input, number} token đầu vào · {output, number} token đầu ra",
+      "duration": "{seconds, number} giây"
     }
   }
 }

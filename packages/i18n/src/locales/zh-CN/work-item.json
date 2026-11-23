@@ -503,6 +503,17 @@
       "no_run": "暂无 Agent 运行",
       "load_failed": "无法加载 Agent 运行。",
       "retry": "重试"
+    },
+    "session_logs": {
+      "title": "会话日志",
+      "empty": "此运行尚未记录任何模型调用。",
+      "load_failed": "无法加载会话日志。",
+      "prompt": "提示词",
+      "reasoning": "推理过程",
+      "response": "响应",
+      "error": "错误",
+      "tokens": "输入 {input, number} · 输出 {output, number} 个 token",
+      "duration": "{seconds, number} 秒"
     }
   }
 }

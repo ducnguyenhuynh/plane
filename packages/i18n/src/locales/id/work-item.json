@@ -503,6 +503,17 @@
       "no_run": "Belum ada proses agen",
       "load_failed": "Tidak dapat memuat proses agen.",
       "retry": "Coba lagi"
+    },
+    "session_logs": {
+      "title": "Log sesi",
+      "empty": "Belum ada panggilan model yang tercatat untuk proses ini.",
+      "load_failed": "Log sesi tidak dapat dimuat.",
+      "prompt": "Prompt",
+      "reasoning": "Penalaran",
+      "response": "Respons",
+      "error": "Kesalahan",
+      "tokens": "{input, number} token masukan · {output, number} token keluaran",
+      "duration": "{seconds, number} dtk"
     }
   }
 }

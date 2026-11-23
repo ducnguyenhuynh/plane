@@ -503,6 +503,17 @@
       "no_run": "Încă nicio execuție a agentului",
       "load_failed": "Execuțiile agenților nu au putut fi încărcate.",
       "retry": "Reîncearcă"
+    },
+    "session_logs": {
+      "title": "Jurnale de sesiune",
+      "empty": "Pentru această execuție nu au fost înregistrate încă apeluri către model.",
+      "load_failed": "Jurnalele de sesiune nu au putut fi încărcate.",
+      "prompt": "Prompt",
+      "reasoning": "Raționament",
+      "response": "Răspuns",
+      "error": "Eroare",
+      "tokens": "{input, number} tokenuri de intrare · {output, number} de ieșire",
+      "duration": "{seconds, number} s"
     }
   }
 }

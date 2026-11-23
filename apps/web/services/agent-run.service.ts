@@ -6,7 +6,7 @@
 
 // api services
 import { API_BASE_URL } from "@plane/constants";
-import type { TAgentRun, TAgentRunDetail } from "@plane/types";
+import type { TAgentRun, TAgentRunDetail, TAgentRunSession, TAgentRunSessionDetail } from "@plane/types";
 import { APIService } from "@/services/api.service";
 
 export class AgentRunService extends APIService {
@@ -32,6 +32,27 @@ export class AgentRunService extends APIService {
 
   async fetchAgentRun(workspaceSlug: string, projectId: string, runId: string): Promise<TAgentRunDetail> {
     return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async fetchAgentRunSessions(workspaceSlug: string, projectId: string, runId: string): Promise<TAgentRunSession[]> {
+    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/sessions/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async fetchAgentRunSession(
+    workspaceSlug: string,
+    projectId: string,
+    runId: string,
+    sessionId: string
+  ): Promise<TAgentRunSessionDetail> {
+    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/sessions/${sessionId}/`)
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;

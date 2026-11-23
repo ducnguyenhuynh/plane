@@ -121,7 +121,12 @@ from .intake import (
 )
 
 from .agent import AIAgentLiteSerializer, AIAgentSerializer, ProjectAgentTeamSerializer, ProjectAIAgentSerializer
-from .agent_run import AgentRunDetailSerializer, AgentRunSerializer
+from .agent_run import (
+    AgentRunDetailSerializer,
+    AgentRunSerializer,
+    AgentRunSessionDetailSerializer,
+    AgentRunSessionSerializer,
+)
 
 from .integration_connection import (
     BackstageConnectionSerializer,

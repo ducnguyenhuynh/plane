@@ -111,3 +111,48 @@ class AgentRunTask(BaseModel):
         verbose_name_plural = "Agent Run Tasks"
         db_table = "agent_run_tasks"
         ordering = ("created_at",)
+
+
+class AgentRunSessionStatus(models.TextChoices):
+    RUNNING = "running", "Running"
+    COMPLETED = "completed", "Completed"
+    FAILED = "failed", "Failed"
+
+
+class AgentRunSession(BaseModel):
+    """One model call of a run: the exact request, the reply, its reasoning and token usage."""
+
+    run = models.ForeignKey(AgentRun, on_delete=models.CASCADE, related_name="sessions")
+    task = models.ForeignKey(AgentRunTask, on_delete=models.SET_NULL, null=True, blank=True, related_name="sessions")
+    agent = models.ForeignKey(
+        "db.AIAgent", on_delete=models.SET_NULL, null=True, blank=True, related_name="run_sessions"
+    )
+    agent_name = models.CharField(max_length=255, blank=True)
+    stage = models.CharField(max_length=20, blank=True)
+    purpose = models.CharField(max_length=30, blank=True)
+    rework_round = models.PositiveSmallIntegerField(default=0)
+    provider = models.CharField(max_length=50, blank=True)
+    model = models.CharField(max_length=255, blank=True)
+    effort = models.CharField(max_length=20, blank=True)
+    status = models.CharField(
+        max_length=20, choices=AgentRunSessionStatus.choices, default=AgentRunSessionStatus.RUNNING
+    )
+    max_tokens = models.PositiveIntegerField(null=True, blank=True)
+    request = models.JSONField(default=dict)
+    response = models.TextField(blank=True)
+    reasoning = models.TextField(blank=True)
+    stop_reason = models.CharField(max_length=50, blank=True)
+    usage = models.JSONField(default=dict)
+    input_tokens = models.PositiveIntegerField(null=True, blank=True)
+    output_tokens = models.PositiveIntegerField(null=True, blank=True)
+    error = models.TextField(blank=True)
+    started_at = models.DateTimeField(null=True)
+    completed_at = models.DateTimeField(null=True)
+    duration_ms = models.PositiveIntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Agent Run Session"
+        verbose_name_plural = "Agent Run Sessions"
+        db_table = "agent_run_sessions"
+        ordering = ("created_at",)
+        indexes = [models.Index(fields=["run", "created_at"], name="agent_run_session_run_idx")]

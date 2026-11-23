@@ -503,6 +503,17 @@
       "no_run": "Henüz aracı çalıştırması yok",
       "load_failed": "Aracı çalıştırmaları yüklenemedi.",
       "retry": "Yeniden dene"
+    },
+    "session_logs": {
+      "title": "Oturum günlükleri",
+      "empty": "Bu çalıştırma için henüz kaydedilmiş model çağrısı yok.",
+      "load_failed": "Oturum günlükleri yüklenemedi.",
+      "prompt": "İstem",
+      "reasoning": "Akıl yürütme",
+      "response": "Yanıt",
+      "error": "Hata",
+      "tokens": "{input, number} giriş · {output, number} çıkış tokenı",
+      "duration": "{seconds, number} sn"
     }
   }
 }

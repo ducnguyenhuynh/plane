@@ -18,6 +18,8 @@ import { useTranslation } from "@plane/i18n";
 import type { TAgentRunStage, TAgentRunStatus } from "@plane/types";
 // components
 import { getAgentErrorMessage } from "@/components/agents/utils";
+// local imports
+import { AgentRunSessionLogs } from "./agent-run-session-logs";
 // services
 import { AgentRunService } from "@/services/agent-run.service";
 
@@ -201,7 +203,7 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
                 <h2 className="text-h5-medium text-primary">{t("agent_run.title")}</h2>
                 <p className="text-body-xs-regular text-tertiary">{t("agent_run.subtitle")}</p>
               </div>
-              <Button variant="secondary" size="md" stretch="auto" label={t("common.close")} onClick={onClose} />
+              <Button variant="secondary" size="md" stretch="auto" label={t("close")} onClick={onClose} />
             </div>
 
             <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
@@ -382,6 +384,14 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
                     </section>
                   )}
 
+                  <AgentRunSessionLogs
+                    key={selected.id}
+                    workspaceSlug={workspaceSlug}
+                    projectId={projectId}
+                    runId={selected.id}
+                    isActive={selectedIsActive}
+                  />
+
                   {detail?.events && detail.events.length > 0 && (
                     <section className="flex flex-col gap-2">
                       <h4 className="text-body-sm-medium text-primary">{t("agent_run.history")}</h4>
@@ -422,7 +432,7 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
         content={t("agent_run.cancel_content")}
         variant="warning"
         primaryButtonText={{ loading: t("agent_run.cancelling"), default: t("agent_run.cancel_run") }}
-        secondaryButtonText={t("common.close")}
+        secondaryButtonText={t("close")}
         handleClose={() => setIsCancelOpen(false)}
         handleSubmit={handleCancel}
       />

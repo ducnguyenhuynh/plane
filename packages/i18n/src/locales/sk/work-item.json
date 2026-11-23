@@ -503,6 +503,17 @@
       "no_run": "Zatiaľ žiadny beh agenta",
       "load_failed": "Behy agentov sa nepodarilo načítať.",
       "retry": "Skúsiť znova"
+    },
+    "session_logs": {
+      "title": "Záznamy relácií",
+      "empty": "Pre tento beh zatiaľ nie sú zaznamenané žiadne volania modelu.",
+      "load_failed": "Záznamy relácií sa nepodarilo načítať.",
+      "prompt": "Prompt",
+      "reasoning": "Uvažovanie",
+      "response": "Odpoveď",
+      "error": "Chyba",
+      "tokens": "{input, number} vstupných · {output, number} výstupných tokenov",
+      "duration": "{seconds, number} s"
     }
   }
 }

@@ -503,6 +503,17 @@
       "no_run": "尚無 Agent 執行",
       "load_failed": "無法載入 Agent 執行。",
       "retry": "重試"
+    },
+    "session_logs": {
+      "title": "工作階段日誌",
+      "empty": "此執行尚未記錄任何模型呼叫。",
+      "load_failed": "無法載入工作階段日誌。",
+      "prompt": "提示詞",
+      "reasoning": "推理過程",
+      "response": "回應",
+      "error": "錯誤",
+      "tokens": "輸入 {input, number} · 輸出 {output, number} 個 token",
+      "duration": "{seconds, number} 秒"
     }
   }
 }

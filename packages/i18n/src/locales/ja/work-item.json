@@ -503,6 +503,17 @@
       "no_run": "エージェント実行はまだありません",
       "load_failed": "エージェント実行を読み込めませんでした。",
       "retry": "再試行"
+    },
+    "session_logs": {
+      "title": "セッションログ",
+      "empty": "この実行では、まだモデルの呼び出しが記録されていません。",
+      "load_failed": "セッションログを読み込めませんでした。",
+      "prompt": "プロンプト",
+      "reasoning": "推論",
+      "response": "応答",
+      "error": "エラー",
+      "tokens": "入力 {input, number} · 出力 {output, number} トークン",
+      "duration": "{seconds, number} 秒"
     }
   }
 }

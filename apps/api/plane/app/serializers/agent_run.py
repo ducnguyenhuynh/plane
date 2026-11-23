@@ -6,7 +6,7 @@
 from rest_framework import serializers
 
 # Module imports
-from plane.db.models import AIAgent, AgentRun, AgentRunArtifact, AgentRunEvent, AgentRunTask
+from plane.db.models import AIAgent, AgentRun, AgentRunArtifact, AgentRunEvent, AgentRunSession, AgentRunTask
 
 from .base import BaseSerializer
 
@@ -106,3 +106,38 @@ class AgentRunDetailSerializer(AgentRunSerializer):
 
     class Meta(AgentRunSerializer.Meta):
         fields = AgentRunSerializer.Meta.fields + ["events", "artifacts", "tasks"]
+
+
+class AgentRunSessionSerializer(BaseSerializer):
+    class Meta:
+        model = AgentRunSession
+        fields = [
+            "id",
+            "run_id",
+            "task_id",
+            "agent_id",
+            "agent_name",
+            "stage",
+            "purpose",
+            "rework_round",
+            "provider",
+            "model",
+            "effort",
+            "status",
+            "stop_reason",
+            "max_tokens",
+            "input_tokens",
+            "output_tokens",
+            "error",
+            "started_at",
+            "completed_at",
+            "duration_ms",
+            "created_at",
+        ]
+        read_only_fields = fields
+
+
+class AgentRunSessionDetailSerializer(AgentRunSessionSerializer):
+    class Meta(AgentRunSessionSerializer.Meta):
+        fields = AgentRunSessionSerializer.Meta.fields + ["request", "response", "reasoning", "usage"]
+        read_only_fields = fields

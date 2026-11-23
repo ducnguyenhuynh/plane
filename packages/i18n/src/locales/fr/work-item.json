@@ -503,6 +503,17 @@
       "no_run": "Aucune exécution pour l'instant",
       "load_failed": "Impossible de charger les exécutions d'agents.",
       "retry": "Réessayer"
+    },
+    "session_logs": {
+      "title": "Journaux de session",
+      "empty": "Aucun appel au modèle n’a encore été enregistré pour cette exécution.",
+      "load_failed": "Impossible de charger les journaux de session.",
+      "prompt": "Prompt",
+      "reasoning": "Raisonnement",
+      "response": "Réponse",
+      "error": "Erreur",
+      "tokens": "{input, number} jetons en entrée · {output, number} jetons en sortie",
+      "duration": "{seconds, number} s"
     }
   }
 }

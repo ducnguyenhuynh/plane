@@ -503,6 +503,17 @@
       "no_run": "Noch kein Agent-Lauf",
       "load_failed": "Agent-Läufe konnten nicht geladen werden.",
       "retry": "Erneut versuchen"
+    },
+    "session_logs": {
+      "title": "Sitzungsprotokolle",
+      "empty": "Für diesen Lauf wurden noch keine Modellaufrufe protokolliert.",
+      "load_failed": "Sitzungsprotokolle konnten nicht geladen werden.",
+      "prompt": "Prompt",
+      "reasoning": "Überlegungen",
+      "response": "Antwort",
+      "error": "Fehler",
+      "tokens": "{input, number} Eingabe- · {output, number} Ausgabe-Tokens",
+      "duration": "{seconds, number} s"
     }
   }
 }
