@@ -1,0 +1,58 @@
+# AI agents on top of docker-compose.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.agents.yml up -d
+# Needs apps/agent-runner/.env (AGENT_RUNNER_TOKEN) and AGENT_WORKSPACE_HOST_ROOT on its own
+# fixed-size filesystem; see apps/agent-runner/README.md.
+services:
+  plane-mq:
+    environment:
+      # Agent runs take hours; keep prefetched agent jobs from hitting the 30 min consumer timeout
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit consumer_timeout 86400000"
+
+  agent-sandbox-image:
+    image: plane-agent-sandbox:2.2.6
+    build:
+      context: ./apps/agent-runner
+      dockerfile: sandbox.Dockerfile
+    entrypoint: ["true"]
+    restart: "no"
+    network_mode: none
+
+  agent-runner:
+    build: ./apps/agent-runner
+    restart: always
+    networks:
+      - default
+      - agent_sandbox
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}:/agent-workspaces
+    environment:
+      AGENT_WORKSPACE_ROOT: /agent-workspaces
+      AGENT_WORKSPACE_HOST_ROOT: ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}
+    env_file:
+      - ./apps/agent-runner/.env
+
+  agent-worker:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.api
+      target: agent-worker
+    restart: always
+    command: ./bin/docker-entrypoint-agent-worker.sh
+    volumes:
+      - ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}:/agent-workspaces
+    env_file:
+      - ./apps/api/.env
+      - ./apps/agent-runner/.env
+    environment:
+      AGENT_WORKSPACE_ROOT: /agent-workspaces
+    depends_on:
+      - api
+      - plane-db
+      - plane-redis
+      - agent-runner
+
+networks:
+  agent_sandbox:
+    name: plane-agent-sandbox
+    internal: true
