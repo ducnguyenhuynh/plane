@@ -532,6 +532,7 @@
       "title": "Agenten",
       "heading": "Agenten",
       "description": "Wijs agenten toe aan projectposities en kies welk model elk gebruikt.",
+      "sessions_label": "Agentsessies",
       "team_size": {
         "title": "Teamgrootte",
         "description": "Hoeveel agenten van elke rol aan een uitvoering deelnemen.",
@@ -539,6 +540,8 @@
         "pm_help": "Schrijft onafhankelijke plannen. Het beste plan wordt gebruikt.",
         "developer_label": "Ontwikkelaars",
         "developer_help": "Werken parallel. Elke agent doet zijn eigen subtaken één voor één, en de PM splitst het werk in maximaal max(3, developers) subtaken.",
+        "designer_label": "Ontwerpers",
+        "designer_help": "Werken parallel aan ontwerpsubtaken. Optioneel.",
         "qa_label": "QA",
         "qa_help": "Beoordelaars. Elke beoordeling moet slagen.",
         "save": "Teamgrootte opslaan",
@@ -569,7 +572,8 @@
         "project_manager": "Projectmanager",
         "reviewer": "Beoordelaar",
         "qa": "QA",
-        "developer": "Ontwikkelaar"
+        "developer": "Ontwikkelaar",
+        "designer": "Ontwerper"
       },
       "assign": {
         "title": "Agent toewijzen",

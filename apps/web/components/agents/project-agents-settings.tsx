@@ -27,9 +27,10 @@ const TEAM_SIZE_MIN = 1;
 const TEAM_SIZE_MAX = 10;
 
 /** Which team-size count each run role is limited by. `reviewer` is not used by runs. */
-const ROLE_COUNT_KEYS: Partial<Record<TAgentRole, "pm_count" | "developer_count" | "qa_count">> = {
+const ROLE_COUNT_KEYS: Partial<Record<TAgentRole, "pm_count" | "developer_count" | "designer_count" | "qa_count">> = {
   project_manager: "pm_count",
   developer: "developer_count",
+  designer: "designer_count",
   qa: "qa_count",
 };
 
@@ -54,7 +55,12 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
   const [formAssignment, setFormAssignment] = useState<TProjectAgent | null | undefined>(undefined);
   const [deleteTarget, setDeleteTarget] = useState<TProjectAgent | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [teamCounts, setTeamCounts] = useState({ pm_count: "1", qa_count: "1", developer_count: "3" });
+  const [teamCounts, setTeamCounts] = useState({
+    pm_count: "1",
+    qa_count: "1",
+    developer_count: "3",
+    designer_count: "1",
+  });
   const [isSavingTeam, setIsSavingTeam] = useState(false);
 
   useEffect(() => {
@@ -63,6 +69,7 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
       pm_count: String(team.pm_count),
       qa_count: String(team.qa_count),
       developer_count: String(team.developer_count),
+      designer_count: String(team.designer_count),
     });
   }, [team]);
 
@@ -71,6 +78,7 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
       pm_count: Number(teamCounts.pm_count),
       qa_count: Number(teamCounts.qa_count),
       developer_count: Number(teamCounts.developer_count),
+      designer_count: Number(teamCounts.designer_count),
     };
     if (
       Object.values(counts).some((value) => !Number.isInteger(value) || value < TEAM_SIZE_MIN || value > TEAM_SIZE_MAX)
@@ -183,7 +191,7 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
           <h4 className="text-body-sm-medium text-primary">{t("project_settings.agents.team_size.title")}</h4>
           <p className="text-body-xs-regular text-tertiary">{t("project_settings.agents.team_size.description")}</p>
         </div>
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-4">
           <InputField
             size="lg"
             orientation="vertical"
@@ -210,6 +218,20 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
             step={1}
             value={teamCounts.developer_count}
             onChange={(event) => setTeamCounts((current) => ({ ...current, developer_count: event.target.value }))}
+            disabled={!canManage}
+          />
+          <InputField
+            size="lg"
+            orientation="vertical"
+            name="designer_count"
+            label={t("project_settings.agents.team_size.designer_label")}
+            description={t("project_settings.agents.team_size.designer_help")}
+            type="number"
+            min={TEAM_SIZE_MIN}
+            max={TEAM_SIZE_MAX}
+            step={1}
+            value={teamCounts.designer_count}
+            onChange={(event) => setTeamCounts((current) => ({ ...current, designer_count: event.target.value }))}
             disabled={!canManage}
           />
           <InputField
@@ -277,7 +299,8 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
         return (
           <section key={role} className="flex flex-col gap-2">
             <h4 className="text-body-sm-medium text-secondary">{roleLabel(role)}</h4>
-            {count !== undefined && activeCount < count && (
+            {/* Designer seats are optional, so an empty position is not flagged as a missing seat. */}
+            {role !== "designer" && count !== undefined && activeCount < count && (
               <p className="text-body-xs-regular text-warning-primary">
                 {t("project_settings.agents.positions.seat_warning", {
                   filled: activeCount,

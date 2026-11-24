@@ -27,6 +27,7 @@ class AgentRole(models.TextChoices):
     REVIEWER = "reviewer", "Reviewer"
     QA = "qa", "QA"
     DEVELOPER = "developer", "Developer"
+    DESIGNER = "designer", "Designer"
 
 
 class ReasoningEffort(models.TextChoices):
@@ -39,7 +40,7 @@ class ReasoningEffort(models.TextChoices):
 
 # Single source of defaults for a project's agent team, shared by the model,
 # the serializer and the view.
-DEFAULT_AGENT_TEAM = {"pm_count": 1, "qa_count": 1, "developer_count": 3}
+DEFAULT_AGENT_TEAM = {"pm_count": 1, "qa_count": 1, "developer_count": 3, "designer_count": 1}
 MAX_TEAM_COUNT = 10
 
 # Registries the sandboxes may reach when installing dependencies
@@ -127,6 +128,7 @@ class ProjectAgentTeam(ProjectBaseModel):
     pm_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["pm_count"])
     qa_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["qa_count"])
     developer_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["developer_count"])
+    designer_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["designer_count"])
     allowed_hosts = models.JSONField(default=list)
     websearch_enabled = models.BooleanField(default=False)
     webfetch_enabled = models.BooleanField(default=False)

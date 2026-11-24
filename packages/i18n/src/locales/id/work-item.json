@@ -519,6 +519,22 @@
       "tool_output": "Keluaran",
       "session_id": "ID sesi"
     },
+    "sessions": {
+      "heading": "Sesi agen",
+      "description": "Setiap proses agen di proyek ini, beserta tugas, sesi, dan artefaknya.",
+      "empty": "Belum ada proses agen di proyek ini.",
+      "load_failed": "Proses agen tidak dapat dimuat.",
+      "detail_load_failed": "Detail proses tidak dapat dimuat.",
+      "load_sessions_failed": "Sesi tidak dapat dimuat.",
+      "run_sessions": "Sesi proses",
+      "reset_button": "Atur ulang sesi",
+      "reset_confirm_title": "Atur ulang sesi ini?",
+      "reset_confirm_content": "Mulai sesi OpenCode baru untuk {session}? Percakapan sebelumnya akan dibuang; riwayat proses dan artefak tetap disimpan.",
+      "resetting": "Mengatur ulang…",
+      "reset_success_title": "Sesi diatur ulang",
+      "reset_success_message": "Langkah berikutnya dimulai di sesi baru.",
+      "reset_failed_title": "Tidak dapat mengatur ulang sesi"
+    },
     "git": {
       "title": "Repositori",
       "repository": "Repositori",

@@ -117,6 +117,7 @@ class ProjectAIAgentEndpoint(BaseAPIView):
             AgentRole.PROJECT_MANAGER: limits["pm_count"],
             AgentRole.QA: limits["qa_count"],
             AgentRole.DEVELOPER: limits["developer_count"],
+            AgentRole.DESIGNER: limits["designer_count"],
         }
         in_team = set()
         for role, limit in roles.items():
@@ -150,7 +151,8 @@ class ProjectAIAgentEndpoint(BaseAPIView):
         ensure_agent_bot(assignment.agent)
         ensure_project_member(assignment.agent.bot_user, project)
         return Response(
-            ProjectAIAgentSerializer(assignment, context={"is_admin": True}).data, status=status.HTTP_201_CREATED
+            ProjectAIAgentSerializer(assignment, context={"is_admin": is_workspace_admin(request, slug)}).data,
+            status=status.HTTP_201_CREATED,
         )
 
     @allow_permission(allowed_roles=[ROLE.ADMIN])
@@ -161,7 +163,10 @@ class ProjectAIAgentEndpoint(BaseAPIView):
         # A position that is switched off leaves the project team
         was_active = assignment.is_active
         serializer = ProjectAIAgentSerializer(
-            assignment, data=request.data, partial=True, context={"project": assignment.project, "is_admin": True}
+            assignment,
+            data=request.data,
+            partial=True,
+            context={"project": assignment.project, "is_admin": is_workspace_admin(request, slug)},
         )
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -175,10 +180,16 @@ class ProjectAIAgentEndpoint(BaseAPIView):
         bot = ensure_agent_bot(assignment.agent)
         if assignment.is_active:
             ensure_project_member(bot, assignment.project)
-        elif was_active:
+        elif (
+            was_active
+            and not ProjectAIAgent.objects.filter(
+                project=assignment.project, agent=assignment.agent, is_active=True
+            ).exists()
+        ):
             deactivate_project_member(bot, assignment.project)
         return Response(
-            ProjectAIAgentSerializer(assignment, context={"is_admin": True}).data, status=status.HTTP_200_OK
+            ProjectAIAgentSerializer(assignment, context={"is_admin": is_workspace_admin(request, slug)}).data,
+            status=status.HTTP_200_OK,
         )
 
     @allow_permission(allowed_roles=[ROLE.ADMIN])
@@ -190,6 +201,9 @@ class ProjectAIAgentEndpoint(BaseAPIView):
         agent = assignment.agent
         assignment.delete()
         # The agent leaves the project once it has no position left there
-        if not ProjectAIAgent.objects.filter(project=project, agent=agent).exists() and agent.bot_user_id:
+        if (
+            not ProjectAIAgent.objects.filter(project=project, agent=agent, is_active=True).exists()
+            and agent.bot_user_id
+        ):
             deactivate_project_member(agent.bot_user, project)
         return Response(status=status.HTTP_204_NO_CONTENT)

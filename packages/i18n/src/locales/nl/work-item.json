@@ -519,6 +519,22 @@
       "tool_output": "Uitvoer",
       "session_id": "Sessie-ID"
     },
+    "sessions": {
+      "heading": "Agentsessies",
+      "description": "Elke agentuitvoering in dit project, met de bijbehorende taken, sessies en artefacten.",
+      "empty": "Er zijn nog geen agentuitvoeringen in dit project.",
+      "load_failed": "Agentuitvoeringen konden niet worden geladen.",
+      "detail_load_failed": "De details van de uitvoering konden niet worden geladen.",
+      "load_sessions_failed": "Sessies konden niet worden geladen.",
+      "run_sessions": "Sessies van de uitvoering",
+      "reset_button": "Sessie resetten",
+      "reset_confirm_title": "Deze sessie resetten?",
+      "reset_confirm_content": "Een nieuwe OpenCode-sessie voor {session} starten? Het eerdere gesprek wordt verwijderd; de uitvoeringsgeschiedenis en artefacten blijven behouden.",
+      "resetting": "Resetten…",
+      "reset_success_title": "Sessie gereset",
+      "reset_success_message": "De volgende stap start in een nieuwe sessie.",
+      "reset_failed_title": "Sessie kon niet worden gereset"
+    },
     "git": {
       "title": "Repository",
       "repository": "Repository",

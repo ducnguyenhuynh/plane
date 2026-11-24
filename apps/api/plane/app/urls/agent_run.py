@@ -10,7 +10,9 @@ from plane.app.views import (
     AgentRunRetryEndpoint,
     AgentRunSessionDetailEndpoint,
     AgentRunSessionListEndpoint,
+    AgentRunSessionResetEndpoint,
     IssueAgentRunEndpoint,
+    ProjectAgentRunListEndpoint,
     ProjectAgentTeamEndpoint,
 )
 
@@ -26,6 +28,11 @@ urlpatterns = [
         name="agent-runs",
     ),
     path(
+        "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/",
+        ProjectAgentRunListEndpoint.as_view(),
+        name="agent-runs",
+    ),
+    path(
         "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/<uuid:run_id>/",
         AgentRunDetailEndpoint.as_view(),
         name="agent-runs",
@@ -38,6 +45,11 @@ urlpatterns = [
     path(
         "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/<uuid:run_id>/sessions/<uuid:session_id>/",
         AgentRunSessionDetailEndpoint.as_view(),
+        name="agent-run-sessions",
+    ),
+    path(
+        "workspaces/<str:slug>/projects/<uuid:project_id>/agent-runs/<uuid:run_id>/sessions/<uuid:session_id>/reset/",
+        AgentRunSessionResetEndpoint.as_view(),
         name="agent-run-sessions",
     ),
     path(

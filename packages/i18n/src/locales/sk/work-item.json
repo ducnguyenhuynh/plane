@@ -519,6 +519,22 @@
       "tool_output": "Výstup",
       "session_id": "ID relácie"
     },
+    "sessions": {
+      "heading": "Relácie agentov",
+      "description": "Každý beh agenta v tomto projekte vrátane jeho úloh, relácií a artefaktov.",
+      "empty": "V tomto projekte zatiaľ nie sú žiadne behy agentov.",
+      "load_failed": "Behy agentov sa nepodarilo načítať.",
+      "detail_load_failed": "Podrobnosti behu sa nepodarilo načítať.",
+      "load_sessions_failed": "Relácie sa nepodarilo načítať.",
+      "run_sessions": "Relácie behu",
+      "reset_button": "Resetovať reláciu",
+      "reset_confirm_title": "Resetovať túto reláciu?",
+      "reset_confirm_content": "Spustiť novú reláciu OpenCode pre {session}? Predchádzajúca konverzácia sa zahodí; história behov a artefakty zostanú.",
+      "resetting": "Resetovanie…",
+      "reset_success_title": "Relácia resetovaná",
+      "reset_success_message": "Ďalší krok sa začne v novej relácii.",
+      "reset_failed_title": "Reláciu sa nepodarilo resetovať"
+    },
     "git": {
       "title": "Repozitár",
       "repository": "Repozitár",

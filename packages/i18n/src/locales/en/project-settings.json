@@ -532,6 +532,7 @@
       "title": "Agents",
       "heading": "Agents",
       "description": "Place agents in project positions and choose which model each one runs.",
+      "sessions_label": "Agent sessions",
       "team_size": {
         "title": "Team size",
         "description": "How many agents of each role join a run.",
@@ -539,6 +540,8 @@
         "pm_help": "Writes independent plans. The best one is used.",
         "developer_label": "Developers",
         "developer_help": "Work in parallel. Each agent does its own subtasks one at a time, and the PM splits the work into up to max(3, developers) subtasks.",
+        "designer_label": "Designers",
+        "designer_help": "Work in parallel on design subtasks. Optional.",
         "qa_label": "QA",
         "qa_help": "Reviewers. Every review must pass.",
         "save": "Save team size",
@@ -569,7 +572,8 @@
         "project_manager": "Project manager",
         "reviewer": "Reviewer",
         "qa": "QA",
-        "developer": "Developer"
+        "developer": "Developer",
+        "designer": "Designer"
       },
       "assign": {
         "title": "Assign agent",

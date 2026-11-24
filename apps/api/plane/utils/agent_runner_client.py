@@ -32,6 +32,8 @@ CONNECT_TIMEOUT = 10
 READ_TIMEOUT = 60
 
 USAGE_KEYS = ("input_tokens", "output_tokens", "reasoning_tokens", "cache_read_tokens", "cache_write_tokens")
+# The whole tool_calls list is rewritten to Postgres every 15s, so cap stored sizes
+MAX_TOOL_TEXT = 4000
 
 
 class AgentRunnerError(AgentRuntimeError):
@@ -204,12 +206,16 @@ def run_sandbox(call: SandboxCall, trace: SandboxTrace, on_progress=None) -> str
             state = part.get("state") if isinstance(part.get("state"), dict) else {}
             if part_id not in tool_calls:
                 tool_order.append(part_id)
+            tool_input = state.get("input") if state.get("input") is not None else {}
+            dumped_input = json.dumps(tool_input, default=str)
             tool_calls[part_id] = {
                 "tool": part.get("tool") or "",
                 "status": state.get("status") or "",
                 "title": state.get("title") or "",
-                "input": state.get("input") if state.get("input") is not None else {},
-                "output": state.get("output") or "",
+                "input": tool_input
+                if len(dumped_input) <= MAX_TOOL_TEXT
+                else {"truncated": dumped_input[:MAX_TOOL_TEXT]},
+                "output": str(state.get("output") or "")[:MAX_TOOL_TEXT],
                 "error": state.get("error") or "",
             }
             trace.tool_calls = [tool_calls[key] for key in tool_order]

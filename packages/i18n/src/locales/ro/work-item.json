@@ -519,6 +519,22 @@
       "tool_output": "Ieșire",
       "session_id": "ID sesiune"
     },
+    "sessions": {
+      "heading": "Sesiuni ale agenților",
+      "description": "Fiecare execuție de agent din acest proiect, cu sarcinile, sesiunile și artefactele sale.",
+      "empty": "În acest proiect nu există încă execuții de agenți.",
+      "load_failed": "Execuțiile agenților nu au putut fi încărcate.",
+      "detail_load_failed": "Detaliile execuției nu au putut fi încărcate.",
+      "load_sessions_failed": "Sesiunile nu au putut fi încărcate.",
+      "run_sessions": "Sesiunile execuției",
+      "reset_button": "Resetați sesiunea",
+      "reset_confirm_title": "Resetați această sesiune?",
+      "reset_confirm_content": "Porniți o sesiune OpenCode nouă pentru {session}? Conversația anterioară este eliminată; istoricul execuțiilor și artefactele rămân.",
+      "resetting": "Se resetează…",
+      "reset_success_title": "Sesiune resetată",
+      "reset_success_message": "Pasul următor începe într-o sesiune nouă.",
+      "reset_failed_title": "Sesiunea nu a putut fi resetată"
+    },
     "git": {
       "title": "Repository",
       "repository": "Repository",

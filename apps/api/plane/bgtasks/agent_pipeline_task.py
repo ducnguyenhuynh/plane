@@ -39,6 +39,7 @@ from plane.db.models import (
     AgentRunStage,
     AgentRunStatus,
     AgentRunTask,
+    AgentSessionReset,
     AIAgent,
     GitHubConnection,
     Issue,
@@ -128,10 +129,19 @@ def issue_identifier(issue, identifier=None):
     return f"{identifier or issue.project.identifier}-{issue.sequence_id}"
 
 
-def agent_session_id(issue_id, agent_id, scope) -> str:
+def agent_session_id(issue_id, agent_id, scope, generation=0) -> str:
     """A stable, short OpenCode session id; the CLI rejects long ones."""
-    digest = hashlib.sha256(f"{issue_id}:{agent_id}:{scope}".encode()).hexdigest()[:40]
+    key = f"{issue_id}:{agent_id}:{scope}" if generation == 0 else f"{issue_id}:{agent_id}:{scope}:{generation}"
+    digest = hashlib.sha256(key.encode()).hexdigest()[:40]
     return f"ses_plane_{digest}"
+
+
+def find_session_scope(issue_id, agent_id, session_id, task_issue_ids) -> str:
+    """The scope of a session saved before scopes existed; empty when nothing matches. Pure."""
+    for candidate in ["pm", "qa"] + [task_issue_id.hex for task_issue_id in task_issue_ids]:
+        if agent_session_id(issue_id, agent_id, candidate) == session_id:
+            return candidate
+    return ""
 
 
 def issue_context(issue) -> str:
@@ -236,6 +246,10 @@ def developer_agents(run):
     return agents
 
 
+def designer_agents(run):
+    return load_agents(run.designer_agents or [])
+
+
 def reviewer_agents(run):
     agents = load_agents(run.qa_agents or [])
     if not agents and run.qa_agent:
@@ -283,7 +297,7 @@ def heartbeat(run, required=False):
         raise AgentRuntimeError("The agent run is no longer active.")
 
 
-def start_session(run, agent, effort, purpose, task, prompt, session_id):
+def start_session(run, agent, effort, purpose, task, prompt, session_id, scope=""):
     try:
         return AgentRunSession.objects.create(
             run=run,
@@ -297,6 +311,7 @@ def start_session(run, agent, effort, purpose, task, prompt, session_id):
             effort=effort or "",
             purpose=purpose,
             session_id=session_id,
+            scope=scope,
             status=AgentRunSessionStatus.RUNNING,
             started_at=timezone.now(),
             request={"prompt": strip_nuls(prompt), "session_id": session_id},
@@ -371,7 +386,12 @@ def invoke(run, ctx, agent, prompt, *, purpose, scope, work_dir, read_only, task
 
     effort = agent.reasoning_effort or ""
     model = agent_model(run, agent) or agent.model
-    session_id = agent_session_id(run.issue_id, agent.id, scope)
+    session_id = agent_session_id(
+        run.issue_id,
+        agent.id,
+        scope,
+        AgentSessionReset.objects.filter(issue_id=run.issue_id, agent_id=agent.id, scope=scope).count(),
+    )
     sessions = ctx.workspace.relative(ctx.workspace.prepare_sessions_dir(f"{run.issue_id}-{agent.id}"))
     sandbox_key = f"{run.id.hex[:12]}-{purpose.replace('_', '-')}-{uuid4().hex[:8]}"
     call = SandboxCall(
@@ -390,7 +410,7 @@ def invoke(run, ctx, agent, prompt, *, purpose, scope, work_dir, read_only, task
     )
 
     heartbeat(run)
-    session = start_session(run, agent, effort, purpose, task, prompt, session_id)
+    session = start_session(run, agent, effort, purpose, task, prompt, session_id, scope)
     trace = SandboxTrace()
     try:
         text = run_sandbox(call, trace, on_progress=progress_callback(run, session, trace))
@@ -408,8 +428,8 @@ def invoke(run, ctx, agent, prompt, *, purpose, scope, work_dir, read_only, task
 
 
 def max_plan_tasks(run) -> int:
-    """N = min(MAX_TASKS, max(3, developer count))."""
-    return min(MAX_TASKS, max(3, len(run.developer_agents or [])))
+    """N = min(MAX_TASKS, max(3, developer + designer count))."""
+    return min(MAX_TASKS, max(3, len(run.developer_agents or []) + len(run.designer_agents or [])))
 
 
 def plan_tasks_from(text, max_tasks):
@@ -435,6 +455,7 @@ def plan_tasks_from(text, max_tasks):
                     else []
                 ),
                 "subtask": subtask if isinstance(subtask, str) else "",
+                "role": "designer" if task.get("role") == "designer" else "developer",
             }
         )
         if len(result) >= max_tasks:
@@ -611,10 +632,12 @@ def plan_prompt(run, limit, children) -> str:
         f"{existing}\n\n"
         "Return ONLY JSON in this shape:\n"
         '{"summary": "...", "tasks": [{"title": "...", "description": "...", '
-        '"paths": ["repo/relative/path"], "depends_on": [0], "subtask": "PROJ-12"}]}\n'
+        '"paths": ["repo/relative/path"], "depends_on": [0], "role": "developer", "subtask": "PROJ-12"}]}\n'
         "- paths: files or directories the subtask will change; leave it empty when unknown "
         "(such a subtask runs alone).\n"
         "- depends_on: zero-based indexes of subtasks that must finish first.\n"
+        '- role: "designer" for user interface look and feel, UX, visual/frontend styling, and game design '
+        '(mechanics, levels, balancing, design docs); otherwise "developer".\n'
         "- subtask: only in a follow-up, the identifier of an existing child to reuse."
     )
     return "\n\n".join(sections)
@@ -681,11 +704,12 @@ def previous_task_agent(issue, agents):
     return None
 
 
-def plan_tasks(run, plan, agents, pm_bot):
+def plan_tasks(run, plan, agents, pm_bot, designers=()):
     """Create the child work items and run tasks from the chosen plan, once per run."""
     if run.tasks.exists():
         return list(run.tasks.select_related("issue", "agent"))
 
+    designers = list(designers)
     children = {
         f"{run.issue.project.identifier}-{issue.sequence_id}": issue
         for issue in Issue.objects.filter(parent_id=run.issue_id, project_id=run.project_id)
@@ -693,10 +717,12 @@ def plan_tasks(run, plan, agents, pm_bot):
     created = []
     items = []
     used = set()
+    counts = {"designer": 0, "developer": 0}
     for index, item in enumerate(plan or []):
         title = str(item.get("title") or f"Subtask {index + 1}")[:255]
         description = str(item.get("description") or item.get("details") or "")
         paths = list(normalize_scope(item.get("paths") or ()))
+        role = "designer" if item.get("role") == "designer" and designers else "developer"
 
         identifier = str(item.get("subtask") or "")
         issue = children.get(identifier) if identifier else None
@@ -705,14 +731,24 @@ def plan_tasks(run, plan, agents, pm_bot):
 
         if issue is not None:
             used.add(str(issue.id))
-            agent = previous_task_agent(issue, agents) or agents[index % len(agents)]
+            agent = previous_task_agent(issue, list(agents) + designers)
         else:
-            agent = agents[index % len(agents)]
+            agent = None
+        if agent is None:
+            pool = designers if role == "designer" else agents
+            agent = pool[counts[role] % len(pool)]
+            counts[role] += 1
+        # A reused child keeps its previous agent, so the prompt must follow that agent's position
+        elif role == "designer" and agent not in designers:
+            role = "developer"
+        elif role == "developer" and agent not in agents:
+            role = "designer"
+        if issue is None:
             assignee = ensure_agent_bot(agent)
             ensure_project_member(assignee, run.project)
             issue = create_child_issue(run, title, description, pm_bot, assignee)
 
-        task = AgentRunTask.objects.create(run=run, issue=issue, agent=agent, status="pending", paths=paths)
+        task = AgentRunTask.objects.create(run=run, issue=issue, agent=agent, status="pending", paths=paths, role=role)
         created.append(task)
         items.append((task, item))
 
@@ -743,10 +779,17 @@ def plan_tasks(run, plan, agents, pm_bot):
 def developer_prompt(run, ctx, task, qa_notes="") -> str:
     notes = f"\n\nQA notes from the previous review (address these):\n{qa_notes}" if qa_notes else ""
     details = f"Subtask: {task.issue.name}\nSubtask details: {task.issue.description_stripped or ''}"
+    role = (
+        "You are the designer for this subtask. Focus on user experience, visual consistency with the existing "
+        "design system, accessibility and, for game design, clear mechanics, balancing values and design notes "
+        "written into the repository.\n\n"
+        if getattr(task, "role", "developer") == "designer"
+        else ""
+    )
     return (
         f"{work_item_data(run, details)}\n\n"
         f"{followup_context(run)}\n\n"
-        f"{repository_rules(bool(ctx.repo))}{notes}\n\n"
+        f"{role}{repository_rules(bool(ctx.repo))}{notes}\n\n"
         "Implement this subtask now."
     )
 
@@ -980,6 +1023,7 @@ def work_task(run, ctx, task, qa_notes=""):
     bot = ensure_agent_bot(task.agent)
     move_task_state(run, task, StateGroup.STARTED, bot)
 
+    purpose = "design" if task.role == "designer" else "develop"
     base = ctx.repo.head(ctx.branch) if ctx.repo else ""
     work_dir = ctx.workspace.prepare_work_dir(run.id, "tasks", task.id)
     index = None
@@ -992,7 +1036,7 @@ def work_task(run, ctx, task, qa_notes=""):
         ctx,
         task.agent,
         developer_prompt(run, ctx, task, qa_notes),
-        purpose="develop",
+        purpose=purpose,
         scope=task.issue_id.hex,
         work_dir=work_dir,
         read_only=False,
@@ -1007,7 +1051,7 @@ def work_task(run, ctx, task, qa_notes=""):
             ctx,
             task.agent,
             f"Subtask: {task.issue.name}\n\nReturn a final summary of the changes you made in the current directory.",
-            purpose="develop_retry",
+            purpose=f"{purpose}_retry",
             scope=task.issue_id.hex,
             work_dir=work_dir,
             read_only=False,
@@ -1206,7 +1250,7 @@ def run_qa_stage(run, ctx, developer_outputs, qa_notes=""):
     notes = []
     for agent, review_text in reviews:
         verdict = extract_json(review_text) or {"passed": False, "notes": review_text}
-        passed = bool(verdict.get("passed"))
+        passed = verdict.get("passed") is True
         AgentRunArtifact.objects.create(
             run=run,
             kind="review",
@@ -1477,7 +1521,7 @@ def pipeline(run, ctx):
             content=plan_text,
             data={"agent_id": str(pm_agent.id)},
         )
-        created = plan_tasks(run, plan, developer_agents(run), ensure_agent_bot(pm_agent))
+        created = plan_tasks(run, plan, developer_agents(run), ensure_agent_bot(pm_agent), designer_agents(run))
         log_event(
             run,
             "stage",
@@ -1548,7 +1592,9 @@ def run_agent_pipeline(run_id):
 
     ctx = None
     try:
-        for agent in load_agents((run.pm_agents or []) + (run.developer_agents or []) + (run.qa_agents or [])):
+        for agent in load_agents(
+            (run.pm_agents or []) + (run.developer_agents or []) + (run.designer_agents or []) + (run.qa_agents or [])
+        ):
             ensure_agent_bot(agent)
         log_event(run, "status", "Agent run started.")
         notify_slack(run, "started", f"Agent run started on {run.issue.name}.")
@@ -1575,20 +1621,28 @@ def run_agent_pipeline(run_id):
                 log_exception(e)
 
 
-def mark_stale_runs_failed(project):
+def mark_stale_runs_failed(project=None):
     """Close runs whose worker died, so the work item is not blocked forever."""
     now = timezone.now()
     # Runs have no time limit: a queued run may legitimately wait a day for a worker
     stale = Q(status=AgentRunStatus.RUNNING, updated_at__lt=now - timedelta(minutes=STALE_RUN_MINUTES)) | Q(
         status=AgentRunStatus.QUEUED, updated_at__lt=now - timedelta(hours=STALE_QUEUED_HOURS)
     )
-    updated = AgentRun.objects.filter(stale, project=project).update(
+    # Every project when the periodic check calls it
+    scope = {} if project is None else {"project": project}
+    session_scope = {} if project is None else {"run__project": project}
+    updated = AgentRun.objects.filter(stale, **scope).update(
         status=AgentRunStatus.FAILED, error=STALE_RUN_ERROR, completed_at=now
     )
     # The sessions of those runs are dead too, or they would stay "running" forever
     AgentRunSession.objects.filter(
-        run__project=project,
         status=AgentRunSessionStatus.RUNNING,
         run__status=AgentRunStatus.FAILED,
+        **session_scope,
     ).update(status=AgentRunSessionStatus.FAILED, error=STALE_RUN_ERROR, completed_at=now)
     return updated
+
+
+@shared_task
+def mark_stale_agent_runs():
+    mark_stale_runs_failed()

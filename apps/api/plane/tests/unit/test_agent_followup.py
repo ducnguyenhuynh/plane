@@ -6,8 +6,11 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
+import pytest
+
 from plane.app.permissions import ROLE
-from plane.utils.agent_followup import handle_comment_followup, mentioned_bot_ids
+from plane.db.models import DEFAULT_AGENT_TEAM, AgentRole
+from plane.utils.agent_followup import AgentRunStartError, handle_comment_followup, mentioned_bot_ids, start_agent_run
 
 BOT_ID = str(uuid4())
 MODULE = "plane.utils.agent_followup"
@@ -161,6 +164,89 @@ def test_it_never_raises():
 def test_mentioned_bot_ids_reads_the_comment_html():
     with patch(f"{MODULE}.ProjectAIAgent", _agents()):
         assert mentioned_bot_ids(_comment()) == {BOT_ID}
+
+
+def test_a_run_cannot_start_on_a_work_item_created_by_a_non_member():
+    issue = SimpleNamespace(project=SimpleNamespace(), created_by_id=uuid4())
+    runs = MagicMock()
+    runs.objects.filter.return_value.exists.return_value = False
+
+    with (
+        patch(f"{MODULE}.mark_stale_runs_failed"),
+        patch(f"{MODULE}.AgentRun", runs),
+        patch(f"{MODULE}.ProjectMember") as members,
+    ):
+        members.objects.filter.return_value.exists.return_value = False
+
+        with pytest.raises(AgentRunStartError, match="created by project members"):
+            start_agent_run(issue)
+
+    assert members.objects.filter.call_args.kwargs == {
+        "project": issue.project,
+        "member_id": issue.created_by_id,
+        "is_active": True,
+        "role__gte": ROLE.MEMBER.value,
+    }
+    runs.objects.create.assert_not_called()
+
+
+class _Positions:
+    def __init__(self, by_role):
+        self.by_role = by_role
+
+    def filter(self, role):
+        return self.by_role[role]
+
+
+def _position(agent, override=""):
+    return SimpleNamespace(agent=agent, agent_id=uuid4(), model_override=override)
+
+
+def _start_run(designer_positions):
+    project = SimpleNamespace(workspace=SimpleNamespace(), workspace_id=uuid4())
+    issue = SimpleNamespace(project=project, created_by_id=uuid4())
+    agents = {name: SimpleNamespace(name=name, model="m") for name in ("PM", "Dev", "QA", "Designer")}
+    positions = _Positions(
+        {
+            AgentRole.PROJECT_MANAGER: [_position(agents["PM"])],
+            AgentRole.QA: [_position(agents["QA"])],
+            AgentRole.DEVELOPER: [_position(agents["Dev"])],
+            AgentRole.DESIGNER: designer_positions,
+        }
+    )
+    runs = MagicMock()
+
+    with (
+        patch(f"{MODULE}.mark_stale_runs_failed"),
+        patch(f"{MODULE}.AgentRun", runs),
+        patch(f"{MODULE}.ProjectMember") as members,
+        patch(f"{MODULE}.team_limits", return_value=dict(DEFAULT_AGENT_TEAM)),
+        patch(f"{MODULE}.project_positions", return_value=positions),
+        patch(f"{MODULE}.ensure_agent_bot"),
+        patch(f"{MODULE}.ensure_project_member"),
+        patch(f"{MODULE}.transaction.on_commit"),
+    ):
+        members.objects.filter.return_value.exists.return_value = True
+        runs.objects.filter.return_value.exists.return_value = False
+        start_agent_run(issue)
+
+    return runs.objects.create.call_args.kwargs
+
+
+def test_a_run_starts_without_a_designer_position():
+    kwargs = _start_run([])
+
+    assert kwargs["designer_agents"] == []
+
+
+def test_a_run_snapshots_designers_and_their_model_override():
+    designer = SimpleNamespace(name="Designer", model="m")
+    position = _position(designer, "opencode-design")
+
+    kwargs = _start_run([position])
+
+    assert kwargs["designer_agents"] == [str(position.agent_id)]
+    assert kwargs["agent_models"][str(position.agent_id)] == "opencode-design"
 
 
 def test_comment_creation_never_fails_because_of_agents():

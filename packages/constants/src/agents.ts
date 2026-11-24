@@ -14,6 +14,7 @@ export const AGENT_ROLES: { value: TAgentRole; label: string }[] = [
   { value: "project_manager", label: "Project manager" },
   { value: "qa", label: "QA" },
   { value: "developer", label: "Developer" },
+  { value: "designer", label: "Designer" },
 ];
 
 /**
@@ -25,6 +26,7 @@ export const AGENT_ROLE_LABELS: Record<TAgentRole, string> = {
   reviewer: "Reviewer",
   qa: "QA",
   developer: "Developer",
+  designer: "Designer",
 };
 
 export const AGENT_EFFORT_LEVELS: { value: TAgentReasoningEffort | ""; label: string }[] = [

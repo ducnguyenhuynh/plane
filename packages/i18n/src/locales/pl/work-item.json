@@ -519,6 +519,22 @@
       "tool_output": "Wyjście",
       "session_id": "ID sesji"
     },
+    "sessions": {
+      "heading": "Sesje agentów",
+      "description": "Każde uruchomienie agenta w tym projekcie wraz z jego zadaniami, sesjami i artefaktami.",
+      "empty": "W tym projekcie nie ma jeszcze uruchomień agentów.",
+      "load_failed": "Nie udało się wczytać uruchomień agentów.",
+      "detail_load_failed": "Nie udało się wczytać szczegółów uruchomienia.",
+      "load_sessions_failed": "Nie udało się wczytać sesji.",
+      "run_sessions": "Sesje uruchomienia",
+      "reset_button": "Zresetować sesję",
+      "reset_confirm_title": "Zresetować tę sesję?",
+      "reset_confirm_content": "Rozpocząć nową sesję OpenCode dla {session}? Poprzednia rozmowa zostanie porzucona; historia uruchomień i artefakty pozostaną.",
+      "resetting": "Resetowanie…",
+      "reset_success_title": "Sesja zresetowana",
+      "reset_success_message": "Następny krok rozpocznie się w nowej sesji.",
+      "reset_failed_title": "Nie udało się zresetować sesji"
+    },
     "git": {
       "title": "Repozytorium",
       "repository": "Repozytorium",

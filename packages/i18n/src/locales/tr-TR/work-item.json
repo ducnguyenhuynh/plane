@@ -519,6 +519,22 @@
       "tool_output": "Çıktı",
       "session_id": "Oturum kimliği"
     },
+    "sessions": {
+      "heading": "Aracı oturumları",
+      "description": "Bu projedeki her aracı çalıştırması; görevleri, oturumları ve çıktılarıyla birlikte.",
+      "empty": "Bu projede henüz aracı çalıştırması yok.",
+      "load_failed": "Aracı çalıştırmaları yüklenemedi.",
+      "detail_load_failed": "Çalıştırma ayrıntıları yüklenemedi.",
+      "load_sessions_failed": "Oturumlar yüklenemedi.",
+      "run_sessions": "Çalıştırma oturumları",
+      "reset_button": "Oturumu sıfırla",
+      "reset_confirm_title": "Bu oturum sıfırlansın mı?",
+      "reset_confirm_content": "{session} için yeni bir OpenCode oturumu başlatılsın mı? Önceki konuşma silinir; çalıştırma geçmişi ve çıktılar kalır.",
+      "resetting": "Sıfırlanıyor…",
+      "reset_success_title": "Oturum sıfırlandı",
+      "reset_success_message": "Sonraki adım yeni bir oturumda başlar.",
+      "reset_failed_title": "Oturum sıfırlanamadı"
+    },
     "git": {
       "title": "Depo",
       "repository": "Depo",

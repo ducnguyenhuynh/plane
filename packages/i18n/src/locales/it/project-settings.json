@@ -532,6 +532,7 @@
       "title": "Agenti",
       "heading": "Agenti",
       "description": "Assegni gli agenti alle posizioni di progetto e scelga il modello usato da ciascuno.",
+      "sessions_label": "Sessioni degli agenti",
       "team_size": {
         "title": "Dimensione del team",
         "description": "Quanti agenti di ogni ruolo partecipano a un'esecuzione.",
@@ -539,6 +540,8 @@
         "pm_help": "Scrive piani indipendenti. Viene usato il migliore.",
         "developer_label": "Sviluppatori",
         "developer_help": "Lavorano in parallelo. Ogni agente svolge le proprie sottoattività una alla volta e il PM divide il lavoro in un massimo di max(3, developers) sottoattività.",
+        "designer_label": "Designer",
+        "designer_help": "Lavorano in parallelo sulle sottoattività di design. Facoltativo.",
         "qa_label": "QA",
         "qa_help": "Revisori. Ogni revisione deve essere superata.",
         "save": "Salva dimensione del team",
@@ -569,7 +572,8 @@
         "project_manager": "Project manager",
         "reviewer": "Revisore",
         "qa": "QA",
-        "developer": "Sviluppatore"
+        "developer": "Sviluppatore",
+        "designer": "Designer"
       },
       "assign": {
         "title": "Assegna agente",

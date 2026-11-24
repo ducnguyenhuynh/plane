@@ -532,6 +532,7 @@
       "title": "Tác nhân",
       "heading": "Tác nhân",
       "description": "Gán tác nhân vào các vị trí trong dự án và chọn mô hình mà mỗi tác nhân sử dụng.",
+      "sessions_label": "Phiên tác nhân",
       "team_size": {
         "title": "Quy mô nhóm",
         "description": "Số lượng tác nhân của mỗi vai trò tham gia một lần chạy.",
@@ -539,6 +540,8 @@
         "pm_help": "Tạo các kế hoạch độc lập. Kế hoạch tốt nhất sẽ được dùng.",
         "developer_label": "Lập trình viên",
         "developer_help": "Làm việc song song. Mỗi tác nhân xử lý lần lượt từng công việc con của mình, và PM chia công việc thành tối đa max(3, developers) công việc con.",
+        "designer_label": "Nhà thiết kế",
+        "designer_help": "Làm việc song song trên các công việc con về thiết kế. Không bắt buộc.",
         "qa_label": "QA",
         "qa_help": "Người đánh giá. Mọi đánh giá phải đạt yêu cầu.",
         "save": "Lưu quy mô nhóm",
@@ -569,7 +572,8 @@
         "project_manager": "Quản lý dự án",
         "reviewer": "Người đánh giá",
         "qa": "QA",
-        "developer": "Lập trình viên"
+        "developer": "Lập trình viên",
+        "designer": "Nhà thiết kế"
       },
       "assign": {
         "title": "Gán tác nhân",

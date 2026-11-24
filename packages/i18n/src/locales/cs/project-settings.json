@@ -532,6 +532,7 @@
       "title": "Agenti",
       "heading": "Agenti",
       "description": "Přiřaďte agenty na pozice v projektu a zvolte, který model každý z nich používá.",
+      "sessions_label": "Relace agentů",
       "team_size": {
         "title": "Velikost týmu",
         "description": "Kolik agentů každé role se účastní běhu.",
@@ -539,6 +540,8 @@
         "pm_help": "Píše nezávislé plány. Použije se nejlepší.",
         "developer_label": "Vývojáři",
         "developer_help": "Pracují paralelně. Každý agent dělá své dílčí úkoly jeden po druhém a PM rozdělí práci na nejvýše max(3, developers) dílčích úkolů.",
+        "designer_label": "Designéři",
+        "designer_help": "Pracují paralelně na designových dílčích úkolech. Volitelné.",
         "qa_label": "QA",
         "qa_help": "Recenzenti. Každá recenze musí projít.",
         "save": "Uložit velikost týmu",
@@ -569,7 +572,8 @@
         "project_manager": "Projektový manažer",
         "reviewer": "Recenzent",
         "qa": "QA",
-        "developer": "Vývojář"
+        "developer": "Vývojář",
+        "designer": "Designér"
       },
       "assign": {
         "title": "Přiřadit agenta",

@@ -519,6 +519,22 @@
       "tool_output": "Sortie",
       "session_id": "ID de session"
     },
+    "sessions": {
+      "heading": "Sessions d'agents",
+      "description": "Toutes les exécutions d'agents de ce projet, avec leurs tâches, sessions et artefacts.",
+      "empty": "Aucune exécution d'agent dans ce projet pour l'instant.",
+      "load_failed": "Impossible de charger les exécutions d'agents.",
+      "detail_load_failed": "Impossible de charger les détails de l'exécution.",
+      "load_sessions_failed": "Impossible de charger les sessions.",
+      "run_sessions": "Sessions de l'exécution",
+      "reset_button": "Réinitialiser la session",
+      "reset_confirm_title": "Réinitialiser cette session ?",
+      "reset_confirm_content": "Démarrer une nouvelle session OpenCode pour {session} ? La conversation précédente est abandonnée ; l'historique des exécutions et les artefacts sont conservés.",
+      "resetting": "Réinitialisation…",
+      "reset_success_title": "Session réinitialisée",
+      "reset_success_message": "La prochaine étape démarre dans une nouvelle session.",
+      "reset_failed_title": "Impossible de réinitialiser la session"
+    },
     "git": {
       "title": "Dépôt",
       "repository": "Dépôt",

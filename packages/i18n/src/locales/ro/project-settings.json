@@ -532,6 +532,7 @@
       "title": "Agenți",
       "heading": "Agenți",
       "description": "Atribuiți agenți pe poziții de proiect și alegeți ce model folosește fiecare.",
+      "sessions_label": "Sesiuni ale agenților",
       "team_size": {
         "title": "Dimensiunea echipei",
         "description": "Câți agenți din fiecare rol participă la o execuție.",
@@ -539,6 +540,8 @@
         "pm_help": "Scrie planuri independente. Se folosește cel mai bun.",
         "developer_label": "Dezvoltatori",
         "developer_help": "Lucrează în paralel. Fiecare agent își face subsarcinile pe rând, iar PM-ul împarte munca în cel mult max(3, developers) subsarcini.",
+        "designer_label": "Designeri",
+        "designer_help": "Lucrează în paralel la subsarcini de design. Opțional.",
         "qa_label": "QA",
         "qa_help": "Recenzori. Fiecare recenzie trebuie să treacă.",
         "save": "Salvează dimensiunea echipei",
@@ -569,7 +572,8 @@
         "project_manager": "Manager de proiect",
         "reviewer": "Recenzor",
         "qa": "QA",
-        "developer": "Dezvoltator"
+        "developer": "Dezvoltator",
+        "designer": "Designer"
       },
       "assign": {
         "title": "Atribuie agent",

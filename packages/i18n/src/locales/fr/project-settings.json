@@ -532,6 +532,7 @@
       "title": "Agents",
       "heading": "Agents",
       "description": "Affectez des agents à des postes de projet et choisissez le modèle utilisé par chacun.",
+      "sessions_label": "Sessions d'agents",
       "team_size": {
         "title": "Taille de l'équipe",
         "description": "Combien d'agents de chaque rôle participent à une exécution.",
@@ -539,6 +540,8 @@
         "pm_help": "Rédige des plans indépendants. Le meilleur est utilisé.",
         "developer_label": "Développeurs",
         "developer_help": "Travaillent en parallèle. Chaque agent traite ses sous-tâches une par une, et le PM découpe le travail en un maximum de max(3, developers) sous-tâches.",
+        "designer_label": "Designers",
+        "designer_help": "Travaillent en parallèle sur les sous-tâches de design. Facultatif.",
         "qa_label": "QA",
         "qa_help": "Relecteurs. Chaque relecture doit être validée.",
         "save": "Enregistrer la taille de l'équipe",
@@ -569,7 +572,8 @@
         "project_manager": "Chef de projet",
         "reviewer": "Relecteur",
         "qa": "QA",
-        "developer": "Développeur"
+        "developer": "Développeur",
+        "designer": "Designer"
       },
       "assign": {
         "title": "Affecter un agent",

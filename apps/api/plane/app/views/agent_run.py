@@ -17,7 +17,12 @@ from plane.app.serializers.agent_run import (
     AgentRunSessionDetailSerializer,
     AgentRunSessionSerializer,
 )
-from plane.bgtasks.agent_pipeline_task import log_event, mark_stale_runs_failed
+from plane.bgtasks.agent_pipeline_task import (
+    agent_session_id,
+    find_session_scope,
+    log_event,
+    mark_stale_runs_failed,
+)
 from plane.db.models import (
     DEFAULT_AGENT_ALLOWED_HOSTS,
     DEFAULT_AGENT_TEAM,
@@ -25,11 +30,12 @@ from plane.db.models import (
     AgentRunSession,
     AgentRunStage,
     AgentRunStatus,
+    AgentSessionReset,
     Issue,
     Project,
     ProjectAgentTeam,
 )
-from plane.utils.agent_followup import AgentRunStartError, enqueue_agent_run, start_agent_run
+from plane.utils.agent_followup import ALREADY_RUNNING, AgentRunStartError, enqueue_agent_run, start_agent_run
 
 from .base import BaseAPIView
 
@@ -80,7 +86,7 @@ class IssueAgentRunEndpoint(BaseAPIView):
         mark_stale_runs_failed(project)
         runs = (
             AgentRun.objects.filter(project=project, issue_id=issue_id)
-            .select_related("pm_agent", "qa_agent")
+            .select_related("issue__project", "pm_agent", "qa_agent")
             .order_by("-created_at")
         )
         return Response(AgentRunSerializer(runs, many=True).data, status=status.HTTP_200_OK)
@@ -100,12 +106,26 @@ class IssueAgentRunEndpoint(BaseAPIView):
         return Response(AgentRunSerializer(run).data, status=status.HTTP_201_CREATED)
 
 
+class ProjectAgentRunListEndpoint(BaseAPIView):
+    @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
+    def get(self, request, slug, project_id):
+        project = get_object_or_404(Project.objects.filter(workspace__slug=slug), pk=project_id)
+        mark_stale_runs_failed(project)
+        # shortcut: latest 50 runs only, add pagination when projects keep more history
+        runs = (
+            AgentRun.objects.filter(project=project)
+            .select_related("issue__project", "pm_agent", "qa_agent")
+            .order_by("-created_at")[:50]
+        )
+        return Response(AgentRunSerializer(runs, many=True).data, status=status.HTTP_200_OK)
+
+
 class AgentRunDetailEndpoint(BaseAPIView):
     @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
     def get(self, request, slug, project_id, run_id):
         run = get_object_or_404(
             AgentRun.objects.filter(project__workspace__slug=slug, project_id=project_id)
-            .select_related("pm_agent", "qa_agent")
+            .select_related("issue__project", "pm_agent", "qa_agent")
             .prefetch_related("tasks__issue__project", "tasks__agent", "events__agent", "artifacts"),
             pk=run_id,
         )
@@ -134,6 +154,42 @@ class AgentRunSessionDetailEndpoint(BaseAPIView):
         return Response(AgentRunSessionDetailSerializer(session).data, status=status.HTTP_200_OK)
 
 
+class AgentRunSessionResetEndpoint(BaseAPIView):
+    @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
+    def post(self, request, slug, project_id, run_id, session_id):
+        session = get_object_or_404(
+            AgentRunSession.objects.filter(
+                run_id=run_id, run__project__workspace__slug=slug, run__project_id=project_id
+            ).select_related("run"),
+            pk=session_id,
+        )
+        if session.agent_id is None:
+            return Response({"error": "This session cannot be reset."}, status=status.HTTP_400_BAD_REQUEST)
+        run = session.run
+        scope = session.scope
+        if not scope:
+            # Sessions saved before scope existed: recover it from the session id
+            scope = find_session_scope(
+                run.issue_id, session.agent_id, session.session_id, [task.issue_id for task in run.tasks.all()]
+            )
+            if not scope:
+                return Response({"error": "This session cannot be reset."}, status=status.HTTP_400_BAD_REQUEST)
+        AgentSessionReset.objects.create(
+            project_id=run.project_id,
+            workspace_id=run.workspace_id,
+            issue_id=run.issue_id,
+            agent_id=session.agent_id,
+            scope=scope,
+        )
+        generation = AgentSessionReset.objects.filter(
+            issue_id=run.issue_id, agent_id=session.agent_id, scope=scope
+        ).count()
+        return Response(
+            {"scope": scope, "next_session_id": agent_session_id(run.issue_id, session.agent_id, scope, generation)},
+            status=status.HTTP_201_CREATED,
+        )
+
+
 class AgentRunRetryEndpoint(BaseAPIView):
     @allow_permission(allowed_roles=[ROLE.ADMIN, ROLE.MEMBER])
     def post(self, request, slug, project_id, run_id):
@@ -142,6 +198,12 @@ class AgentRunRetryEndpoint(BaseAPIView):
         )
         if run.status != AgentRunStatus.FAILED:
             return Response({"error": "Only failed runs can be retried."}, status=status.HTTP_400_BAD_REQUEST)
+        if (
+            AgentRun.objects.filter(issue_id=run.issue_id, status__in=[AgentRunStatus.QUEUED, AgentRunStatus.RUNNING])
+            .exclude(pk=run.pk)
+            .exists()
+        ):
+            return Response({"error": ALREADY_RUNNING}, status=status.HTTP_400_BAD_REQUEST)
 
         run.status = AgentRunStatus.QUEUED
         run.error = ""

@@ -4,6 +4,6 @@
 # A merge conflict here means another PR added a migration to the same app first:
 # merge preview, delete your migration, and run makemigrations again.
 
-db: 0135_project_agent_sandbox_settings
+db: 0136_agent_designer_and_session_resets
 
 license: 0006_instance_is_current_version_deprecated

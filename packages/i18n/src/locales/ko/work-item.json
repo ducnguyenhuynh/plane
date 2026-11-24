@@ -519,6 +519,22 @@
       "tool_output": "출력",
       "session_id": "세션 ID"
     },
+    "sessions": {
+      "heading": "에이전트 세션",
+      "description": "이 프로젝트의 모든 에이전트 실행과 해당 작업, 세션, 산출물입니다.",
+      "empty": "이 프로젝트에는 아직 에이전트 실행이 없습니다.",
+      "load_failed": "에이전트 실행을 불러올 수 없습니다.",
+      "detail_load_failed": "실행 세부 정보를 불러올 수 없습니다.",
+      "load_sessions_failed": "세션을 불러올 수 없습니다.",
+      "run_sessions": "실행 세션",
+      "reset_button": "세션 초기화",
+      "reset_confirm_title": "이 세션을 초기화할까요?",
+      "reset_confirm_content": "{session}에 대한 새 OpenCode 세션을 시작할까요? 이전 대화는 삭제되고 실행 기록과 산출물은 유지됩니다.",
+      "resetting": "초기화하는 중…",
+      "reset_success_title": "세션 초기화됨",
+      "reset_success_message": "다음 단계는 새 세션에서 시작됩니다.",
+      "reset_failed_title": "세션을 초기화할 수 없습니다"
+    },
     "git": {
       "title": "리포지토리",
       "repository": "리포지토리",

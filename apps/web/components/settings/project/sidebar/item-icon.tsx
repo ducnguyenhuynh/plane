@@ -38,5 +38,6 @@ export const PROJECT_SETTINGS_ICONS: Record<TProjectSettingsTabs, IconGlyph | Re
   estimates: EstimateOutline,
   automations: TriggerOutline,
   agents: CodeOutline,
+  agent_sessions: CodeOutline,
   integrations: LinkOutline,
 };

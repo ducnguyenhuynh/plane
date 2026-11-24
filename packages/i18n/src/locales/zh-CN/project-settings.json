@@ -532,6 +532,7 @@
       "title": "智能体",
       "heading": "智能体",
       "description": "将智能体分配到项目角色，并为每个智能体选择要运行的模型。",
+      "sessions_label": "Agent 会话",
       "team_size": {
         "title": "团队规模",
         "description": "每个角色有多少个 Agent 参与一次运行。",
@@ -539,6 +540,8 @@
         "pm_help": "撰写独立计划，采用其中最好的一份。",
         "developer_label": "开发者",
         "developer_help": "并行工作。每个 Agent 一次处理一个自己的子任务，PM 会把工作拆分为最多 max(3, developers) 个子任务。",
+        "designer_label": "设计师",
+        "designer_help": "并行处理设计子任务。可选。",
         "qa_label": "QA",
         "qa_help": "评审者。每次评审都必须通过。",
         "save": "保存团队规模",
@@ -569,7 +572,8 @@
         "project_manager": "项目经理",
         "reviewer": "评审者",
         "qa": "QA",
-        "developer": "开发者"
+        "developer": "开发者",
+        "designer": "设计师"
       },
       "assign": {
         "title": "分配 Agent",

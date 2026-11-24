@@ -22,6 +22,15 @@ export class AgentRunService extends APIService {
       });
   }
 
+  /** The latest 50 runs of the project, across every work item. */
+  async fetchProjectAgentRuns(workspaceSlug: string, projectId: string): Promise<TAgentRun[]> {
+    return this.get(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
   /** A follow-up run starts from the earlier sessions; without instructions it starts a fresh run. */
   async startAgentRun(
     workspaceSlug: string,
@@ -70,6 +79,22 @@ export class AgentRunService extends APIService {
 
   async retryAgentRun(workspaceSlug: string, projectId: string, runId: string): Promise<TAgentRun> {
     return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/retry/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  /** Starts a fresh OpenCode session for `sessionId`; the run keeps its history. */
+  async resetAgentRunSession(
+    workspaceSlug: string,
+    projectId: string,
+    runId: string,
+    sessionId: string
+  ): Promise<{ scope: string; next_session_id: string }> {
+    return this.post(
+      `/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-runs/${runId}/sessions/${sessionId}/reset/`
+    )
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;

@@ -519,6 +519,22 @@
       "tool_output": "Đầu ra",
       "session_id": "ID phiên"
     },
+    "sessions": {
+      "heading": "Phiên tác nhân",
+      "description": "Mọi lần chạy tác nhân trong dự án này, cùng các công việc, phiên và tạo tác của nó.",
+      "empty": "Dự án này chưa có lần chạy tác nhân nào.",
+      "load_failed": "Không thể tải lần chạy tác nhân.",
+      "detail_load_failed": "Không thể tải chi tiết lần chạy.",
+      "load_sessions_failed": "Không thể tải các phiên.",
+      "run_sessions": "Các phiên của lần chạy",
+      "reset_button": "Đặt lại phiên",
+      "reset_confirm_title": "Đặt lại phiên này?",
+      "reset_confirm_content": "Bắt đầu một phiên OpenCode mới cho {session}? Cuộc hội thoại trước đó sẽ bị hủy; lịch sử lần chạy và tạo tác vẫn được giữ lại.",
+      "resetting": "Đang đặt lại…",
+      "reset_success_title": "Đã đặt lại phiên",
+      "reset_success_message": "Bước tiếp theo sẽ bắt đầu trong một phiên mới.",
+      "reset_failed_title": "Không thể đặt lại phiên"
+    },
     "git": {
       "title": "Kho lưu trữ",
       "repository": "Kho lưu trữ",

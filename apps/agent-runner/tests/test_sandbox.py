@@ -320,6 +320,27 @@ exit 0
         with open(os.path.join(self.root, "rm.txt"), encoding="utf-8") as handle:
             self.assertIn(f"rm -f {events[0]['sandbox']}", handle.read())
 
+    def test_runner_enforces_a_wall_clock_cap(self):
+        docker = self.write_fake_docker(
+            """case "$1" in
+  run) sleep 30 ;;
+  rm) echo "$*" >> "$DIR/rm.txt" ;;
+esac
+exit 0
+"""
+        )
+        config = self.make_config(docker_bin=docker)
+        runner = SandboxRunner(config, FakeProxy())
+        events = []
+
+        with patch("runner.sandbox.MAX_RUN_SECONDS", 1):
+            started = time.monotonic()
+            runner.run(make_request(), events.append)
+        self.assertLess(time.monotonic() - started, 10)
+
+        self.assertEqual(events[-1]["type"], "exit")
+        self.assertTrue(events[-1]["timed_out"])
+
     def test_runner_enforces_concurrency_limit(self):
         docker = self.write_fake_docker(
             """case "$1" in

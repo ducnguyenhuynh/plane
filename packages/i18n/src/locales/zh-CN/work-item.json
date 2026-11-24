@@ -519,6 +519,22 @@
       "tool_output": "输出",
       "session_id": "会话 ID"
     },
+    "sessions": {
+      "heading": "Agent 会话",
+      "description": "此项目中的每次 Agent 运行，包括其任务、会话和产物。",
+      "empty": "此项目尚无 Agent 运行。",
+      "load_failed": "无法加载 Agent 运行。",
+      "detail_load_failed": "无法加载运行详情。",
+      "load_sessions_failed": "无法加载会话。",
+      "run_sessions": "运行会话",
+      "reset_button": "重置会话",
+      "reset_confirm_title": "要重置此会话吗？",
+      "reset_confirm_content": "要为 {session} 开始新的 OpenCode 会话吗？之前的对话将被丢弃，运行历史和产物会保留。",
+      "resetting": "正在重置…",
+      "reset_success_title": "会话已重置",
+      "reset_success_message": "下一步将在新会话中开始。",
+      "reset_failed_title": "无法重置会话"
+    },
     "git": {
       "title": "仓库",
       "repository": "仓库",

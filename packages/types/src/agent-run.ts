@@ -7,6 +7,9 @@
 export type TAgentRunStatus = "queued" | "running" | "completed" | "failed";
 export type TAgentRunStage = "pm" | "developer" | "qa" | "final" | "done";
 
+/** The position a subtask is executed in. */
+export type TAgentRunTaskRole = "developer" | "designer";
+
 export type TAgentRunAgent = {
   id: string;
   name: string;
@@ -19,6 +22,7 @@ export type TAgentRunAgent = {
 export type TAgentRunTeam = {
   pm: TAgentRunAgent[];
   developer: TAgentRunAgent[];
+  designer: TAgentRunAgent[];
   qa: TAgentRunAgent[];
 };
 
@@ -48,6 +52,7 @@ export type TAgentRunTask = {
   issue_id: string;
   issue_identifier: string;
   issue_name: string;
+  role: TAgentRunTaskRole;
   agent: TAgentRunAgent | null;
   status: string;
   paths: string[];
@@ -56,6 +61,8 @@ export type TAgentRunTask = {
   merged_sha: string;
   changed_paths: string[];
   conflict_attempts: number;
+  /** The OpenCode session the task ran in; empty until it starts. */
+  session_id: string;
   created_at: string;
 };
 
@@ -80,6 +87,8 @@ export type TAgentRunSession = {
   agent_name: string;
   stage: string;
   purpose: string;
+  /** What the session is scoped to: task, plan, review or final. */
+  scope: string;
   session_id: string;
   rework_round: number;
   provider: string;
@@ -111,6 +120,8 @@ export type TAgentRunSessionDetail = TAgentRunSession & {
 export type TAgentRun = {
   id: string;
   issue_id: string;
+  issue_identifier: string;
+  issue_name: string;
   status: TAgentRunStatus;
   stage: TAgentRunStage;
   pm_agent: TAgentRunAgent | null;

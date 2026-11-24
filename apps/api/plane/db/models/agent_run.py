@@ -36,6 +36,7 @@ class AgentRun(ProjectBaseModel):
     # Snapshots of the team at start, so history survives assignment changes
     pm_agents = models.JSONField(default=list)
     developer_agents = models.JSONField(default=list)
+    designer_agents = models.JSONField(default=list)
     qa_agent = models.ForeignKey("db.AIAgent", on_delete=models.SET_NULL, null=True, related_name="qa_runs")
     qa_agents = models.JSONField(default=list)
     # Model resolved per agent at start (position model_override when set), {agent_id: model}
@@ -115,6 +116,7 @@ class AgentRunTask(BaseModel):
     run = models.ForeignKey(AgentRun, on_delete=models.CASCADE, related_name="tasks")
     issue = models.ForeignKey("db.Issue", on_delete=models.CASCADE, related_name="agent_run_tasks")
     agent = models.ForeignKey("db.AIAgent", on_delete=models.SET_NULL, null=True, related_name="run_tasks")
+    role = models.CharField(max_length=20, default="developer")  # "developer" or "designer"
     status = models.CharField(max_length=20, default="pending")
     output = models.TextField(blank=True)
     paths = models.JSONField(default=list)
@@ -150,6 +152,7 @@ class AgentRunSession(BaseModel):
     agent_name = models.CharField(max_length=255, blank=True)
     stage = models.CharField(max_length=20, blank=True)
     purpose = models.CharField(max_length=30, blank=True)
+    scope = models.CharField(max_length=140, blank=True)
     session_id = models.CharField(max_length=140, blank=True)
     rework_round = models.PositiveSmallIntegerField(default=0)
     provider = models.CharField(max_length=50, blank=True)
@@ -179,3 +182,17 @@ class AgentRunSession(BaseModel):
         db_table = "agent_run_sessions"
         ordering = ("created_at",)
         indexes = [models.Index(fields=["run", "created_at"], name="agent_run_session_run_idx")]
+
+
+class AgentSessionReset(ProjectBaseModel):
+    """Each row moves one opencode session (issue + agent + scope) to a fresh session id."""
+
+    issue = models.ForeignKey("db.Issue", on_delete=models.CASCADE, related_name="agent_session_resets")
+    agent = models.ForeignKey("db.AIAgent", on_delete=models.CASCADE, related_name="session_resets")
+    scope = models.CharField(max_length=140)
+
+    class Meta:
+        verbose_name = "Agent Session Reset"
+        verbose_name_plural = "Agent Session Resets"
+        db_table = "agent_session_resets"
+        ordering = ("created_at",)

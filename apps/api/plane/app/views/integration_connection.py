@@ -22,6 +22,7 @@ from plane.db.models import BackstageConnection, GitHubConnection, Project, Proj
 from plane.license.utils.encryption import decrypt_data, encrypt_data
 from plane.utils.url_security import pinned_fetch
 
+from .agent import is_workspace_admin
 from .base import BaseAPIView
 
 GITHUB_API = "https://api.github.com"
@@ -236,6 +237,16 @@ class ProjectIntegrationEndpoint(BaseAPIView):
         integration, _ = ProjectIntegration.objects.get_or_create(
             project=project, defaults={"workspace_id": project.workspace_id}
         )
+        # The GitHub token is workspace-wide, so only a workspace admin may pick which repository it reaches
+        if (
+            "github_repository" in request.data
+            and str(request.data["github_repository"] or "").strip() != integration.github_repository
+            and not is_workspace_admin(request, slug)
+        ):
+            return Response(
+                {"error": "Only workspace admins can change the GitHub repository."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
         serializer = ProjectIntegrationSerializer(integration, data=request.data, partial=True)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

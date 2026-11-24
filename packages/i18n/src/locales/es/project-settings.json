@@ -532,6 +532,7 @@
       "title": "Agentes",
       "heading": "Agentes",
       "description": "Asigne agentes a posiciones del proyecto y elija el modelo que ejecuta cada uno.",
+      "sessions_label": "Sesiones de agentes",
       "team_size": {
         "title": "Tamaño del equipo",
         "description": "Cuántos agentes de cada rol participan en una ejecución.",
@@ -539,6 +540,8 @@
         "pm_help": "Escribe planes independientes. Se usa el mejor.",
         "developer_label": "Desarrolladores",
         "developer_help": "Trabajan en paralelo. Cada agente hace sus subtareas de una en una y el PM divide el trabajo en hasta max(3, developers) subtareas.",
+        "designer_label": "Diseñadores",
+        "designer_help": "Trabajan en paralelo en subtareas de diseño. Opcional.",
         "qa_label": "QA",
         "qa_help": "Revisores. Toda revisión debe aprobarse.",
         "save": "Guardar tamaño del equipo",
@@ -569,7 +572,8 @@
         "project_manager": "Gestor de proyecto",
         "reviewer": "Revisor",
         "qa": "QA",
-        "developer": "Desarrollador"
+        "developer": "Desarrollador",
+        "designer": "Diseñador"
       },
       "assign": {
         "title": "Asignar agente",

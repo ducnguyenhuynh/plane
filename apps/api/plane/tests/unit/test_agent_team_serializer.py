@@ -88,6 +88,14 @@ def test_bad_hosts_skills_and_mcp_servers_are_rejected():
         assert not serializer.is_valid(), payload
 
 
+def test_the_designer_count_is_a_validated_team_size():
+    assert ProjectAgentTeamSerializer(data={"designer_count": 2}, partial=True).is_valid()
+    for value in (0, 11):
+        serializer = ProjectAgentTeamSerializer(data={"designer_count": value}, partial=True)
+        assert not serializer.is_valid()
+        assert "designer_count" in serializer.errors
+
+
 def test_good_settings_are_accepted():
     serializer = ProjectAgentTeamSerializer(
         data={

@@ -532,6 +532,7 @@
       "title": "Agenti",
       "heading": "Agenti",
       "description": "Priraďte agentov na pozície v projekte a vyberte, ktorý model každý z nich používa.",
+      "sessions_label": "Relácie agentov",
       "team_size": {
         "title": "Veľkosť tímu",
         "description": "Koľko agentov každej roly sa zúčastňuje behu.",
@@ -539,6 +540,8 @@
         "pm_help": "Píše nezávislé plány. Použije sa najlepší.",
         "developer_label": "Vývojári",
         "developer_help": "Pracujú paralelne. Každý agent robí svoje podúlohy jednu po druhej a PM rozdelí prácu na najviac max(3, developers) podúloh.",
+        "designer_label": "Dizajnéri",
+        "designer_help": "Pracujú paralelne na dizajnových podúlohách. Voliteľné.",
         "qa_label": "QA",
         "qa_help": "Recenzenti. Každá recenzia musí prejsť.",
         "save": "Uložiť veľkosť tímu",
@@ -569,7 +572,8 @@
         "project_manager": "Projektový manažér",
         "reviewer": "Recenzent",
         "qa": "QA",
-        "developer": "Vývojár"
+        "developer": "Vývojár",
+        "designer": "Dizajnér"
       },
       "assign": {
         "title": "Priradiť agenta",

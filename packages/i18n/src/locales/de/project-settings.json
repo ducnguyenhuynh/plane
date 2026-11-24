@@ -532,6 +532,7 @@
       "title": "Agenten",
       "heading": "Agenten",
       "description": "Agenten Projektpositionen zuweisen und festlegen, welches Modell jeder verwendet.",
+      "sessions_label": "Agenten-Sitzungen",
       "team_size": {
         "title": "Teamgröße",
         "description": "Wie viele Agenten jeder Rolle an einem Lauf teilnehmen.",
@@ -539,6 +540,8 @@
         "pm_help": "Schreibt unabhängige Pläne. Der beste wird verwendet.",
         "developer_label": "Entwickler",
         "developer_help": "Arbeiten parallel. Jeder Agent erledigt seine Unteraufgaben nacheinander, und der PM teilt die Arbeit in bis zu max(3, developers) Unteraufgaben auf.",
+        "designer_label": "Designer",
+        "designer_help": "Arbeiten parallel an Design-Unteraufgaben. Optional.",
         "qa_label": "QA",
         "qa_help": "Prüfer. Jede Prüfung muss bestehen.",
         "save": "Teamgröße speichern",
@@ -569,7 +572,8 @@
         "project_manager": "Projektmanager",
         "reviewer": "Prüfer",
         "qa": "QA",
-        "developer": "Entwickler"
+        "developer": "Entwickler",
+        "designer": "Designer"
       },
       "assign": {
         "title": "Agent zuweisen",

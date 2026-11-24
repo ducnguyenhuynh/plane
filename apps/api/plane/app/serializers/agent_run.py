@@ -27,7 +27,12 @@ class AgentRunTeamAgentSerializer(BaseSerializer):
 
 def team_agents(run):
     """The run's agents per role, in snapshot order; old runs fall back to the single agents."""
-    ids = list(run.pm_agents or []) + list(run.developer_agents or []) + list(run.qa_agents or [])
+    ids = (
+        list(run.pm_agents or [])
+        + list(run.developer_agents or [])
+        + list(run.designer_agents or [])
+        + list(run.qa_agents or [])
+    )
     agents = {str(agent.id): agent for agent in AIAgent.objects.filter(id__in=ids)}
 
     def pick(snapshot, fallback):
@@ -38,6 +43,7 @@ def team_agents(run):
     return {
         "pm": pick(run.pm_agents, run.pm_agent),
         "developer": pick(run.developer_agents, None),
+        "designer": pick(run.designer_agents, None),
         "qa": pick(run.qa_agents, run.qa_agent),
     }
 
@@ -69,9 +75,11 @@ class AgentRunTaskSerializer(BaseSerializer):
             "issue_identifier",
             "issue_name",
             "agent",
+            "role",
             "status",
             "paths",
             "depends_on",
+            "session_id",
             "commit_sha",
             "merged_sha",
             "changed_paths",
@@ -90,12 +98,16 @@ class AgentRunSerializer(BaseSerializer):
     pm_agent = AgentRunAgentSerializer(read_only=True)
     qa_agent = AgentRunAgentSerializer(read_only=True)
     team = serializers.SerializerMethodField()
+    issue_identifier = serializers.SerializerMethodField()
+    issue_name = serializers.SerializerMethodField()
 
     class Meta:
         model = AgentRun
         fields = [
             "id",
             "issue_id",
+            "issue_identifier",
+            "issue_name",
             "status",
             "stage",
             "pm_agent",
@@ -121,6 +133,12 @@ class AgentRunSerializer(BaseSerializer):
     def get_team(self, obj):
         return {role: AgentRunTeamAgentSerializer(agents, many=True).data for role, agents in team_agents(obj).items()}
 
+    def get_issue_identifier(self, obj):
+        return f"{obj.issue.project.identifier}-{obj.issue.sequence_id}"
+
+    def get_issue_name(self, obj):
+        return obj.issue.name
+
 
 class AgentRunDetailSerializer(AgentRunSerializer):
     events = AgentRunEventSerializer(many=True, read_only=True)
@@ -142,6 +160,7 @@ class AgentRunSessionSerializer(BaseSerializer):
             "agent_name",
             "stage",
             "purpose",
+            "scope",
             "session_id",
             "rework_round",
             "provider",

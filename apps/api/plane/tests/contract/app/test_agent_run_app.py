@@ -47,7 +47,9 @@ class TestAgentRunEndpoint:
 
     @pytest.fixture
     def issue(self, workspace, project):
-        return Issue.objects.create(name="Build the thing", project=project, workspace=workspace)
+        return Issue.objects.create(
+            name="Build the thing", project=project, workspace=workspace, created_by=workspace.owner
+        )
 
     def url(self, workspace, project, issue):
         return f"/api/workspaces/{workspace.slug}/projects/{project.id}/issues/{issue.id}/agent-runs/"

@@ -98,7 +98,7 @@ function SessionDetail({ workspaceSlug, projectId, runId, session }: SessionProp
   );
 }
 
-function SessionRow({ workspaceSlug, projectId, runId, session }: SessionProps) {
+export function SessionRow({ workspaceSlug, projectId, runId, session }: SessionProps) {
   // translation
   const { t } = useTranslation();
   // states

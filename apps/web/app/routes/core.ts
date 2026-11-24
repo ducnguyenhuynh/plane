@@ -351,6 +351,11 @@ export const coreRoutes: RouteConfigEntry[] = [
               ":workspaceSlug/settings/projects/:projectId/agents",
               "./(all)/[workspaceSlug]/(settings)/settings/projects/[projectId]/agents/page.tsx"
             ),
+            // Project Agent Sessions
+            route(
+              ":workspaceSlug/settings/projects/:projectId/agent-sessions",
+              "./(all)/[workspaceSlug]/(settings)/settings/projects/[projectId]/agent-sessions/page.tsx"
+            ),
             // Project Integrations
             route(
               ":workspaceSlug/settings/projects/:projectId/integrations",

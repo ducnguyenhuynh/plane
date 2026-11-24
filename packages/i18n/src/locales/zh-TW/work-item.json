@@ -519,6 +519,22 @@
       "tool_output": "輸出",
       "session_id": "工作階段 ID"
     },
+    "sessions": {
+      "heading": "Agent 工作階段",
+      "description": "此專案中的每次 Agent 執行，包含其任務、工作階段和產物。",
+      "empty": "此專案尚無 Agent 執行。",
+      "load_failed": "無法載入 Agent 執行。",
+      "detail_load_failed": "無法載入執行詳細資料。",
+      "load_sessions_failed": "無法載入工作階段。",
+      "run_sessions": "執行工作階段",
+      "reset_button": "重設工作階段",
+      "reset_confirm_title": "要重設此工作階段嗎？",
+      "reset_confirm_content": "要為 {session} 開始新的 OpenCode 工作階段嗎？先前的對話將被捨棄，執行歷史和產物會保留。",
+      "resetting": "正在重設…",
+      "reset_success_title": "工作階段已重設",
+      "reset_success_message": "下一步將在新的工作階段中開始。",
+      "reset_failed_title": "無法重設工作階段"
+    },
     "git": {
       "title": "儲存庫",
       "repository": "儲存庫",

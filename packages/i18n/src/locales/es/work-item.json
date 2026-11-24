@@ -519,6 +519,22 @@
       "tool_output": "Salida",
       "session_id": "ID de sesión"
     },
+    "sessions": {
+      "heading": "Sesiones de agentes",
+      "description": "Todas las ejecuciones de agentes de este proyecto, con sus tareas, sesiones y artefactos.",
+      "empty": "Todavía no hay ejecuciones de agentes en este proyecto.",
+      "load_failed": "No se pudieron cargar las ejecuciones de agentes.",
+      "detail_load_failed": "No se pudieron cargar los detalles de la ejecución.",
+      "load_sessions_failed": "No se pudieron cargar las sesiones.",
+      "run_sessions": "Sesiones de la ejecución",
+      "reset_button": "Restablecer sesión",
+      "reset_confirm_title": "¿Restablecer esta sesión?",
+      "reset_confirm_content": "¿Iniciar una sesión de OpenCode nueva para {session}? La conversación anterior se descarta; el historial de ejecuciones y los artefactos se conservan.",
+      "resetting": "Restableciendo…",
+      "reset_success_title": "Sesión restablecida",
+      "reset_success_message": "El siguiente paso comienza en una sesión nueva.",
+      "reset_failed_title": "No se pudo restablecer la sesión"
+    },
     "git": {
       "title": "Repositorio",
       "repository": "Repositorio",

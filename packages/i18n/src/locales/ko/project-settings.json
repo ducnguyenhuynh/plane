@@ -532,6 +532,7 @@
       "title": "에이전트",
       "heading": "에이전트",
       "description": "에이전트를 프로젝트 포지션에 배치하고 각 에이전트가 사용할 모델을 선택합니다.",
+      "sessions_label": "에이전트 세션",
       "team_size": {
         "title": "팀 규모",
         "description": "실행에 참여하는 역할별 에이전트 수입니다.",
@@ -539,6 +540,8 @@
         "pm_help": "독립적인 계획을 작성합니다. 가장 좋은 계획이 사용됩니다.",
         "developer_label": "개발자",
         "developer_help": "병렬로 작업합니다. 각 에이전트는 자신의 하위 작업을 하나씩 처리하고, PM은 작업을 최대 max(3, developers)개의 하위 작업으로 나눕니다.",
+        "designer_label": "디자이너",
+        "designer_help": "디자인 하위 작업을 병렬로 진행합니다. 선택 사항입니다.",
         "qa_label": "QA",
         "qa_help": "검토자입니다. 모든 검토를 통과해야 합니다.",
         "save": "팀 규모 저장",
@@ -569,7 +572,8 @@
         "project_manager": "프로젝트 관리자",
         "reviewer": "검토자",
         "qa": "QA",
-        "developer": "개발자"
+        "developer": "개발자",
+        "designer": "디자이너"
       },
       "assign": {
         "title": "에이전트 배정",

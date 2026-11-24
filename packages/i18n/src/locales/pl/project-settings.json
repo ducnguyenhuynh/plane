@@ -532,6 +532,7 @@
       "title": "Agenci",
       "heading": "Agenci",
       "description": "Przypisz agentów do stanowisk w projekcie i wybierz model używany przez każdego z nich.",
+      "sessions_label": "Sesje agentów",
       "team_size": {
         "title": "Rozmiar zespołu",
         "description": "Ilu agentów każdej roli bierze udział w uruchomieniu.",
@@ -539,6 +540,8 @@
         "pm_help": "Tworzy niezależne plany. Wykorzystywany jest najlepszy.",
         "developer_label": "Programiści",
         "developer_help": "Pracują równolegle. Każdy agent wykonuje swoje podzadania pojedynczo, a PM dzieli pracę na maksymalnie max(3, developers) podzadań.",
+        "designer_label": "Projektanci",
+        "designer_help": "Pracują równolegle nad podzadaniami projektowymi. Opcjonalne.",
         "qa_label": "QA",
         "qa_help": "Recenzenci. Każda recenzja musi zostać zaliczona.",
         "save": "Zapisz rozmiar zespołu",
@@ -569,7 +572,8 @@
         "project_manager": "Menedżer projektu",
         "reviewer": "Recenzent",
         "qa": "QA",
-        "developer": "Programista"
+        "developer": "Programista",
+        "designer": "Projektant"
       },
       "assign": {
         "title": "Przypisz agenta",

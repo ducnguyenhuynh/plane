@@ -532,6 +532,7 @@
       "title": "Agen",
       "heading": "Agen",
       "description": "Tempatkan agen pada posisi proyek dan pilih model yang dijalankan setiap agen.",
+      "sessions_label": "Sesi agen",
       "team_size": {
         "title": "Ukuran tim",
         "description": "Berapa banyak agen dari setiap peran yang ikut dalam satu proses.",
@@ -539,6 +540,8 @@
         "pm_help": "Menyusun rencana independen. Rencana terbaik yang dipakai.",
         "developer_label": "Developer",
         "developer_help": "Bekerja paralel. Setiap agen mengerjakan subtugasnya satu per satu, dan PM membagi pekerjaan menjadi maksimal max(3, developers) subtugas.",
+        "designer_label": "Desainer",
+        "designer_help": "Bekerja paralel pada subtugas desain. Opsional.",
         "qa_label": "QA",
         "qa_help": "Peninjau. Setiap peninjauan harus lulus.",
         "save": "Simpan ukuran tim",
@@ -569,7 +572,8 @@
         "project_manager": "Manajer proyek",
         "reviewer": "Peninjau",
         "qa": "QA",
-        "developer": "Developer"
+        "developer": "Developer",
+        "designer": "Desainer"
       },
       "assign": {
         "title": "Tetapkan agen",

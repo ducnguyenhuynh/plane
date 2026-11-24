@@ -7,7 +7,7 @@
 /** Old providers stay in the union because rows created before OpenCode-only can still be returned. */
 export type TAgentProvider = "anthropic" | "openai" | "opencode" | "custom";
 
-export type TAgentRole = "project_manager" | "reviewer" | "qa" | "developer";
+export type TAgentRole = "project_manager" | "reviewer" | "qa" | "developer" | "designer";
 
 /** Empty string means the provider/model default. */
 export type TAgentReasoningEffort = "low" | "medium" | "high" | "xhigh" | "max";
@@ -96,6 +96,7 @@ export type TProjectAgentTeam = {
   pm_count: number;
   qa_count: number;
   developer_count: number;
+  designer_count: number;
   /** Read-only: hosts the sandbox always allows. */
   default_allowed_hosts: string[];
   allowed_hosts: string[];

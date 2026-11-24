@@ -519,6 +519,22 @@
       "tool_output": "出力",
       "session_id": "セッション ID"
     },
+    "sessions": {
+      "heading": "エージェントセッション",
+      "description": "このプロジェクトのすべてのエージェント実行と、そのタスク、セッション、成果物です。",
+      "empty": "このプロジェクトにはまだエージェント実行がありません。",
+      "load_failed": "エージェント実行を読み込めませんでした。",
+      "detail_load_failed": "実行の詳細を読み込めませんでした。",
+      "load_sessions_failed": "セッションを読み込めませんでした。",
+      "run_sessions": "実行のセッション",
+      "reset_button": "セッションをリセット",
+      "reset_confirm_title": "このセッションをリセットしますか？",
+      "reset_confirm_content": "{session} の新しい OpenCode セッションを開始しますか？以前の会話は破棄されますが、実行履歴と成果物は保持されます。",
+      "resetting": "リセットしています…",
+      "reset_success_title": "セッションをリセットしました",
+      "reset_success_message": "次のステップは新しいセッションで開始されます。",
+      "reset_failed_title": "セッションをリセットできませんでした"
+    },
     "git": {
       "title": "リポジトリ",
       "repository": "リポジトリ",

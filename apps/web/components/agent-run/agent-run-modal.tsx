@@ -34,7 +34,7 @@ const isActiveRun = (run: { status: TAgentRunStatus } | undefined) =>
 const POLL_INTERVAL = 5000;
 
 /** Runs are markdown; code blocks get their own horizontal scroll so they never widen the dialog. */
-function RunMarkdown({ content }: { content: string }) {
+export function RunMarkdown({ content }: { content: string }) {
   return (
     <div className="flex flex-col gap-2 text-body-xs-regular text-secondary">
       <ReactMarkdown

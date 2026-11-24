@@ -23,6 +23,8 @@ from .validation import SandboxRequest
 HEARTBEAT_INTERVAL = 15.0
 # Longer than the worker's 60s read timeout, so a dead client cannot hold a slot forever
 DRAIN_TIMEOUT = 120
+# A looping agent keeps printing output, so it never hits the idle timeout
+MAX_RUN_SECONDS = 4 * 3600
 
 Emit = Callable[[dict], None]
 
@@ -389,10 +391,11 @@ class SandboxRunner:
                     pass
 
         def monitor() -> None:
-            next_heartbeat = time.monotonic() + HEARTBEAT_INTERVAL
+            started = time.monotonic()
+            next_heartbeat = started + HEARTBEAT_INTERVAL
             while not stop.wait(0.2):
                 now = time.monotonic()
-                if now - last_output[0] > self.config.idle_timeout:
+                if now - last_output[0] > self.config.idle_timeout or now - started > MAX_RUN_SECONDS:
                     timed_out[0] = True
                     _kill(proc)
                     return

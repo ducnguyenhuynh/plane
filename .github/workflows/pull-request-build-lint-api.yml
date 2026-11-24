@@ -13,6 +13,7 @@ on:
       - "reopened"
     paths:
       - "apps/api/**"
+      - "apps/agent-runner/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -46,3 +47,16 @@ jobs:
       - name: Lint apps/api
         working-directory: apps/api
         run: uv run --no-sync ruff check .
+      # The agent tests need the API's runtime packages and pytest, which lint does not install
+      - name: Install test dependencies
+        working-directory: apps/api
+        run: uv sync --locked --group test
+      - name: Agent unit tests
+        working-directory: apps/api
+        env:
+          REDIS_URL: redis://localhost:6379
+          SECRET_KEY: ci-test
+        run: uv run --no-sync pytest -q -p no:cacheprovider plane/tests/unit/test_agent_*.py plane/tests/unit/test_slack_task.py
+      - name: Agent runner tests
+        working-directory: apps/agent-runner
+        run: uv run --project ../api --no-sync python -m unittest discover -s tests -t .

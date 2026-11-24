@@ -532,6 +532,7 @@
       "title": "智慧代理",
       "heading": "智慧代理",
       "description": "將智慧代理指派到專案角色，並為每個代理選擇要執行的模型。",
+      "sessions_label": "Agent 工作階段",
       "team_size": {
         "title": "團隊規模",
         "description": "每個角色有多少個 Agent 參與一次執行。",
@@ -539,6 +540,8 @@
         "pm_help": "撰寫獨立計畫，採用其中最好的一份。",
         "developer_label": "開發者",
         "developer_help": "平行工作。每個 Agent 一次處理一個自己的子任務，PM 會把工作拆分為最多 max(3, developers) 個子任務。",
+        "designer_label": "設計師",
+        "designer_help": "平行處理設計子任務。選填。",
         "qa_label": "QA",
         "qa_help": "審查者。每次審查都必須通過。",
         "save": "儲存團隊規模",
@@ -569,7 +572,8 @@
         "project_manager": "專案經理",
         "reviewer": "審查者",
         "qa": "QA",
-        "developer": "開發者"
+        "developer": "開發者",
+        "designer": "設計師"
       },
       "assign": {
         "title": "指派 Agent",

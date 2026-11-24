@@ -519,6 +519,22 @@
       "tool_output": "Ausgabe",
       "session_id": "Sitzungs-ID"
     },
+    "sessions": {
+      "heading": "Agenten-Sitzungen",
+      "description": "Jeder Agent-Lauf in diesem Projekt mit seinen Aufgaben, Sitzungen und Artefakten.",
+      "empty": "In diesem Projekt gibt es noch keine Agent-Läufe.",
+      "load_failed": "Agent-Läufe konnten nicht geladen werden.",
+      "detail_load_failed": "Die Details des Laufs konnten nicht geladen werden.",
+      "load_sessions_failed": "Sitzungen konnten nicht geladen werden.",
+      "run_sessions": "Sitzungen des Laufs",
+      "reset_button": "Sitzung zurücksetzen",
+      "reset_confirm_title": "Diese Sitzung zurücksetzen?",
+      "reset_confirm_content": "Eine neue OpenCode-Sitzung für {session} starten? Die bisherige Unterhaltung wird verworfen; Laufhistorie und Artefakte bleiben erhalten.",
+      "resetting": "Wird zurückgesetzt…",
+      "reset_success_title": "Sitzung zurückgesetzt",
+      "reset_success_message": "Der nächste Schritt startet in einer neuen Sitzung.",
+      "reset_failed_title": "Sitzung konnte nicht zurückgesetzt werden"
+    },
     "git": {
       "title": "Repository",
       "repository": "Repository",

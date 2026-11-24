@@ -15,15 +15,19 @@ from plane.bgtasks.agent_pipeline_task import (
     STALE_QUEUED_HOURS,
     STALE_RUN_MINUTES,
     AgentRuntimeError,
+    QaRejectedError,
     agent_session_id,
     comment_key,
+    find_session_scope,
     followup_context,
     group_tasks_by_agent,
     human_comments,
     invoke,
     is_cancelled,
     latest_review_notes,
+    mark_stale_agent_runs,
     mark_stale_runs_failed,
+    plan_tasks,
     plan_tasks_from,
     prepare_context,
     progress_callback,
@@ -103,6 +107,12 @@ def test_plan_tasks_from_returns_nothing_without_tasks():
     assert plan_tasks_from('{"tasks": "nope"}', 3) == []
 
 
+def test_plan_tasks_from_normalizes_the_role():
+    tasks = plan_tasks_from('{"tasks": [{"role": "designer"}, {"role": "Designer"}, {}]}', 10)
+
+    assert [task["role"] for task in tasks] == ["designer", "developer", "developer"]
+
+
 def test_plan_tasks_from_keeps_paths_depends_on_and_subtask():
     plan = (
         '{"tasks": [{"title": "One", "paths": ["src/app.py", 5], "depends_on": [0, "x", true], '
@@ -155,6 +165,84 @@ def test_group_tasks_by_agent_keeps_one_group_per_agent_in_first_seen_order():
 
     assert [group[0] for group in groups] == [dev_a, dev_b]
     assert [[task.name for task in group[1]] for group in groups] == [["one", "three"], ["two"]]
+
+
+def _plan_run():
+    run = _run()
+    run.project = SimpleNamespace()
+    run.tasks = MagicMock()
+    run.tasks.exists.return_value = False
+    return run
+
+
+def _created_tasks(run, plan, agents, designers=()):
+    created = []
+
+    def create(**kwargs):
+        created.append(kwargs)
+        return SimpleNamespace(**kwargs)
+
+    with (
+        patch("plane.bgtasks.agent_pipeline_task.Issue") as issues,
+        patch("plane.bgtasks.agent_pipeline_task.AgentRunTask") as tasks,
+        patch("plane.bgtasks.agent_pipeline_task.ensure_agent_bot"),
+        patch("plane.bgtasks.agent_pipeline_task.ensure_project_member"),
+        patch(
+            "plane.bgtasks.agent_pipeline_task.create_child_issue",
+            side_effect=lambda *args: SimpleNamespace(id=uuid4()),
+        ),
+    ):
+        issues.objects.filter.return_value = []
+        tasks.objects.create.side_effect = create
+        plan_tasks(run, plan, agents, "pm", designers=designers)
+
+    return created
+
+
+def test_a_designer_subtask_goes_to_a_designer():
+    developer, designer = _agent(), _agent()
+
+    created = _created_tasks(_plan_run(), [{"title": "Design", "role": "designer"}], [developer], [designer])
+
+    assert created[0]["agent"] is designer
+    assert created[0]["role"] == "designer"
+
+
+def test_a_designer_subtask_without_designers_falls_back_to_a_developer():
+    developer = _agent()
+
+    created = _created_tasks(_plan_run(), [{"title": "Design", "role": "designer"}], [developer])
+
+    assert created[0]["agent"] is developer
+    assert created[0]["role"] == "developer"
+
+
+def test_a_reused_subtask_keeps_its_developer_and_the_developer_prompt():
+    developer, designer = _agent(), _agent()
+    child = SimpleNamespace(id=uuid4(), sequence_id=7)
+    created = []
+
+    def create(**kwargs):
+        created.append(kwargs)
+        return SimpleNamespace(**kwargs)
+
+    with (
+        patch("plane.bgtasks.agent_pipeline_task.Issue") as issues,
+        patch("plane.bgtasks.agent_pipeline_task.AgentRunTask") as tasks,
+        patch("plane.bgtasks.agent_pipeline_task.create_child_issue") as create_child,
+    ):
+        issues.objects.filter.return_value = [child]
+        tasks.objects.filter.return_value.order_by.return_value.first.return_value = SimpleNamespace(
+            agent_id=developer.id
+        )
+        tasks.objects.create.side_effect = create
+        plan_tasks(
+            _plan_run(), [{"title": "Polish", "role": "designer", "subtask": "ENG-7"}], [developer], "pm", [designer]
+        )
+
+    create_child.assert_not_called()
+    assert created[0]["agent"] is developer
+    assert created[0]["role"] == "developer"
 
 
 def test_comment_key_is_stable_for_the_same_run_kind_task_and_round():
@@ -253,6 +341,27 @@ def test_queued_runs_are_only_stale_after_a_day():
     sessions.objects.filter.return_value.update.assert_called_once()
 
 
+def test_the_stale_check_covers_every_project_without_a_scope():
+    with (
+        patch("plane.bgtasks.agent_pipeline_task.AgentRun") as runs,
+        patch("plane.bgtasks.agent_pipeline_task.AgentRunSession") as sessions,
+    ):
+        runs.objects.filter.return_value.update.return_value = 1
+        sessions.objects.filter.return_value.update.return_value = 0
+
+        assert mark_stale_runs_failed() == 1
+
+    assert "project" not in runs.objects.filter.call_args.kwargs
+    assert "run__project" not in sessions.objects.filter.call_args.kwargs
+
+
+def test_the_periodic_task_fails_stale_runs_everywhere():
+    with patch("plane.bgtasks.agent_pipeline_task.mark_stale_runs_failed") as stale:
+        mark_stale_agent_runs()
+
+    stale.assert_called_once_with()
+
+
 def test_followup_context_is_empty_for_a_first_run():
     assert followup_context(_run()) == ""
 
@@ -290,6 +399,23 @@ def test_agent_session_id_is_deterministic_and_bounded():
     assert session_id != agent_session_id(issue_id, agent_id, "qa")
 
 
+def test_a_reset_generation_changes_the_session_id_only_from_one_on():
+    issue_id, agent_id = uuid4(), uuid4()
+
+    # Generation 0 is the id every session had before resets existed
+    assert agent_session_id(issue_id, agent_id, "pm", 0) == agent_session_id(issue_id, agent_id, "pm")
+    assert agent_session_id(issue_id, agent_id, "pm", 1) != agent_session_id(issue_id, agent_id, "pm")
+
+
+def test_find_session_scope_recovers_pm_qa_and_task_scopes():
+    issue_id, agent_id, task_issue_id = uuid4(), uuid4(), uuid4()
+
+    for scope in ("pm", "qa", task_issue_id.hex):
+        session_id = agent_session_id(issue_id, agent_id, scope)
+        assert find_session_scope(issue_id, agent_id, session_id, [task_issue_id]) == scope
+    assert find_session_scope(issue_id, agent_id, "ses_other", [task_issue_id]) == ""
+
+
 def test_start_session_stores_the_prompt_and_session_id():
     run, agent = _run(), _agent()
 
@@ -311,8 +437,10 @@ def test_invoke_builds_the_sandbox_call(run_sandbox):
 
     with (
         patch("plane.bgtasks.agent_pipeline_task.AgentRunSession") as sessions,
+        patch("plane.bgtasks.agent_pipeline_task.AgentSessionReset") as resets,
         patch("plane.bgtasks.agent_pipeline_task.AgentRun") as runs,
     ):
+        resets.objects.filter.return_value.count.return_value = 0
         sessions.objects.create.return_value = SimpleNamespace(pk="session", started_at=None)
         runs.objects.filter.return_value.update.return_value = 1
 
@@ -352,6 +480,7 @@ def test_the_agent_model_override_wins(run_sandbox):
 
     with (
         patch("plane.bgtasks.agent_pipeline_task.AgentRunSession") as sessions,
+        patch("plane.bgtasks.agent_pipeline_task.AgentSessionReset"),
         patch("plane.bgtasks.agent_pipeline_task.AgentRun") as runs,
     ):
         sessions.objects.create.return_value = SimpleNamespace(pk="session", started_at=None)
@@ -367,6 +496,7 @@ def test_a_session_log_failure_does_not_fail_invoke():
 
     with (
         patch("plane.bgtasks.agent_pipeline_task.AgentRunSession") as sessions,
+        patch("plane.bgtasks.agent_pipeline_task.AgentSessionReset"),
         patch("plane.bgtasks.agent_pipeline_task.AgentRun") as runs,
         patch("plane.bgtasks.agent_pipeline_task.run_sandbox", return_value="ok"),
     ):
@@ -387,6 +517,7 @@ def test_a_heartbeat_with_no_updated_rows_raises_inside_on_progress():
 
     with (
         patch("plane.bgtasks.agent_pipeline_task.AgentRunSession") as sessions,
+        patch("plane.bgtasks.agent_pipeline_task.AgentSessionReset"),
         patch("plane.bgtasks.agent_pipeline_task.AgentRun") as runs,
         patch("plane.bgtasks.agent_pipeline_task.run_sandbox", side_effect=fake_sandbox),
     ):
@@ -446,6 +577,27 @@ def test_an_empty_review_is_not_counted_as_a_rejection():
             run_qa_stage(run, _ctx(), [])
 
     artifacts.objects.create.assert_not_called()
+
+
+def test_a_string_false_verdict_is_not_an_approval():
+    run, agent = _run(), _agent()
+    run.qa_agent = None
+    run.save = MagicMock()
+
+    with (
+        patch("plane.bgtasks.agent_pipeline_task.reviewer_agents", return_value=[agent]),
+        patch("plane.bgtasks.agent_pipeline_task.human_comments", return_value=[]),
+        patch("plane.bgtasks.agent_pipeline_task.AgentRunArtifact") as artifacts,
+        patch("plane.bgtasks.agent_pipeline_task.post_comment"),
+        patch("plane.bgtasks.agent_pipeline_task.ensure_agent_bot"),
+        patch("plane.bgtasks.agent_pipeline_task.log_event"),
+        patch("plane.bgtasks.agent_pipeline_task.prepare_review_dir", return_value="/review"),
+        patch("plane.bgtasks.agent_pipeline_task.invoke", return_value='{"passed": "false", "notes": "nope"}'),
+    ):
+        with pytest.raises(QaRejectedError):
+            run_qa_stage(run, _ctx(), [])
+
+    assert artifacts.objects.create.call_args.kwargs["data"]["passed"] is False
 
 
 def test_a_replaced_job_counts_as_cancelled():

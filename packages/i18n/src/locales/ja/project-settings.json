@@ -532,6 +532,7 @@
       "title": "エージェント",
       "heading": "エージェント",
       "description": "エージェントをプロジェクトの役割に配置し、それぞれが使用するモデルを選択します。",
+      "sessions_label": "エージェントセッション",
       "team_size": {
         "title": "チームサイズ",
         "description": "実行に参加する各ロールのエージェント数です。",
@@ -539,6 +540,8 @@
         "pm_help": "独立した計画を作成します。最も良いものが採用されます。",
         "developer_label": "開発者",
         "developer_help": "並行して作業します。各エージェントは自分のサブタスクを1つずつ実行し、PM は作業を最大 max(3, developers) 個のサブタスクに分割します。",
+        "designer_label": "デザイナー",
+        "designer_help": "デザインのサブタスクを並行して進めます。任意です。",
         "qa_label": "QA",
         "qa_help": "レビュアーです。すべてのレビューに合格する必要があります。",
         "save": "チームサイズを保存",
@@ -569,7 +572,8 @@
         "project_manager": "プロジェクトマネージャー",
         "reviewer": "レビュアー",
         "qa": "QA",
-        "developer": "開発者"
+        "developer": "開発者",
+        "designer": "デザイナー"
       },
       "assign": {
         "title": "エージェントを割り当て",

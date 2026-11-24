@@ -519,6 +519,22 @@
       "tool_output": "Output",
       "session_id": "ID sessione"
     },
+    "sessions": {
+      "heading": "Sessioni degli agenti",
+      "description": "Tutte le esecuzioni degli agenti di questo progetto, con le relative attività, sessioni e artefatti.",
+      "empty": "Non ci sono ancora esecuzioni di agenti in questo progetto.",
+      "load_failed": "Impossibile caricare le esecuzioni degli agenti.",
+      "detail_load_failed": "Impossibile caricare i dettagli dell'esecuzione.",
+      "load_sessions_failed": "Impossibile caricare le sessioni.",
+      "run_sessions": "Sessioni dell'esecuzione",
+      "reset_button": "Reimposta sessione",
+      "reset_confirm_title": "Reimpostare questa sessione?",
+      "reset_confirm_content": "Avviare una nuova sessione OpenCode per {session}? La conversazione precedente viene eliminata; la cronologia delle esecuzioni e gli artefatti restano.",
+      "resetting": "Reimpostazione…",
+      "reset_success_title": "Sessione reimpostata",
+      "reset_success_message": "Il passaggio successivo inizia in una nuova sessione.",
+      "reset_failed_title": "Impossibile reimpostare la sessione"
+    },
     "git": {
       "title": "Repository",
       "repository": "Repository",

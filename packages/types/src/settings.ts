@@ -39,6 +39,7 @@ export type TProjectSettingsTabs =
   | "estimates"
   | "automations"
   | "agents"
+  | "agent_sessions"
   | "integrations";
 export type TProjectSettingsItem = {
   key: TProjectSettingsTabs;

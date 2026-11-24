@@ -519,6 +519,22 @@
       "tool_output": "Výstup",
       "session_id": "ID relace"
     },
+    "sessions": {
+      "heading": "Relace agentů",
+      "description": "Každý běh agenta v tomto projektu včetně jeho úkolů, relací a artefaktů.",
+      "empty": "V tomto projektu zatím nejsou žádné běhy agentů.",
+      "load_failed": "Běhy agentů se nepodařilo načíst.",
+      "detail_load_failed": "Podrobnosti běhu se nepodařilo načíst.",
+      "load_sessions_failed": "Relace se nepodařilo načíst.",
+      "run_sessions": "Relace běhu",
+      "reset_button": "Resetovat relaci",
+      "reset_confirm_title": "Resetovat tuto relaci?",
+      "reset_confirm_content": "Spustit novou relaci OpenCode pro {session}? Předchozí konverzace bude zrušena; historie běhu a artefakty zůstanou.",
+      "resetting": "Resetování…",
+      "reset_success_title": "Relace resetována",
+      "reset_success_message": "Další krok začne v nové relaci.",
+      "reset_failed_title": "Relaci se nepodařilo resetovat"
+    },
     "git": {
       "title": "Repozitář",
       "repository": "Repozitář",

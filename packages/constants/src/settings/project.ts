@@ -114,6 +114,13 @@ export const PROJECT_SETTINGS: Record<TProjectSettingsTabs, TProjectSettingsItem
     access: [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER],
     highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/agents/`,
   },
+  agent_sessions: {
+    key: "agent_sessions",
+    i18n_label: "project_settings.agents.sessions_label",
+    href: `/agent-sessions`,
+    access: [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/agent-sessions/`,
+  },
   integrations: {
     key: "integrations",
     i18n_label: "integrations.integrations",
@@ -142,6 +149,7 @@ export const GROUPED_PROJECT_SETTINGS: Record<PROJECT_SETTINGS_CATEGORY, TProjec
   [PROJECT_SETTINGS_CATEGORY.EXECUTION]: [
     PROJECT_SETTINGS["automations"],
     PROJECT_SETTINGS["agents"],
+    PROJECT_SETTINGS["agent_sessions"],
     PROJECT_SETTINGS["integrations"],
   ],
 };

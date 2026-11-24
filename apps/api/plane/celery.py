@@ -53,6 +53,10 @@ app.conf.beat_schedule = {
         "task": "plane.bgtasks.issue_automation_task.unsnooze_expired_intake_issues",
         "schedule": crontab(minute="*/5"),  # Every 5 minutes
     },
+    "check-every-ten-minutes-to-fail-stale-agent-runs": {
+        "task": "plane.bgtasks.agent_pipeline_task.mark_stale_agent_runs",
+        "schedule": crontab(minute="*/10"),  # Every 10 minutes
+    },
     "push-instance-metrics": {
         "task": "plane.license.bgtasks.telemetry_metrics.push_instance_metrics",
         "schedule": schedule(run_every=timedelta(minutes=METRICS_PUSH_INTERVAL_MINUTES)),

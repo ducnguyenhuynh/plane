@@ -53,6 +53,7 @@ def team_limits(project):
         "pm_count": team.pm_count,
         "qa_count": team.qa_count,
         "developer_count": team.developer_count,
+        "designer_count": team.designer_count,
     }
 
 
@@ -61,12 +62,21 @@ def start_agent_run(issue, *, instructions="", trigger_comment=None) -> AgentRun
     mark_stale_runs_failed(issue.project)
     if AgentRun.objects.filter(project=issue.project, issue=issue, status__in=ACTIVE_STATUSES).exists():
         raise AgentRunStartError(ALREADY_RUNNING)
+    # A guest could otherwise steer agents through the description of their own work item
+    if not ProjectMember.objects.filter(
+        project=issue.project,
+        member_id=issue.created_by_id,
+        is_active=True,
+        role__gte=ROLE.MEMBER.value,
+    ).exists():
+        raise AgentRunStartError("Agents only run on work items created by project members.")
 
     limits = team_limits(issue.project)
     positions = project_positions(issue.project)
     pm_positions = list(positions.filter(role=AgentRole.PROJECT_MANAGER)[: limits["pm_count"]])
     qa_positions = list(positions.filter(role=AgentRole.QA)[: limits["qa_count"]])
     developer_positions = list(positions.filter(role=AgentRole.DEVELOPER)[: limits["developer_count"]])
+    designer_positions = list(positions.filter(role=AgentRole.DESIGNER)[: limits["designer_count"]])
 
     missing = []
     if not pm_positions:
@@ -80,7 +90,7 @@ def start_agent_run(issue, *, instructions="", trigger_comment=None) -> AgentRun
 
     # Snapshot the model each agent runs with (a position's override wins)
     agent_models = {}
-    for position in pm_positions + qa_positions + developer_positions:
+    for position in pm_positions + qa_positions + developer_positions + designer_positions:
         if position.model_override:
             agent_models[str(position.agent_id)] = position.model_override
 
@@ -93,6 +103,7 @@ def start_agent_run(issue, *, instructions="", trigger_comment=None) -> AgentRun
             pm_agent=pm_positions[0].agent,
             pm_agents=[str(position.agent_id) for position in pm_positions],
             developer_agents=[str(position.agent_id) for position in developer_positions],
+            designer_agents=[str(position.agent_id) for position in designer_positions],
             qa_agent=qa_positions[0].agent,
             qa_agents=[str(position.agent_id) for position in qa_positions],
             agent_models=agent_models,
@@ -104,7 +115,7 @@ def start_agent_run(issue, *, instructions="", trigger_comment=None) -> AgentRun
         # Another request created an active run between the check and the insert
         raise AgentRunStartError(ALREADY_RUNNING) from error
 
-    for position in pm_positions + qa_positions + developer_positions:
+    for position in pm_positions + qa_positions + developer_positions + designer_positions:
         bot = ensure_agent_bot(position.agent)
         ensure_project_member(bot, issue.project)
 

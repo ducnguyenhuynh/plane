@@ -208,6 +208,7 @@ class ProjectAgentTeamSerializer(BaseSerializer):
             "pm_count",
             "qa_count",
             "developer_count",
+            "designer_count",
             "allowed_hosts",
             "websearch_enabled",
             "webfetch_enabled",
@@ -227,6 +228,9 @@ class ProjectAgentTeamSerializer(BaseSerializer):
         return self._validate_count(value)
 
     def validate_developer_count(self, value):
+        return self._validate_count(value)
+
+    def validate_designer_count(self, value):
         return self._validate_count(value)
 
     @staticmethod

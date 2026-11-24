@@ -532,6 +532,7 @@
       "title": "Ajanlar",
       "heading": "Ajanlar",
       "description": "Ajanları proje pozisyonlarına atayın ve her birinin kullanacağı modeli seçin.",
+      "sessions_label": "Aracı oturumları",
       "team_size": {
         "title": "Ekip boyutu",
         "description": "Her rolden kaç aracının bir çalıştırmaya katılacağı.",
@@ -539,6 +540,8 @@
         "pm_help": "Bağımsız planlar yazar. En iyisi kullanılır.",
         "developer_label": "Geliştiriciler",
         "developer_help": "Paralel çalışırlar. Her aracı kendi alt görevlerini tek tek yapar ve PM işi en fazla max(3, developers) alt göreve böler.",
+        "designer_label": "Tasarımcılar",
+        "designer_help": "Tasarım alt görevleri üzerinde paralel çalışır. İsteğe bağlı.",
         "qa_label": "QA",
         "qa_help": "İnceleyiciler. Her inceleme geçmelidir.",
         "save": "Ekip boyutunu kaydet",
@@ -569,7 +572,8 @@
         "project_manager": "Proje yöneticisi",
         "reviewer": "İnceleyici",
         "qa": "QA",
-        "developer": "Geliştirici"
+        "developer": "Geliştirici",
+        "designer": "Tasarımcı"
       },
       "assign": {
         "title": "Aracı ata",

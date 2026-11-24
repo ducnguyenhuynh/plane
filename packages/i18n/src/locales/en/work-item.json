@@ -519,6 +519,22 @@
       "tool_output": "Output",
       "session_id": "Session ID"
     },
+    "sessions": {
+      "heading": "Agent sessions",
+      "description": "Every agent run in this project, with its tasks, sessions and artifacts.",
+      "empty": "No agent runs in this project yet.",
+      "load_failed": "Agent runs could not be loaded.",
+      "detail_load_failed": "The run details could not be loaded.",
+      "load_sessions_failed": "Sessions could not be loaded.",
+      "run_sessions": "Run sessions",
+      "reset_button": "Reset session",
+      "reset_confirm_title": "Reset this session?",
+      "reset_confirm_content": "Start a fresh OpenCode session for {session}? The earlier conversation is dropped; the run history and artifacts stay.",
+      "resetting": "Resetting…",
+      "reset_success_title": "Session reset",
+      "reset_success_message": "The next step starts in a new session.",
+      "reset_failed_title": "Could not reset the session"
+    },
     "git": {
       "title": "Repository",
       "repository": "Repository",

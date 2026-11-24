@@ -12,6 +12,7 @@ import requests
 
 from plane.license.utils.encryption import encrypt_data
 from plane.utils.agent_runner_client import (
+    MAX_TOOL_TEXT,
     AgentRunnerError,
     SandboxCall,
     SandboxTrace,
@@ -63,14 +64,19 @@ def _reasoning(part_id, text):
     return _event({"type": "reasoning", "part": {"id": part_id, "text": text}})
 
 
-def _tool(part_id, tool, status="completed", title="run", output="ok"):
+def _tool(part_id, tool, status="completed", title="run", output="ok", input=None):
     return _event(
         {
             "type": "tool_use",
             "part": {
                 "id": part_id,
                 "tool": tool,
-                "state": {"status": status, "title": title, "input": {"cmd": "ls"}, "output": output},
+                "state": {
+                    "status": status,
+                    "title": title,
+                    "input": {"cmd": "ls"} if input is None else input,
+                    "output": output,
+                },
             },
         }
     )
@@ -172,6 +178,24 @@ def test_tool_calls_are_collected_once_per_part(post):
     assert trace.tool_calls[0]["status"] == "completed"
     assert trace.tool_calls[0]["output"] == "app.py"
     assert trace.tool_calls[0]["input"] == {"cmd": "ls"}
+
+
+@patch("plane.utils.agent_runner_client.requests.post")
+def test_tool_text_is_capped_before_it_is_stored(post):
+    post.return_value = _response(
+        [
+            _tool("t1", "bash", output="x" * (MAX_TOOL_TEXT + 100), input={"cmd": "y" * (MAX_TOOL_TEXT + 100)}),
+            _exit(),
+        ]
+    )
+    trace = SandboxTrace()
+
+    run_sandbox(_call(), trace)
+
+    assert trace.tool_calls[0]["output"] == "x" * MAX_TOOL_TEXT
+    truncated = trace.tool_calls[0]["input"]["truncated"]
+    assert len(truncated) == MAX_TOOL_TEXT
+    assert truncated.startswith('{"cmd": "yyy')
 
 
 @patch("plane.utils.agent_runner_client.requests.post")
