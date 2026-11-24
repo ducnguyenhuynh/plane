@@ -15,13 +15,14 @@ import { Switch } from "@makeplane/propel/components/switch";
 import { TextAreaField } from "@makeplane/propel/components/text-area-field";
 import { setToast } from "@plane/blocks/toast";
 import { useTranslation } from "@plane/i18n";
-import type { TAgent, TAgentPayload, TAgentProvider } from "@plane/types";
+import type { TAgent, TAgentPayload } from "@plane/types";
 // services
 import { AgentService } from "@/services/agent.service";
 // local imports
 import { getAgentErrorMessage } from "./utils";
 
 const agentService = new AgentService();
+const OPENCODE_BASE_URL = AGENT_PROVIDERS[0].defaultBaseUrl;
 
 type Props = {
   workspaceSlug: string;
@@ -33,10 +34,10 @@ type Props = {
 
 const EMPTY_FORM: TAgentPayload = {
   name: "",
-  provider: "anthropic",
+  provider: "opencode",
   model: "",
   api_key: "",
-  base_url: "",
+  base_url: OPENCODE_BASE_URL,
   system_prompt: "",
   reasoning_effort: "",
   is_active: true,
@@ -54,10 +55,11 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
     if (agent) {
       setForm({
         name: agent.name,
-        provider: agent.provider,
+        // Only OpenCode can be saved, so an old provider is moved over on the next submit
+        provider: "opencode",
         model: agent.model,
         api_key: "",
-        base_url: agent.base_url ?? "",
+        base_url: agent.provider === "opencode" && agent.base_url ? agent.base_url : OPENCODE_BASE_URL,
         system_prompt: agent.system_prompt ?? "",
         reasoning_effort: agent.reasoning_effort ?? "",
         is_active: agent.is_active,
@@ -70,12 +72,6 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
   const setField = <K extends keyof TAgentPayload>(key: K, value: TAgentPayload[K]) =>
     setForm((current) => ({ ...current, [key]: value }));
 
-  const handleProviderChange = (provider: TAgentProvider | null) => {
-    if (!provider) return;
-    const definition = AGENT_PROVIDERS.find((item) => item.value === provider);
-    setForm((current) => ({ ...current, provider, base_url: definition?.defaultBaseUrl ?? "" }));
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!form.name.trim() || !form.model.trim()) {
@@ -86,7 +82,7 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
       });
       return;
     }
-    if ((form.provider === "opencode" || form.provider === "custom") && !form.base_url?.trim()) {
+    if (!form.base_url?.trim()) {
       setToast({
         type: "error",
         title: t("workspace_settings.settings.ai_agents.form.missing_base_url_title"),
@@ -161,14 +157,6 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               placeholder="Opus 5.5"
               autoComplete="off"
             />
-            <SelectField<TAgentProvider>
-              size="lg"
-              aria-label={t("workspace_settings.settings.ai_agents.form.provider")}
-              label={t("workspace_settings.settings.ai_agents.form.provider")}
-              value={form.provider}
-              onValueChange={handleProviderChange}
-              options={AGENT_PROVIDERS.map(({ value, label }) => ({ value, label }))}
-            />
             <InputField
               size="lg"
               orientation="vertical"
@@ -177,7 +165,7 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               required
               value={form.model}
               onChange={(e) => setField("model", e.target.value)}
-              placeholder={form.provider === "anthropic" ? "claude-opus-5.5" : "deepseek-4.1-flash"}
+              placeholder="deepseek-v4.1-flash"
               autoComplete="off"
             />
             <InputField
@@ -203,7 +191,7 @@ export function AgentFormDialog({ workspaceSlug, agent, isOpen, onClose }: Props
               label={t("workspace_settings.settings.ai_agents.form.base_url")}
               value={form.base_url}
               onChange={(e) => setField("base_url", e.target.value)}
-              placeholder="https://api.anthropic.com"
+              placeholder="https://opencode.ai/inference/go/v1"
               autoComplete="off"
             />
             <SelectField<string>

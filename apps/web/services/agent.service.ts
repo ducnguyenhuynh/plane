@@ -6,7 +6,14 @@
 
 // api services
 import { API_BASE_URL } from "@plane/constants";
-import type { TAgent, TAgentPayload, TProjectAgent, TProjectAgentPayload, TProjectAgentTeam } from "@plane/types";
+import type {
+  TAgent,
+  TAgentPayload,
+  TProjectAgent,
+  TProjectAgentMcpServerPayload,
+  TProjectAgentPayload,
+  TProjectAgentTeam,
+} from "@plane/types";
 import { APIService } from "@/services/api.service";
 
 export class AgentService extends APIService {
@@ -106,7 +113,9 @@ export class AgentService extends APIService {
   async updateAgentTeam(
     workspaceSlug: string,
     projectId: string,
-    data: Partial<Pick<TProjectAgentTeam, "pm_count" | "qa_count" | "developer_count">>
+    data: Partial<Omit<TProjectAgentTeam, "id" | "project_id" | "default_allowed_hosts" | "mcp_servers">> & {
+      mcp_servers?: TProjectAgentMcpServerPayload[];
+    }
   ): Promise<TProjectAgentTeam> {
     return this.patch(`/api/workspaces/${workspaceSlug}/projects/${projectId}/agent-team/`, data)
       .then((response) => response?.data)

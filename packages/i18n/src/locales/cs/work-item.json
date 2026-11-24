@@ -513,7 +513,29 @@
       "response": "Odpověď",
       "error": "Chyba",
       "tokens": "{input, number} vstupních · {output, number} výstupních tokenů",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Volání nástrojů",
+      "tool_input": "Vstup",
+      "tool_output": "Výstup",
+      "session_id": "ID relace"
+    },
+    "git": {
+      "title": "Repozitář",
+      "repository": "Repozitář",
+      "branch": "Větev",
+      "commit": "Poslední commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Zatím není otevřen",
+      "files_changed": "Změněné soubory: {count, number}",
+      "conflict_attempts": "Opravy konfliktů: {count, number}"
+    },
+    "follow_up": {
+      "title": "Pokračujte v této práci",
+      "label": "Co mají agenti dále změnit nebo udělat?",
+      "placeholder": "Popište požadovanou změnu",
+      "hint": "Agenti pokračují ze svých dřívějších relací a ve stejné větvi. Agenta můžete zmínit také v komentáři.",
+      "submit": "Pokračovat v práci",
+      "submitting": "Spouštění…"
     }
   }
 }

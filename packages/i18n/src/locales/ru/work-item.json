@@ -513,7 +513,29 @@
       "response": "Ответ",
       "error": "Ошибка",
       "tokens": "{input, number} входных · {output, number} выходных токенов",
-      "duration": "{seconds, number} с"
+      "duration": "{seconds, number} с",
+      "tools": "Вызовы инструментов",
+      "tool_input": "Ввод",
+      "tool_output": "Вывод",
+      "session_id": "ID сеанса"
+    },
+    "git": {
+      "title": "Репозиторий",
+      "repository": "Репозиторий",
+      "branch": "Ветка",
+      "commit": "Последний коммит",
+      "pull_request": "Pull request",
+      "no_pull_request": "Ещё не создан",
+      "files_changed": "Изменённые файлы: {count, number}",
+      "conflict_attempts": "Исправления конфликтов: {count, number}"
+    },
+    "follow_up": {
+      "title": "Продолжить эту работу",
+      "label": "Что агенты должны изменить или сделать далее?",
+      "placeholder": "Опишите желаемое изменение",
+      "hint": "Агенты продолжают из своих предыдущих сеансов и в той же ветке. Агента также можно упомянуть в комментарии.",
+      "submit": "Продолжить работу",
+      "submitting": "Запуск…"
     }
   }
 }

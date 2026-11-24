@@ -18,6 +18,7 @@ import type { TAgentRole, TProjectAgent } from "@plane/types";
 import { AgentService } from "@/services/agent.service";
 // local imports
 import { AssignAgentDialog } from "./assign-agent-dialog";
+import { ProjectAgentSandboxSettings } from "./project-agent-sandbox-settings";
 import { getAgentErrorMessage } from "./utils";
 
 const agentService = new AgentService();
@@ -324,6 +325,8 @@ export function ProjectAgentsSettings({ workspaceSlug, projectId, canManage }: P
         handleClose={() => setDeleteTarget(null)}
         handleSubmit={handleDelete}
       />
+
+      <ProjectAgentSandboxSettings workspaceSlug={workspaceSlug} projectId={projectId} canManage={canManage} />
     </div>
   );
 }

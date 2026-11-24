@@ -513,7 +513,29 @@
       "response": "პასუხი",
       "error": "შეცდომა",
       "tokens": "{input, number} შემავალი · {output, number} გამომავალი ტოკენი",
-      "duration": "{seconds, number} წმ"
+      "duration": "{seconds, number} წმ",
+      "tools": "ინსტრუმენტების გამოძახებები",
+      "tool_input": "შემავალი",
+      "tool_output": "გამომავალი",
+      "session_id": "სესიის ID"
+    },
+    "git": {
+      "title": "რეპოზიტორია",
+      "repository": "რეპოზიტორია",
+      "branch": "განშტოება",
+      "commit": "ბოლო კომიტი",
+      "pull_request": "Pull request",
+      "no_pull_request": "ჯერ არ გახსნილა",
+      "files_changed": "შეცვლილი ფაილები: {count, number}",
+      "conflict_attempts": "კონფლიქტების გასწორება: {count, number}"
+    },
+    "follow_up": {
+      "title": "ამ სამუშაოს გაგრძელება",
+      "label": "რა უნდა შეცვალონ ან გააკეთონ აგენტებმა შემდეგ?",
+      "placeholder": "აღწერეთ სასურველი ცვლილება",
+      "hint": "აგენტები აგრძელებენ წინა სესიებიდან და იმავე განშტოებაზე. აგენტის ხსენება კომენტარშიც შეგიძლიათ.",
+      "submit": "სამუშაოს გაგრძელება",
+      "submitting": "იწყება…"
     }
   }
 }

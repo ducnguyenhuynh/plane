@@ -513,7 +513,29 @@
       "response": "Отговор",
       "error": "Грешка",
       "tokens": "{input, number} входни · {output, number} изходни токена",
-      "duration": "{seconds, number} с"
+      "duration": "{seconds, number} с",
+      "tools": "Извиквания на инструменти",
+      "tool_input": "Вход",
+      "tool_output": "Изход",
+      "session_id": "ID на сесията"
+    },
+    "git": {
+      "title": "Хранилище",
+      "repository": "Хранилище",
+      "branch": "Клон",
+      "commit": "Последен commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Все още не е отворен",
+      "files_changed": "Променени файлове: {count, number}",
+      "conflict_attempts": "Корекции на конфликти: {count, number}"
+    },
+    "follow_up": {
+      "title": "Продължете тази работа",
+      "label": "Какво да променят или направят агентите след това?",
+      "placeholder": "Опишете промяната, която искате",
+      "hint": "Агентите продължават от предишните си сесии и същия клон. Можете да споменете агент и в коментар.",
+      "submit": "Продължете работата",
+      "submitting": "Стартиране…"
     }
   }
 }

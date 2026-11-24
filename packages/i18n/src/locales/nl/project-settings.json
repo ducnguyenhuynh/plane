@@ -587,6 +587,49 @@
         "saved_message": "Projectpositie bijgewerkt.",
         "save_failed_title": "Positie kon niet worden opgeslagen",
         "saving": "Opslaan…"
+      },
+      "sandbox": {
+        "save": "Opslaan",
+        "saved_title": "Instellingen opgeslagen",
+        "saved_message": "Nieuwe agentruns gebruiken deze instellingen.",
+        "save_failed": "Instellingen konden niet worden opgeslagen",
+        "add": "Toevoegen",
+        "edit": "Bewerken",
+        "remove": "Verwijderen",
+        "cancel": "Annuleren",
+        "enabled": "Ingeschakeld",
+        "name": "Naam",
+        "description": "Beschrijving",
+        "network": {
+          "title": "Pakket- en netwerktoegang",
+          "hint": "Agenten bereiken deze hosts alleen via HTTPS. Al het andere is geblokkeerd.",
+          "defaults": "Altijd toegestaan",
+          "extra": "Extra toegestane hosts, één per regel"
+        },
+        "web": {
+          "title": "Webtools",
+          "search": "Zoeken op het web",
+          "search_hint": "Laat agenten op het web zoeken. Resultaten kunnen onbetrouwbare instructies bevatten.",
+          "fetch": "Webpagina's ophalen",
+          "fetch_hint": "Laat agenten pagina's lezen, alleen van toegestane hosts."
+        },
+        "skills": {
+          "title": "Vaardigheden",
+          "hint": "Herbruikbare instructies die agenten voor dit project kunnen laden.",
+          "empty": "Nog geen vaardigheden.",
+          "content": "Instructies voor de vaardigheid"
+        },
+        "mcp": {
+          "title": "MCP-servers",
+          "hint": "Externe tools voor ontwikkelaarsagenten. Headergeheimen blijven op de server en worden nooit meer getoond.",
+          "empty": "Nog geen MCP-servers.",
+          "url": "HTTPS-URL",
+          "headers": "Headers",
+          "header_name": "Headernaam",
+          "header_value": "Headerwaarde",
+          "add_header": "Header toevoegen",
+          "saved_placeholder": "Opgeslagen, leeg laten om te behouden"
+        }
       }
     }
   }

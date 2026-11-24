@@ -587,6 +587,49 @@
         "saved_message": "Pozice v projektu byla aktualizována.",
         "save_failed_title": "Pozici se nepodařilo uložit",
         "saving": "Ukládání…"
+      },
+      "sandbox": {
+        "save": "Uložit",
+        "saved_title": "Nastavení uloženo",
+        "saved_message": "Nová spuštění agentů použijí tato nastavení.",
+        "save_failed": "Nastavení se nepodařilo uložit",
+        "add": "Přidat",
+        "edit": "Upravit",
+        "remove": "Odebrat",
+        "cancel": "Zrušit",
+        "enabled": "Zapnuto",
+        "name": "Název",
+        "description": "Popis",
+        "network": {
+          "title": "Přístup k síti a balíčkům",
+          "hint": "Agenti mohou těmto hostitelům přistupovat pouze přes HTTPS. Vše ostatní je zablokováno.",
+          "defaults": "Vždy povoleno",
+          "extra": "Další povolení hostitelé, jeden na řádek"
+        },
+        "web": {
+          "title": "Webové nástroje",
+          "search": "Webové vyhledávání",
+          "search_hint": "Umožňuje agentům vyhledávat na webu. Výsledky mohou obsahovat nedůvěryhodné pokyny.",
+          "fetch": "Načítání webových stránek",
+          "fetch_hint": "Umožňuje agentům číst stránky, pouze z povolených hostitelů."
+        },
+        "skills": {
+          "title": "Dovednosti",
+          "hint": "Opakovaně použitelné pokyny, které agenti mohou pro tento projekt načíst.",
+          "empty": "Zatím žádné dovednosti.",
+          "content": "Pokyny k dovednosti"
+        },
+        "mcp": {
+          "title": "Servery MCP",
+          "hint": "Vzdálené nástroje pro vývojářské agenty. Tajemství hlaviček zůstávají na serveru a už se nikdy nezobrazují.",
+          "empty": "Zatím žádné servery MCP.",
+          "url": "URL HTTPS",
+          "headers": "Hlavičky",
+          "header_name": "Název hlavičky",
+          "header_value": "Hodnota hlavičky",
+          "add_header": "Přidat hlavičku",
+          "saved_placeholder": "Uloženo, ponechte prázdné pro zachování"
+        }
       }
     }
   }

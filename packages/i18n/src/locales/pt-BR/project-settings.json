@@ -587,6 +587,49 @@
         "saved_message": "Posição do projeto atualizada.",
         "save_failed_title": "Não foi possível salvar a posição",
         "saving": "Salvando…"
+      },
+      "sandbox": {
+        "save": "Salvar",
+        "saved_title": "Configurações salvas",
+        "saved_message": "Novas execuções de agentes usarão estas configurações.",
+        "save_failed": "Não foi possível salvar as configurações",
+        "add": "Adicionar",
+        "edit": "Editar",
+        "remove": "Remover",
+        "cancel": "Cancelar",
+        "enabled": "Ativado",
+        "name": "Nome",
+        "description": "Descrição",
+        "network": {
+          "title": "Acesso a rede e pacotes",
+          "hint": "Os agentes só podem acessar estes hosts por HTTPS. Todo o resto é bloqueado.",
+          "defaults": "Sempre permitidos",
+          "extra": "Hosts adicionais permitidos, um por linha"
+        },
+        "web": {
+          "title": "Ferramentas web",
+          "search": "Pesquisa na web",
+          "search_hint": "Permite que os agentes pesquisem na web. Os resultados podem conter instruções não confiáveis.",
+          "fetch": "Leitura de páginas web",
+          "fetch_hint": "Permite que os agentes leiam páginas, apenas dos hosts permitidos."
+        },
+        "skills": {
+          "title": "Habilidades",
+          "hint": "Instruções reutilizáveis que os agentes podem carregar para este projeto.",
+          "empty": "Ainda não há habilidades.",
+          "content": "Instruções da habilidade"
+        },
+        "mcp": {
+          "title": "Servidores MCP",
+          "hint": "Ferramentas remotas para agentes de desenvolvimento. Os segredos dos cabeçalhos ficam no servidor e nunca são exibidos novamente.",
+          "empty": "Ainda não há servidores MCP.",
+          "url": "URL HTTPS",
+          "headers": "Cabeçalhos",
+          "header_name": "Nome do cabeçalho",
+          "header_value": "Valor do cabeçalho",
+          "add_header": "Adicionar cabeçalho",
+          "saved_placeholder": "Salvo, deixe vazio para manter"
+        }
       }
     }
   }

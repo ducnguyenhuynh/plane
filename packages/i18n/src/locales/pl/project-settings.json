@@ -587,6 +587,49 @@
         "saved_message": "Zaktualizowano stanowisko w projekcie.",
         "save_failed_title": "Nie udało się zapisać stanowiska",
         "saving": "Zapisywanie…"
+      },
+      "sandbox": {
+        "save": "Zapisz",
+        "saved_title": "Zapisano ustawienia",
+        "saved_message": "Nowe uruchomienia agentów będą używać tych ustawień.",
+        "save_failed": "Nie udało się zapisać ustawień",
+        "add": "Dodaj",
+        "edit": "Edytuj",
+        "remove": "Usuń",
+        "cancel": "Anuluj",
+        "enabled": "Włączone",
+        "name": "Nazwa",
+        "description": "Opis",
+        "network": {
+          "title": "Dostęp do sieci i pakietów",
+          "hint": "Agenci mogą łączyć się z tymi hostami tylko przez HTTPS. Wszystko inne jest blokowane.",
+          "defaults": "Zawsze dozwolone",
+          "extra": "Dodatkowe dozwolone hosty, jeden w wierszu"
+        },
+        "web": {
+          "title": "Narzędzia webowe",
+          "search": "Wyszukiwanie w sieci",
+          "search_hint": "Pozwala agentom wyszukiwać w sieci. Wyniki mogą zawierać niezaufane instrukcje.",
+          "fetch": "Pobieranie stron webowych",
+          "fetch_hint": "Pozwala agentom czytać strony, tylko z dozwolonych hostów."
+        },
+        "skills": {
+          "title": "Umiejętności",
+          "hint": "Instrukcje wielokrotnego użytku, które agenci mogą wczytać dla tego projektu.",
+          "empty": "Brak umiejętności.",
+          "content": "Instrukcje umiejętności"
+        },
+        "mcp": {
+          "title": "Serwery MCP",
+          "hint": "Zdalne narzędzia dla agentów deweloperskich. Sekrety nagłówków pozostają na serwerze i nigdy nie są ponownie wyświetlane.",
+          "empty": "Brak serwerów MCP.",
+          "url": "Adres URL HTTPS",
+          "headers": "Nagłówki",
+          "header_name": "Nazwa nagłówka",
+          "header_value": "Wartość nagłówka",
+          "add_header": "Dodaj nagłówek",
+          "saved_placeholder": "Zapisano, pozostaw puste, aby zachować"
+        }
       }
     }
   }

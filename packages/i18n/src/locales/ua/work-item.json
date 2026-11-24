@@ -513,7 +513,29 @@
       "response": "Відповідь",
       "error": "Помилка",
       "tokens": "{input, number} вхідних · {output, number} вихідних токенів",
-      "duration": "{seconds, number} с"
+      "duration": "{seconds, number} с",
+      "tools": "Виклики інструментів",
+      "tool_input": "Вхід",
+      "tool_output": "Вихід",
+      "session_id": "ID сеансу"
+    },
+    "git": {
+      "title": "Репозиторій",
+      "repository": "Репозиторій",
+      "branch": "Гілка",
+      "commit": "Останній коміт",
+      "pull_request": "Pull request",
+      "no_pull_request": "Ще не створено",
+      "files_changed": "Змінені файли: {count, number}",
+      "conflict_attempts": "Виправлення конфліктів: {count, number}"
+    },
+    "follow_up": {
+      "title": "Продовжити цю роботу",
+      "label": "Що агенти мають змінити або зробити далі?",
+      "placeholder": "Опишіть бажану зміну",
+      "hint": "Агенти продовжують зі своїх попередніх сеансів і в тій самій гілці. Агента також можна згадати в коментарі.",
+      "submit": "Продовжити роботу",
+      "submitting": "Запуск…"
     }
   }
 }

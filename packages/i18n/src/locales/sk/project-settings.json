@@ -587,6 +587,49 @@
         "saved_message": "Pozícia v projekte bola aktualizovaná.",
         "save_failed_title": "Pozíciu sa nepodarilo uložiť",
         "saving": "Ukladá sa…"
+      },
+      "sandbox": {
+        "save": "Uložiť",
+        "saved_title": "Nastavenia uložené",
+        "saved_message": "Nové spustenia agentov použijú tieto nastavenia.",
+        "save_failed": "Nastavenia sa nepodarilo uložiť",
+        "add": "Pridať",
+        "edit": "Upraviť",
+        "remove": "Odstrániť",
+        "cancel": "Zrušiť",
+        "enabled": "Zapnuté",
+        "name": "Názov",
+        "description": "Popis",
+        "network": {
+          "title": "Prístup k sieti a balíkom",
+          "hint": "Agenti môžu k týmto hostiteľom pristupovať iba cez HTTPS. Všetko ostatné je zablokované.",
+          "defaults": "Vždy povolené",
+          "extra": "Ďalší povolení hostitelia, jeden na riadok"
+        },
+        "web": {
+          "title": "Webové nástroje",
+          "search": "Webové vyhľadávanie",
+          "search_hint": "Umožňuje agentom vyhľadávať na webe. Výsledky môžu obsahovať nedôveryhodné pokyny.",
+          "fetch": "Načítanie webových stránok",
+          "fetch_hint": "Umožňuje agentom čítať stránky, iba z povolených hostiteľov."
+        },
+        "skills": {
+          "title": "Zručnosti",
+          "hint": "Opakovane použiteľné pokyny, ktoré agenti môžu pre tento projekt načítať.",
+          "empty": "Zatiaľ žiadne zručnosti.",
+          "content": "Pokyny k zručnosti"
+        },
+        "mcp": {
+          "title": "Servery MCP",
+          "hint": "Vzdialené nástroje pre vývojárskych agentov. Tajomstvá hlavičiek zostávajú na serveri a už sa nikdy nezobrazujú.",
+          "empty": "Zatiaľ žiadne servery MCP.",
+          "url": "URL HTTPS",
+          "headers": "Hlavičky",
+          "header_name": "Názov hlavičky",
+          "header_value": "Hodnota hlavičky",
+          "add_header": "Pridať hlavičku",
+          "saved_placeholder": "Uložené, nechajte prázdne na zachovanie"
+        }
       }
     }
   }

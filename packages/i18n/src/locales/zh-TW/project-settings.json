@@ -587,6 +587,49 @@
         "saved_message": "專案職位已更新。",
         "save_failed_title": "無法儲存職位",
         "saving": "正在儲存…"
+      },
+      "sandbox": {
+        "save": "儲存",
+        "saved_title": "設定已儲存",
+        "saved_message": "新的 Agent 執行將使用這些設定。",
+        "save_failed": "無法儲存設定",
+        "add": "新增",
+        "edit": "編輯",
+        "remove": "刪除",
+        "cancel": "取消",
+        "enabled": "已啟用",
+        "name": "名稱",
+        "description": "說明",
+        "network": {
+          "title": "套件與網路存取",
+          "hint": "Agent 只能透過 HTTPS 存取這些主機。其他所有存取都會被封鎖。",
+          "defaults": "一律允許",
+          "extra": "額外允許的主機，每行一個"
+        },
+        "web": {
+          "title": "Web 工具",
+          "search": "Web 搜尋",
+          "search_hint": "允許 Agent 搜尋 Web。結果可能包含不可信的指示。",
+          "fetch": "Web 擷取",
+          "fetch_hint": "允許 Agent 讀取頁面，僅限允許的主機。"
+        },
+        "skills": {
+          "title": "技能",
+          "hint": "Agent 可為此專案載入的可重複使用指示。",
+          "empty": "尚無技能。",
+          "content": "技能指示"
+        },
+        "mcp": {
+          "title": "MCP 伺服器",
+          "hint": "供開發者 Agent 使用的遠端工具。標頭密鑰會留在伺服器上，且不會再次顯示。",
+          "empty": "尚無 MCP 伺服器。",
+          "url": "HTTPS URL",
+          "headers": "標頭",
+          "header_name": "標頭名稱",
+          "header_value": "標頭值",
+          "add_header": "新增標頭",
+          "saved_placeholder": "已儲存，留空以保留"
+        }
       }
     }
   }

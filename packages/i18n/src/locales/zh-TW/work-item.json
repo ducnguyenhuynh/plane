@@ -513,7 +513,29 @@
       "response": "回應",
       "error": "錯誤",
       "tokens": "輸入 {input, number} · 輸出 {output, number} 個 token",
-      "duration": "{seconds, number} 秒"
+      "duration": "{seconds, number} 秒",
+      "tools": "工具呼叫",
+      "tool_input": "輸入",
+      "tool_output": "輸出",
+      "session_id": "工作階段 ID"
+    },
+    "git": {
+      "title": "儲存庫",
+      "repository": "儲存庫",
+      "branch": "分支",
+      "commit": "最新提交",
+      "pull_request": "提取請求",
+      "no_pull_request": "尚未開啟",
+      "files_changed": "變更的檔案：{count, number}",
+      "conflict_attempts": "衝突修正：{count, number}"
+    },
+    "follow_up": {
+      "title": "繼續此工作",
+      "label": "接下來您希望 Agent 變更或執行什麼？",
+      "placeholder": "描述您想要的變更",
+      "hint": "Agent 會從先前的工作階段和同一分支繼續。您也可以在留言中提及某個 Agent。",
+      "submit": "繼續工作",
+      "submitting": "正在啟動…"
     }
   }
 }

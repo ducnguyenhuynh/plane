@@ -22,8 +22,17 @@ export class AgentRunService extends APIService {
       });
   }
 
-  async startAgentRun(workspaceSlug: string, projectId: string, issueId: string): Promise<TAgentRun> {
-    return this.post(`/api/workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/agent-runs/`)
+  /** A follow-up run starts from the earlier sessions; without instructions it starts a fresh run. */
+  async startAgentRun(
+    workspaceSlug: string,
+    projectId: string,
+    issueId: string,
+    instructions?: string
+  ): Promise<TAgentRun> {
+    return this.post(
+      `/api/workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/agent-runs/`,
+      instructions ? { instructions } : undefined
+    )
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;

@@ -513,7 +513,29 @@
       "response": "Yanıt",
       "error": "Hata",
       "tokens": "{input, number} giriş · {output, number} çıkış tokenı",
-      "duration": "{seconds, number} sn"
+      "duration": "{seconds, number} sn",
+      "tools": "Araç çağrıları",
+      "tool_input": "Girdi",
+      "tool_output": "Çıktı",
+      "session_id": "Oturum kimliği"
+    },
+    "git": {
+      "title": "Depo",
+      "repository": "Depo",
+      "branch": "Dal",
+      "commit": "Son commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Henüz açılmadı",
+      "files_changed": "Değişen dosyalar: {count, number}",
+      "conflict_attempts": "Çakışma düzeltmeleri: {count, number}"
+    },
+    "follow_up": {
+      "title": "Bu çalışmayı sürdürün",
+      "label": "Aracılar bundan sonra neyi değiştirmeli veya yapmalı?",
+      "placeholder": "İstediğiniz değişikliği açıklayın",
+      "hint": "Aracılar önceki oturumlarından ve aynı daldan devam eder. Bir aracıdan yorumda da bahsedebilirsiniz.",
+      "submit": "Çalışmayı sürdürün",
+      "submitting": "Başlatılıyor…"
     }
   }
 }

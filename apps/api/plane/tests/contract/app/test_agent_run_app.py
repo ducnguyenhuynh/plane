@@ -57,11 +57,12 @@ class TestAgentRunEndpoint:
         return f"/api/workspaces/{workspace.slug}/projects/{project.id}/agent-runs/{run.id}/{suffix}"
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_start_run_snapshots_the_project_positions(
-        self, mock_delay, session_client, workspace, project, positions, issue
+        self, mock_delay, session_client, workspace, project, positions, issue, django_capture_on_commit_callbacks
     ):
-        response = session_client.post(self.url(workspace, project, issue), format="json")
+        with django_capture_on_commit_callbacks(execute=True):
+            response = session_client.post(self.url(workspace, project, issue), format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
         run = AgentRun.objects.get(issue=issue)
@@ -78,7 +79,7 @@ class TestAgentRunEndpoint:
             assert agent.bot_user_id is not None
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_start_run_snapshots_the_model_override(self, mock_delay, session_client, workspace, project, issue):
         agent = AIAgent.objects.create(
             workspace=workspace, name="PM", provider="openai", model="gpt", api_key="encrypted"
@@ -129,7 +130,7 @@ class TestAgentRunEndpoint:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_a_new_run_is_allowed_after_the_previous_one_finished(
         self, mock_delay, session_client, workspace, project, positions, issue
     ):
@@ -140,7 +141,7 @@ class TestAgentRunEndpoint:
         assert response.status_code == status.HTTP_201_CREATED
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_stale_runs_are_recovered_before_starting(
         self, mock_delay, session_client, workspace, project, positions, issue
     ):
@@ -193,7 +194,7 @@ class TestAgentRunEndpoint:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_retry_restarts_a_failed_run(self, mock_delay, session_client, workspace, project, positions, issue):
         run = AgentRun.objects.create(
             project=project,
@@ -254,7 +255,7 @@ class TestAgentRunEndpoint:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     @pytest.mark.django_db
-    @patch("plane.app.views.agent_run.run_agent_pipeline.delay")
+    @patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay")
     def test_team_size_caps_the_agents_used(self, mock_delay, session_client, workspace, project, positions, issue):
         second_dev = AIAgent.objects.create(
             workspace=workspace, name="Dev 2", provider="openai", model="gpt-test", api_key="encrypted"
@@ -308,7 +309,7 @@ class TestAgentRunEndpoint:
         child = Issue.objects.create(name="Subtask", project=project, workspace=workspace, parent=issue)
         AgentRunTask.objects.create(run=run, issue=child, agent=positions[AgentRole.DEVELOPER])
 
-        with patch("plane.app.views.agent_run.run_agent_pipeline.delay"):
+        with patch("plane.bgtasks.agent_pipeline_task.run_agent_pipeline.delay"):
             response = session_client.post(self.run_url(workspace, project, run, "retry"), format="json")
 
         assert response.status_code == status.HTTP_200_OK

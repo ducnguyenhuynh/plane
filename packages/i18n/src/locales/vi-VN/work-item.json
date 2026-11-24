@@ -513,7 +513,29 @@
       "response": "Phản hồi",
       "error": "Lỗi",
       "tokens": "{input, number} token đầu vào · {output, number} token đầu ra",
-      "duration": "{seconds, number} giây"
+      "duration": "{seconds, number} giây",
+      "tools": "Lệnh gọi công cụ",
+      "tool_input": "Đầu vào",
+      "tool_output": "Đầu ra",
+      "session_id": "ID phiên"
+    },
+    "git": {
+      "title": "Kho lưu trữ",
+      "repository": "Kho lưu trữ",
+      "branch": "Nhánh",
+      "commit": "Commit gần nhất",
+      "pull_request": "Pull request",
+      "no_pull_request": "Chưa được mở",
+      "files_changed": "Tệp đã thay đổi: {count, number}",
+      "conflict_attempts": "Sửa xung đột: {count, number}"
+    },
+    "follow_up": {
+      "title": "Tiếp tục công việc này",
+      "label": "Các tác nhân nên thay đổi hoặc làm gì tiếp theo?",
+      "placeholder": "Mô tả thay đổi bạn muốn",
+      "hint": "Các tác nhân tiếp tục từ các phiên trước và trên cùng nhánh. Bạn cũng có thể nhắc đến một tác nhân trong bình luận.",
+      "submit": "Tiếp tục công việc",
+      "submitting": "Đang bắt đầu…"
     }
   }
 }

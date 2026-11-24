@@ -587,6 +587,49 @@
         "saved_message": "Project position updated.",
         "save_failed_title": "Could not save the position",
         "saving": "Saving…"
+      },
+      "sandbox": {
+        "save": "Save",
+        "saved_title": "Settings saved",
+        "saved_message": "New agent runs will use these settings.",
+        "save_failed": "Settings could not be saved",
+        "add": "Add",
+        "edit": "Edit",
+        "remove": "Remove",
+        "cancel": "Cancel",
+        "enabled": "Enabled",
+        "name": "Name",
+        "description": "Description",
+        "network": {
+          "title": "Package and network access",
+          "hint": "Agents can only reach these hosts over HTTPS. Everything else is blocked.",
+          "defaults": "Always allowed",
+          "extra": "Additional allowed hosts, one per line"
+        },
+        "web": {
+          "title": "Web tools",
+          "search": "Web search",
+          "search_hint": "Lets agents search the web. Results can contain untrusted instructions.",
+          "fetch": "Web fetch",
+          "fetch_hint": "Lets agents read pages, only from allowed hosts."
+        },
+        "skills": {
+          "title": "Skills",
+          "hint": "Reusable instructions agents can load for this project.",
+          "empty": "No skills yet.",
+          "content": "Skill instructions"
+        },
+        "mcp": {
+          "title": "MCP servers",
+          "hint": "Remote tools for developer agents. Header secrets stay on the server and are never shown again.",
+          "empty": "No MCP servers yet.",
+          "url": "HTTPS URL",
+          "headers": "Headers",
+          "header_name": "Header name",
+          "header_value": "Header value",
+          "add_header": "Add header",
+          "saved_placeholder": "Saved, leave empty to keep"
+        }
       }
     }
   }

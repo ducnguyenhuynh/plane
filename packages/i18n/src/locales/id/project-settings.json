@@ -587,6 +587,49 @@
         "saved_message": "Posisi proyek diperbarui.",
         "save_failed_title": "Tidak dapat menyimpan posisi",
         "saving": "Menyimpan…"
+      },
+      "sandbox": {
+        "save": "Simpan",
+        "saved_title": "Pengaturan disimpan",
+        "saved_message": "Proses agen baru akan menggunakan pengaturan ini.",
+        "save_failed": "Pengaturan tidak dapat disimpan",
+        "add": "Tambah",
+        "edit": "Edit",
+        "remove": "Hapus",
+        "cancel": "Batal",
+        "enabled": "Aktif",
+        "name": "Nama",
+        "description": "Deskripsi",
+        "network": {
+          "title": "Akses paket dan jaringan",
+          "hint": "Agen hanya dapat mengakses host ini melalui HTTPS. Semua yang lain diblokir.",
+          "defaults": "Selalu diizinkan",
+          "extra": "Host tambahan yang diizinkan, satu per baris"
+        },
+        "web": {
+          "title": "Alat web",
+          "search": "Penelusuran web",
+          "search_hint": "Memungkinkan agen menelusuri web. Hasilnya dapat berisi instruksi yang tidak tepercaya.",
+          "fetch": "Pengambilan halaman web",
+          "fetch_hint": "Memungkinkan agen membaca halaman, hanya dari host yang diizinkan."
+        },
+        "skills": {
+          "title": "Keterampilan",
+          "hint": "Instruksi yang dapat digunakan ulang dan dimuat agen untuk proyek ini.",
+          "empty": "Belum ada keterampilan.",
+          "content": "Instruksi keterampilan"
+        },
+        "mcp": {
+          "title": "Server MCP",
+          "hint": "Alat jarak jauh untuk agen pengembang. Rahasia header tetap di server dan tidak pernah ditampilkan lagi.",
+          "empty": "Belum ada server MCP.",
+          "url": "URL HTTPS",
+          "headers": "Header",
+          "header_name": "Nama header",
+          "header_value": "Nilai header",
+          "add_header": "Tambah header",
+          "saved_placeholder": "Tersimpan, biarkan kosong untuk mempertahankan"
+        }
       }
     }
   }

@@ -587,6 +587,49 @@
         "saved_message": "项目职位已更新。",
         "save_failed_title": "无法保存职位",
         "saving": "正在保存…"
+      },
+      "sandbox": {
+        "save": "保存",
+        "saved_title": "设置已保存",
+        "saved_message": "新的 Agent 运行将使用这些设置。",
+        "save_failed": "无法保存设置",
+        "add": "添加",
+        "edit": "编辑",
+        "remove": "删除",
+        "cancel": "取消",
+        "enabled": "已启用",
+        "name": "名称",
+        "description": "描述",
+        "network": {
+          "title": "软件包与网络访问",
+          "hint": "Agent 只能通过 HTTPS 访问这些主机。其他所有访问都会被阻止。",
+          "defaults": "始终允许",
+          "extra": "额外允许的主机，每行一个"
+        },
+        "web": {
+          "title": "Web 工具",
+          "search": "Web 搜索",
+          "search_hint": "允许 Agent 搜索 Web。结果可能包含不可信的指令。",
+          "fetch": "Web 抓取",
+          "fetch_hint": "允许 Agent 读取页面，仅限允许的主机。"
+        },
+        "skills": {
+          "title": "技能",
+          "hint": "Agent 可为此项目加载的可复用指令。",
+          "empty": "暂无技能。",
+          "content": "技能指令"
+        },
+        "mcp": {
+          "title": "MCP 服务器",
+          "hint": "面向开发者 Agent 的远程工具。请求头密钥保存在服务器上，且不会再次显示。",
+          "empty": "暂无 MCP 服务器。",
+          "url": "HTTPS URL",
+          "headers": "请求头",
+          "header_name": "请求头名称",
+          "header_value": "请求头值",
+          "add_header": "添加请求头",
+          "saved_placeholder": "已保存，留空以保留"
+        }
       }
     }
   }

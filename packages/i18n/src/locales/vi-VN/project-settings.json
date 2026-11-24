@@ -587,6 +587,49 @@
         "saved_message": "Đã cập nhật vị trí trong dự án.",
         "save_failed_title": "Không thể lưu vị trí",
         "saving": "Đang lưu…"
+      },
+      "sandbox": {
+        "save": "Lưu",
+        "saved_title": "Đã lưu cài đặt",
+        "saved_message": "Các lần chạy tác nhân mới sẽ dùng các cài đặt này.",
+        "save_failed": "Không thể lưu cài đặt",
+        "add": "Thêm",
+        "edit": "Sửa",
+        "remove": "Xóa",
+        "cancel": "Hủy",
+        "enabled": "Bật",
+        "name": "Tên",
+        "description": "Mô tả",
+        "network": {
+          "title": "Quyền truy cập mạng và gói",
+          "hint": "Tác nhân chỉ có thể truy cập các máy chủ này qua HTTPS. Mọi thứ khác đều bị chặn.",
+          "defaults": "Luôn được phép",
+          "extra": "Máy chủ được phép bổ sung, mỗi dòng một mục"
+        },
+        "web": {
+          "title": "Công cụ web",
+          "search": "Tìm kiếm web",
+          "search_hint": "Cho phép tác nhân tìm kiếm trên web. Kết quả có thể chứa chỉ dẫn không đáng tin cậy.",
+          "fetch": "Tải trang web",
+          "fetch_hint": "Cho phép tác nhân đọc trang, chỉ từ các máy chủ được phép."
+        },
+        "skills": {
+          "title": "Kỹ năng",
+          "hint": "Chỉ dẫn tái sử dụng mà tác nhân có thể tải cho dự án này.",
+          "empty": "Chưa có kỹ năng nào.",
+          "content": "Chỉ dẫn của kỹ năng"
+        },
+        "mcp": {
+          "title": "Máy chủ MCP",
+          "hint": "Công cụ từ xa cho tác nhân lập trình. Bí mật tiêu đề được giữ trên máy chủ và không bao giờ hiển thị lại.",
+          "empty": "Chưa có máy chủ MCP nào.",
+          "url": "URL HTTPS",
+          "headers": "Tiêu đề",
+          "header_name": "Tên tiêu đề",
+          "header_value": "Giá trị tiêu đề",
+          "add_header": "Thêm tiêu đề",
+          "saved_placeholder": "Đã lưu, để trống để giữ nguyên"
+        }
       }
     }
   }

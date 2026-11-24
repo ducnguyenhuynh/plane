@@ -513,7 +513,29 @@
       "response": "Response",
       "error": "Error",
       "tokens": "{input, number} input · {output, number} output tokens",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Tool calls",
+      "tool_input": "Input",
+      "tool_output": "Output",
+      "session_id": "Session ID"
+    },
+    "git": {
+      "title": "Repository",
+      "repository": "Repository",
+      "branch": "Branch",
+      "commit": "Latest commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Not opened yet",
+      "files_changed": "Files changed: {count, number}",
+      "conflict_attempts": "Conflict fixes: {count, number}"
+    },
+    "follow_up": {
+      "title": "Continue this work",
+      "label": "What should the agents change or do next?",
+      "placeholder": "Describe the change you want",
+      "hint": "The agents continue from their earlier sessions and the same branch. You can also mention an agent in a comment.",
+      "submit": "Continue work",
+      "submitting": "Starting…"
     }
   }
 }

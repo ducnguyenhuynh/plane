@@ -18,7 +18,7 @@ class TestAIAgentEndpoint:
 
         response = session_client.post(
             url,
-            {"name": "Opus", "provider": "anthropic", "model": "claude-opus-5.5", "api_key": "sk-secret"},
+            {"name": "Opus", "provider": "opencode", "model": "deepseek-v4.1-flash", "api_key": "sk-secret"},
             format="json",
         )
 
@@ -28,11 +28,18 @@ class TestAIAgentEndpoint:
         agent = AIAgent.objects.get(pk=response.data["id"])
         assert agent.api_key != "sk-secret"
         assert decrypt_data(agent.api_key) == "sk-secret"
+        # A missing base URL becomes the OpenCode default
+        assert agent.base_url == "https://opencode.ai/inference/go/v1"
 
     @pytest.mark.django_db
     def test_api_key_is_not_required_on_update(self, session_client, workspace):
         agent = AIAgent.objects.create(
-            workspace=workspace, name="Opus", provider="anthropic", model="old", api_key="encrypted"
+            workspace=workspace,
+            name="Opus",
+            provider="opencode",
+            model="old",
+            api_key="encrypted",
+            base_url="https://opencode.ai/inference/go/v1",
         )
         url = f"/api/workspaces/{workspace.slug}/ai-agents/{agent.id}/"
 
@@ -57,15 +64,28 @@ class TestAIAgentEndpoint:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     @pytest.mark.django_db
-    def test_custom_provider_requires_base_url(self, session_client, workspace):
+    def test_only_opencode_providers_and_endpoints_are_accepted(self, session_client, workspace):
         url = f"/api/workspaces/{workspace.slug}/ai-agents/"
 
-        response = session_client.post(
+        foreign_provider = session_client.post(
             url, {"name": "Dev", "provider": "custom", "model": "deepseek-4.1-flash", "api_key": "sk"}, format="json"
         )
+        foreign_base_url = session_client.post(
+            url,
+            {
+                "name": "Dev",
+                "provider": "opencode",
+                "model": "deepseek-4.1-flash",
+                "api_key": "sk",
+                "base_url": "https://api.openai.com/v1",
+            },
+            format="json",
+        )
 
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert "base_url" in response.data
+        assert foreign_provider.status_code == status.HTTP_400_BAD_REQUEST
+        assert "provider" in foreign_provider.data
+        assert foreign_base_url.status_code == status.HTTP_400_BAD_REQUEST
+        assert "base_url" in foreign_base_url.data
 
 
 @pytest.mark.contract

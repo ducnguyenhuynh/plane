@@ -513,7 +513,29 @@
       "response": "Respons",
       "error": "Kesalahan",
       "tokens": "{input, number} token masukan · {output, number} token keluaran",
-      "duration": "{seconds, number} dtk"
+      "duration": "{seconds, number} dtk",
+      "tools": "Panggilan alat",
+      "tool_input": "Masukan",
+      "tool_output": "Keluaran",
+      "session_id": "ID sesi"
+    },
+    "git": {
+      "title": "Repositori",
+      "repository": "Repositori",
+      "branch": "Branch",
+      "commit": "Commit terakhir",
+      "pull_request": "Pull request",
+      "no_pull_request": "Belum dibuka",
+      "files_changed": "File diubah: {count, number}",
+      "conflict_attempts": "Perbaikan konflik: {count, number}"
+    },
+    "follow_up": {
+      "title": "Lanjutkan pekerjaan ini",
+      "label": "Apa yang harus diubah atau dilakukan agen selanjutnya?",
+      "placeholder": "Jelaskan perubahan yang Anda inginkan",
+      "hint": "Agen melanjutkan dari sesi sebelumnya dan branch yang sama. Anda juga dapat menyebut agen di komentar.",
+      "submit": "Lanjutkan pekerjaan",
+      "submitting": "Memulai…"
     }
   }
 }

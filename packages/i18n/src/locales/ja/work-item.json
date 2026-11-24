@@ -513,7 +513,29 @@
       "response": "応答",
       "error": "エラー",
       "tokens": "入力 {input, number} · 出力 {output, number} トークン",
-      "duration": "{seconds, number} 秒"
+      "duration": "{seconds, number} 秒",
+      "tools": "ツール呼び出し",
+      "tool_input": "入力",
+      "tool_output": "出力",
+      "session_id": "セッション ID"
+    },
+    "git": {
+      "title": "リポジトリ",
+      "repository": "リポジトリ",
+      "branch": "ブランチ",
+      "commit": "最新のコミット",
+      "pull_request": "プルリクエスト",
+      "no_pull_request": "まだ作成されていません",
+      "files_changed": "変更されたファイル: {count, number}",
+      "conflict_attempts": "競合の修正: {count, number}"
+    },
+    "follow_up": {
+      "title": "この作業を続ける",
+      "label": "次にエージェントへ変更や実行してほしいことを入力してください",
+      "placeholder": "希望する変更を入力してください",
+      "hint": "エージェントは以前のセッションと同じブランチから続行します。コメントでエージェントにメンションすることもできます。",
+      "submit": "作業を続ける",
+      "submitting": "開始しています…"
     }
   }
 }

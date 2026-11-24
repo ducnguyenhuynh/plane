@@ -19,6 +19,7 @@ import type { TAgentRunStage, TAgentRunStatus } from "@plane/types";
 // components
 import { getAgentErrorMessage } from "@/components/agents/utils";
 // local imports
+import { AgentRunGitSummary, commitUrlForRun } from "./agent-run-git";
 import { AgentRunSessionLogs } from "./agent-run-session-logs";
 // services
 import { AgentRunService } from "@/services/agent-run.service";
@@ -78,6 +79,7 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
   const [isRetrying, setIsRetrying] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [followUp, setFollowUp] = useState("");
   // derived keys
   const listKey = `AGENT_RUNS_${issueId}`;
   const { data: runs, mutate: mutateList } = useSWR(
@@ -103,10 +105,11 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
     void mutateDetail();
   };
 
-  const handleStart = async () => {
+  const handleStart = async (instructions?: string) => {
     setIsStarting(true);
     try {
-      await agentRunService.startAgentRun(workspaceSlug, projectId, issueId);
+      await agentRunService.startAgentRun(workspaceSlug, projectId, issueId, instructions);
+      setFollowUp("");
       setSelectedRunId(null);
       refresh();
       setToast({
@@ -328,11 +331,42 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
                     )}
                   </div>
 
+                  {canStartNew && (
+                    <section className="flex flex-col gap-2">
+                      <h4 className="text-body-sm-medium text-primary">{t("agent_run.follow_up.title")}</h4>
+                      <label className="text-body-xs-medium text-secondary" htmlFor="agent-run-follow-up">
+                        {t("agent_run.follow_up.label")}
+                      </label>
+                      <textarea
+                        id="agent-run-follow-up"
+                        rows={3}
+                        value={followUp}
+                        onChange={(event) => setFollowUp(event.target.value)}
+                        placeholder={t("agent_run.follow_up.placeholder")}
+                        className="w-full rounded-md border border-subtle bg-layer-1 p-2 text-body-sm-regular text-primary placeholder:text-tertiary focus-visible:ring-2 focus-visible:ring-accent-strong focus-visible:outline-none"
+                      />
+                      <p className="text-body-xs-regular text-tertiary">{t("agent_run.follow_up.hint")}</p>
+                      <div>
+                        <Button
+                          variant="primary"
+                          size="md"
+                          stretch="auto"
+                          label={isStarting ? t("agent_run.follow_up.submitting") : t("agent_run.follow_up.submit")}
+                          loading={isStarting}
+                          disabled={!followUp.trim() || isStarting}
+                          onClick={() => void handleStart(followUp.trim())}
+                        />
+                      </div>
+                    </section>
+                  )}
+
                   {selected.error && (
                     <div className="rounded-md border border-danger-subtle bg-danger-subtle p-3 text-body-xs-regular text-danger-primary">
                       {selected.error}
                     </div>
                   )}
+
+                  <AgentRunGitSummary run={detail ?? selected} />
 
                   {selected.result && (
                     <section className="flex flex-col gap-2">
@@ -346,24 +380,53 @@ export function AgentRunModal({ workspaceSlug, projectId, issueId, isOpen, onClo
                   {detail?.tasks && detail.tasks.length > 0 && (
                     <section className="flex flex-col gap-2">
                       <h4 className="text-body-sm-medium text-primary">{t("agent_run.subtasks")}</h4>
-                      {detail.tasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-subtle p-3"
-                        >
-                          <div className="flex flex-col">
-                            <Link
-                              className="text-body-sm-medium text-link-primary hover:underline"
-                              href={`/${workspaceSlug}/browse/${task.issue_identifier}`}
-                            >
-                              {task.issue_identifier} {task.issue_name}
-                            </Link>
-                            <span className="text-body-xs-regular text-tertiary">
-                              {task.agent?.name ?? t("agent_run.no_agent")} · {task.status}
-                            </span>
+                      {detail.tasks.map((task) => {
+                        const sha = task.merged_sha || task.commit_sha;
+                        const commitUrl = commitUrlForRun(detail ?? selected, detail.repository, sha);
+                        return (
+                          <div
+                            key={task.id}
+                            className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-subtle p-3"
+                          >
+                            <div className="flex flex-col">
+                              <Link
+                                className="text-body-sm-medium text-link-primary hover:underline"
+                                href={`/${workspaceSlug}/browse/${task.issue_identifier}`}
+                              >
+                                {task.issue_identifier} {task.issue_name}
+                              </Link>
+                              <span
+                                className={`text-body-xs-regular ${
+                                  task.status === "blocked" ? "text-danger-primary" : "text-tertiary"
+                                }`}
+                              >
+                                {task.agent?.name ?? t("agent_run.no_agent")} · {task.status}
+                              </span>
+                              <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-xs-regular text-tertiary">
+                                {sha &&
+                                  (commitUrl ? (
+                                    <a
+                                      className="text-link-primary hover:underline"
+                                      href={commitUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {sha.slice(0, 7)}
+                                    </a>
+                                  ) : (
+                                    <span>{sha.slice(0, 7)}</span>
+                                  ))}
+                                {task.changed_paths.length > 0 && (
+                                  <span>{t("agent_run.git.files_changed", { count: task.changed_paths.length })}</span>
+                                )}
+                                {task.conflict_attempts > 0 && (
+                                  <span>{t("agent_run.git.conflict_attempts", { count: task.conflict_attempts })}</span>
+                                )}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </section>
                   )}
 

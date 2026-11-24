@@ -63,7 +63,21 @@ class AgentRunTaskSerializer(BaseSerializer):
 
     class Meta:
         model = AgentRunTask
-        fields = ["id", "issue_id", "issue_identifier", "issue_name", "agent", "status", "output", "created_at"]
+        fields = [
+            "id",
+            "issue_id",
+            "issue_identifier",
+            "issue_name",
+            "agent",
+            "status",
+            "paths",
+            "depends_on",
+            "commit_sha",
+            "merged_sha",
+            "changed_paths",
+            "conflict_attempts",
+            "created_at",
+        ]
 
     def get_issue_identifier(self, obj):
         return f"{obj.issue.project.identifier}-{obj.issue.sequence_id}"
@@ -90,6 +104,15 @@ class AgentRunSerializer(BaseSerializer):
             "rework_round",
             "result",
             "error",
+            "parent_run_id",
+            "instructions",
+            "repository",
+            "base_branch",
+            "branch",
+            "base_sha",
+            "head_sha",
+            "pull_request_number",
+            "pull_request_url",
             "created_at",
             "started_at",
             "completed_at",
@@ -119,6 +142,7 @@ class AgentRunSessionSerializer(BaseSerializer):
             "agent_name",
             "stage",
             "purpose",
+            "session_id",
             "rework_round",
             "provider",
             "model",
@@ -128,6 +152,7 @@ class AgentRunSessionSerializer(BaseSerializer):
             "max_tokens",
             "input_tokens",
             "output_tokens",
+            "cost",
             "error",
             "started_at",
             "completed_at",
@@ -139,5 +164,5 @@ class AgentRunSessionSerializer(BaseSerializer):
 
 class AgentRunSessionDetailSerializer(AgentRunSessionSerializer):
     class Meta(AgentRunSessionSerializer.Meta):
-        fields = AgentRunSessionSerializer.Meta.fields + ["request", "response", "reasoning", "usage"]
+        fields = AgentRunSessionSerializer.Meta.fields + ["request", "response", "reasoning", "usage", "tool_calls"]
         read_only_fields = fields

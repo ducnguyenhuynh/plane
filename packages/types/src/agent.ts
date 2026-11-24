@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+/** Old providers stay in the union because rows created before OpenCode-only can still be returned. */
 export type TAgentProvider = "anthropic" | "openai" | "opencode" | "custom";
 
 export type TAgentRole = "project_manager" | "reviewer" | "qa" | "developer";
@@ -65,6 +66,29 @@ export type TProjectAgentPayload = {
   is_active?: boolean;
 };
 
+export type TProjectAgentSkill = {
+  name: string;
+  description: string;
+  content: string;
+  enabled: boolean;
+};
+
+export type TProjectAgentMcpServer = {
+  name: string;
+  url: string;
+  enabled: boolean;
+  /** Header secrets are write-only; the API only reports which headers exist. */
+  header_names: string[];
+};
+
+export type TProjectAgentMcpServerPayload = {
+  name: string;
+  url: string;
+  enabled: boolean;
+  /** An empty value keeps the stored secret; an omitted header is deleted. */
+  headers: Record<string, string>;
+};
+
 export type TProjectAgentTeam = {
   /** `null` while the counts are still the unsaved defaults. */
   id: string | null;
@@ -72,4 +96,11 @@ export type TProjectAgentTeam = {
   pm_count: number;
   qa_count: number;
   developer_count: number;
+  /** Read-only: hosts the sandbox always allows. */
+  default_allowed_hosts: string[];
+  allowed_hosts: string[];
+  websearch_enabled: boolean;
+  webfetch_enabled: boolean;
+  skills: TProjectAgentSkill[];
+  mcp_servers: TProjectAgentMcpServer[];
 };

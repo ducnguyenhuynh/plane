@@ -513,7 +513,29 @@
       "response": "响应",
       "error": "错误",
       "tokens": "输入 {input, number} · 输出 {output, number} 个 token",
-      "duration": "{seconds, number} 秒"
+      "duration": "{seconds, number} 秒",
+      "tools": "工具调用",
+      "tool_input": "输入",
+      "tool_output": "输出",
+      "session_id": "会话 ID"
+    },
+    "git": {
+      "title": "仓库",
+      "repository": "仓库",
+      "branch": "分支",
+      "commit": "最新提交",
+      "pull_request": "拉取请求",
+      "no_pull_request": "尚未打开",
+      "files_changed": "更改的文件：{count, number}",
+      "conflict_attempts": "冲突修复：{count, number}"
+    },
+    "follow_up": {
+      "title": "继续此工作",
+      "label": "接下来您希望 Agent 更改或执行什么？",
+      "placeholder": "描述您想要的更改",
+      "hint": "Agent 会从之前的会话和同一分支继续。您也可以在评论中提及某个 Agent。",
+      "submit": "继续工作",
+      "submitting": "正在启动…"
     }
   }
 }

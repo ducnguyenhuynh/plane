@@ -8,7 +8,7 @@ import { useState } from "react";
 import useSWR from "swr";
 // plane imports
 import { useTranslation } from "@plane/i18n";
-import type { TAgentRunSession, TAgentRunSessionStatus } from "@plane/types";
+import type { TAgentRunSession, TAgentRunSessionStatus, TAgentRunToolCall } from "@plane/types";
 // services
 import { AgentRunService } from "@/services/agent-run.service";
 
@@ -39,6 +39,39 @@ function SessionBlock({ label, content }: { label: string; content: string }) {
   );
 }
 
+/** Tool calls are plain text: input is pretty-printed JSON, output and error are kept as sent. */
+function ToolCalls({ toolCalls }: { toolCalls: TAgentRunToolCall[] }) {
+  // translation
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-body-xs-medium text-secondary">{t("agent_run.session_logs.tools")}</span>
+      {toolCalls.map((call, index) => {
+        const input = call.input === null || call.input === undefined ? "" : JSON.stringify(call.input, null, 2);
+        const failed = call.status === "failed" || call.status === "error";
+        return (
+          // oxlint-disable-next-line react/no-array-index-key -- tool calls carry no id; the list never reorders
+          <details key={`${call.tool}-${index}`} className="rounded-sm border border-subtle p-2">
+            <summary className="cursor-pointer text-body-xs-regular">
+              <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="text-secondary">{call.tool}</span>
+                {call.title && <span className="text-tertiary">{call.title}</span>}
+                {call.status && <span className={failed ? "text-danger-primary" : "text-tertiary"}>{call.status}</span>}
+              </span>
+            </summary>
+            <div className="mt-2 flex flex-col gap-2">
+              {input && <SessionBlock label={t("agent_run.session_logs.tool_input")} content={input} />}
+              {call.output && <SessionBlock label={t("agent_run.session_logs.tool_output")} content={call.output} />}
+              {call.error && <SessionBlock label={t("agent_run.session_logs.error")} content={call.error} />}
+            </div>
+          </details>
+        );
+      })}
+    </div>
+  );
+}
+
 function SessionDetail({ workspaceSlug, projectId, runId, session }: SessionProps) {
   // translation
   const { t } = useTranslation();
@@ -51,10 +84,16 @@ function SessionDetail({ workspaceSlug, projectId, runId, session }: SessionProp
 
   return (
     <div className="mt-2 flex flex-col gap-2">
+      {data?.session_id && (
+        <p className="font-code text-caption-sm-regular break-all text-tertiary">
+          {t("agent_run.session_logs.session_id")}: {data.session_id}
+        </p>
+      )}
       {data?.error && <SessionBlock label={t("agent_run.session_logs.error")} content={data.error} />}
       {prompt && <SessionBlock label={t("agent_run.session_logs.prompt")} content={prompt} />}
       {data?.reasoning && <SessionBlock label={t("agent_run.session_logs.reasoning")} content={data.reasoning} />}
       {data?.response && <SessionBlock label={t("agent_run.session_logs.response")} content={data.response} />}
+      {data?.tool_calls && data.tool_calls.length > 0 && <ToolCalls toolCalls={data.tool_calls} />}
     </div>
   );
 }

@@ -587,6 +587,49 @@
         "saved_message": "Projektposition aktualisiert.",
         "save_failed_title": "Position konnte nicht gespeichert werden",
         "saving": "Wird gespeichert…"
+      },
+      "sandbox": {
+        "save": "Speichern",
+        "saved_title": "Einstellungen gespeichert",
+        "saved_message": "Neue Agentenläufe verwenden diese Einstellungen.",
+        "save_failed": "Einstellungen konnten nicht gespeichert werden",
+        "add": "Hinzufügen",
+        "edit": "Bearbeiten",
+        "remove": "Entfernen",
+        "cancel": "Abbrechen",
+        "enabled": "Aktiviert",
+        "name": "Name",
+        "description": "Beschreibung",
+        "network": {
+          "title": "Paket- und Netzwerkzugriff",
+          "hint": "Agenten erreichen diese Hosts nur über HTTPS. Alles andere ist blockiert.",
+          "defaults": "Immer erlaubt",
+          "extra": "Zusätzlich erlaubte Hosts, einer pro Zeile"
+        },
+        "web": {
+          "title": "Web-Tools",
+          "search": "Websuche",
+          "search_hint": "Ermöglicht Agenten die Websuche. Ergebnisse können nicht vertrauenswürdige Anweisungen enthalten.",
+          "fetch": "Webabruf",
+          "fetch_hint": "Ermöglicht Agenten, Seiten zu lesen, nur von erlaubten Hosts."
+        },
+        "skills": {
+          "title": "Fähigkeiten",
+          "hint": "Wiederverwendbare Anweisungen, die Agenten für dieses Projekt laden können.",
+          "empty": "Noch keine Fähigkeiten.",
+          "content": "Anweisungen für die Fähigkeit"
+        },
+        "mcp": {
+          "title": "MCP-Server",
+          "hint": "Remote-Tools für Entwickleragenten. Header-Geheimnisse bleiben auf dem Server und werden nie erneut angezeigt.",
+          "empty": "Noch keine MCP-Server.",
+          "url": "HTTPS-URL",
+          "headers": "Header",
+          "header_name": "Header-Name",
+          "header_value": "Header-Wert",
+          "add_header": "Header hinzufügen",
+          "saved_placeholder": "Gespeichert, leer lassen zum Behalten"
+        }
       }
     }
   }

@@ -3,7 +3,6 @@
 # See the LICENSE file for details.
 
 # Django imports
-from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
@@ -18,10 +17,10 @@ from plane.app.serializers.agent_run import (
     AgentRunSessionDetailSerializer,
     AgentRunSessionSerializer,
 )
-from plane.bgtasks.agent_pipeline_task import log_event, mark_stale_runs_failed, run_agent_pipeline
+from plane.bgtasks.agent_pipeline_task import log_event, mark_stale_runs_failed
 from plane.db.models import (
+    DEFAULT_AGENT_ALLOWED_HOSTS,
     DEFAULT_AGENT_TEAM,
-    AgentRole,
     AgentRun,
     AgentRunSession,
     AgentRunStage,
@@ -29,30 +28,10 @@ from plane.db.models import (
     Issue,
     Project,
     ProjectAgentTeam,
-    ProjectAIAgent,
 )
-from plane.utils.agent_bot import ensure_agent_bot, ensure_project_member
+from plane.utils.agent_followup import AgentRunStartError, enqueue_agent_run, start_agent_run
 
 from .base import BaseAPIView
-
-
-def project_positions(project):
-    return (
-        ProjectAIAgent.objects.filter(project=project, is_active=True, agent__is_active=True)
-        .select_related("agent")
-        .order_by("created_at")
-    )
-
-
-def team_limits(project):
-    team = ProjectAgentTeam.objects.filter(project=project).first()
-    if not team:
-        return dict(DEFAULT_AGENT_TEAM)
-    return {
-        "pm_count": team.pm_count,
-        "qa_count": team.qa_count,
-        "developer_count": team.developer_count,
-    }
 
 
 class ProjectAgentTeamEndpoint(BaseAPIView):
@@ -66,7 +45,19 @@ class ProjectAgentTeamEndpoint(BaseAPIView):
         if team:
             return Response(ProjectAgentTeamSerializer(team).data, status=status.HTTP_200_OK)
         # Reading must not write: report the defaults for an unsaved team
-        return Response({"id": None, **DEFAULT_AGENT_TEAM}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "id": None,
+                **DEFAULT_AGENT_TEAM,
+                "allowed_hosts": [],
+                "websearch_enabled": False,
+                "webfetch_enabled": False,
+                "skills": [],
+                "mcp_servers": [],
+                "default_allowed_hosts": DEFAULT_AGENT_ALLOWED_HOSTS,
+            },
+            status=status.HTTP_200_OK,
+        )
 
     @allow_permission(allowed_roles=[ROLE.ADMIN])
     def patch(self, request, slug, project_id):
@@ -99,67 +90,13 @@ class IssueAgentRunEndpoint(BaseAPIView):
         issue = get_object_or_404(
             Issue.objects.filter(project__workspace__slug=slug, project_id=project_id), pk=issue_id
         )
-        mark_stale_runs_failed(issue.project)
-        active = AgentRun.objects.filter(
-            project=issue.project,
-            issue=issue,
-            status__in=[AgentRunStatus.QUEUED, AgentRunStatus.RUNNING],
-        )
-        if active.exists():
-            return Response(
-                {"error": "An agent run is already in progress for this work item."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        limits = team_limits(issue.project)
-        positions = project_positions(issue.project)
-        pm_positions = list(positions.filter(role=AgentRole.PROJECT_MANAGER)[: limits["pm_count"]])
-        qa_positions = list(positions.filter(role=AgentRole.QA)[: limits["qa_count"]])
-        developer_positions = list(positions.filter(role=AgentRole.DEVELOPER)[: limits["developer_count"]])
-
-        missing = []
-        if not pm_positions:
-            missing.append("project manager")
-        if not developer_positions:
-            missing.append("developer")
-        if not qa_positions:
-            missing.append("QA")
-        if missing:
-            return Response(
-                {"error": f"Assign an agent to these positions first: {', '.join(missing)}."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        # Snapshot the model each agent runs with (a position's override wins)
-        agent_models = {}
-        for position in pm_positions + qa_positions + developer_positions:
-            if position.model_override:
-                agent_models[str(position.agent_id)] = position.model_override
-
+        instructions = request.data.get("instructions")
+        if not isinstance(instructions, str):
+            instructions = ""
         try:
-            run = AgentRun.objects.create(
-                project=issue.project,
-                workspace=issue.project.workspace,
-                issue=issue,
-                pm_agent=pm_positions[0].agent,
-                pm_agents=[str(position.agent_id) for position in pm_positions],
-                developer_agents=[str(position.agent_id) for position in developer_positions],
-                qa_agent=qa_positions[0].agent,
-                qa_agents=[str(position.agent_id) for position in qa_positions],
-                agent_models=agent_models,
-            )
-        except IntegrityError:
-            # Another request created an active run between the check and the insert
-            return Response(
-                {"error": "An agent run is already in progress for this work item."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        for position in pm_positions + qa_positions + developer_positions:
-            bot = ensure_agent_bot(position.agent)
-            ensure_project_member(bot, issue.project)
-
-        run_agent_pipeline.delay(str(run.id))
+            run = start_agent_run(issue, instructions=instructions)
+        except AgentRunStartError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(AgentRunSerializer(run).data, status=status.HTTP_201_CREATED)
 
 
@@ -181,7 +118,7 @@ class AgentRunSessionListEndpoint(BaseAPIView):
         run = get_object_or_404(
             AgentRun.objects.filter(project__workspace__slug=slug, project_id=project_id), pk=run_id
         )
-        sessions = run.sessions.defer("request", "response", "reasoning", "usage").order_by("created_at")
+        sessions = run.sessions.defer("request", "response", "reasoning", "usage", "tool_calls").order_by("created_at")
         return Response(AgentRunSessionSerializer(sessions, many=True).data, status=status.HTTP_200_OK)
 
 
@@ -212,7 +149,7 @@ class AgentRunRetryEndpoint(BaseAPIView):
         # A run with tasks resumes at the developer stage; otherwise the PM plan is regenerated
         run.stage = AgentRunStage.DEVELOPER if run.tasks.exists() else AgentRunStage.PM
         run.save(update_fields=["status", "error", "completed_at", "stage", "updated_at"])
-        run_agent_pipeline.delay(str(run.id))
+        enqueue_agent_run(str(run.id))
         return Response(AgentRunSerializer(run).data, status=status.HTTP_200_OK)
 
 

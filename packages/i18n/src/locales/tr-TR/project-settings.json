@@ -587,6 +587,49 @@
         "saved_message": "Proje pozisyonu güncellendi.",
         "save_failed_title": "Pozisyon kaydedilemedi",
         "saving": "Kaydediliyor…"
+      },
+      "sandbox": {
+        "save": "Kaydet",
+        "saved_title": "Ayarlar kaydedildi",
+        "saved_message": "Yeni ajan çalıştırmaları bu ayarları kullanır.",
+        "save_failed": "Ayarlar kaydedilemedi",
+        "add": "Ekle",
+        "edit": "Düzenle",
+        "remove": "Kaldır",
+        "cancel": "İptal",
+        "enabled": "Etkin",
+        "name": "Ad",
+        "description": "Açıklama",
+        "network": {
+          "title": "Paket ve ağ erişimi",
+          "hint": "Ajanlar bu ana bilgisayarlara yalnızca HTTPS üzerinden erişebilir. Diğer her şey engellenir.",
+          "defaults": "Her zaman izin verilir",
+          "extra": "Ek izin verilen ana bilgisayarlar, her satırda bir tane"
+        },
+        "web": {
+          "title": "Web araçları",
+          "search": "Web araması",
+          "search_hint": "Ajanların web'de arama yapmasını sağlar. Sonuçlar güvenilmeyen talimatlar içerebilir.",
+          "fetch": "Web sayfası getirme",
+          "fetch_hint": "Ajanların sayfaları yalnızca izin verilen ana bilgisayarlardan okumasını sağlar."
+        },
+        "skills": {
+          "title": "Beceriler",
+          "hint": "Ajanların bu proje için yükleyebileceği yeniden kullanılabilir talimatlar.",
+          "empty": "Henüz beceri yok.",
+          "content": "Beceri talimatları"
+        },
+        "mcp": {
+          "title": "MCP sunucuları",
+          "hint": "Geliştirici ajanları için uzak araçlar. Başlık sırları sunucuda kalır ve bir daha asla gösterilmez.",
+          "empty": "Henüz MCP sunucusu yok.",
+          "url": "HTTPS URL",
+          "headers": "Başlıklar",
+          "header_name": "Başlık adı",
+          "header_value": "Başlık değeri",
+          "add_header": "Başlık ekle",
+          "saved_placeholder": "Kaydedildi, korumak için boş bırakın"
+        }
       }
     }
   }

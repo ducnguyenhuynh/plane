@@ -44,6 +44,18 @@ class AgentRun(ProjectBaseModel):
     rework_round = models.PositiveSmallIntegerField(default=0)
     result = models.TextField(blank=True)
     error = models.TextField(blank=True)
+    parent_run = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, related_name="follow_ups")
+    instructions = models.TextField(blank=True)
+    trigger_comment = models.ForeignKey(
+        "db.IssueComment", on_delete=models.SET_NULL, null=True, blank=True, related_name="agent_runs"
+    )
+    repository = models.CharField(max_length=500, blank=True)
+    base_branch = models.CharField(max_length=255, blank=True)
+    branch = models.CharField(max_length=255, blank=True)
+    base_sha = models.CharField(max_length=64, blank=True)
+    head_sha = models.CharField(max_length=64, blank=True)
+    pull_request_number = models.PositiveIntegerField(null=True, blank=True)
+    pull_request_url = models.URLField(max_length=1000, blank=True)
     started_at = models.DateTimeField(null=True)
     completed_at = models.DateTimeField(null=True)
 
@@ -105,6 +117,14 @@ class AgentRunTask(BaseModel):
     agent = models.ForeignKey("db.AIAgent", on_delete=models.SET_NULL, null=True, related_name="run_tasks")
     status = models.CharField(max_length=20, default="pending")
     output = models.TextField(blank=True)
+    paths = models.JSONField(default=list)
+    depends_on = models.JSONField(default=list)
+    session_id = models.CharField(max_length=140, blank=True)
+    base_sha = models.CharField(max_length=64, blank=True)
+    commit_sha = models.CharField(max_length=64, blank=True)
+    merged_sha = models.CharField(max_length=64, blank=True)
+    changed_paths = models.JSONField(default=list)
+    conflict_attempts = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         verbose_name = "Agent Run Task"
@@ -130,6 +150,7 @@ class AgentRunSession(BaseModel):
     agent_name = models.CharField(max_length=255, blank=True)
     stage = models.CharField(max_length=20, blank=True)
     purpose = models.CharField(max_length=30, blank=True)
+    session_id = models.CharField(max_length=140, blank=True)
     rework_round = models.PositiveSmallIntegerField(default=0)
     provider = models.CharField(max_length=50, blank=True)
     model = models.CharField(max_length=255, blank=True)
@@ -143,6 +164,8 @@ class AgentRunSession(BaseModel):
     reasoning = models.TextField(blank=True)
     stop_reason = models.CharField(max_length=50, blank=True)
     usage = models.JSONField(default=dict)
+    tool_calls = models.JSONField(default=list)
+    cost = models.DecimalField(max_digits=14, decimal_places=6, null=True, blank=True)
     input_tokens = models.PositiveIntegerField(null=True, blank=True)
     output_tokens = models.PositiveIntegerField(null=True, blank=True)
     error = models.TextField(blank=True)

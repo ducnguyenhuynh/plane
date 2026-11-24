@@ -7,10 +7,7 @@
 import type { TAgentProvider, TAgentReasoningEffort, TAgentRole } from "@plane/types";
 
 export const AGENT_PROVIDERS: { value: TAgentProvider; label: string; defaultBaseUrl: string }[] = [
-  { value: "anthropic", label: "Anthropic", defaultBaseUrl: "https://api.anthropic.com" },
-  { value: "openai", label: "OpenAI", defaultBaseUrl: "https://api.openai.com/v1" },
-  { value: "opencode", label: "OpenCode", defaultBaseUrl: "https://opencode.ai/zen/v1" },
-  { value: "custom", label: "Custom (OpenAI-compatible)", defaultBaseUrl: "" },
+  { value: "opencode", label: "OpenCode", defaultBaseUrl: "https://opencode.ai/inference/go/v1" },
 ];
 
 export const AGENT_ROLES: { value: TAgentRole; label: string }[] = [

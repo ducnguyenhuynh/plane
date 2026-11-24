@@ -513,7 +513,29 @@
       "response": "Antwoord",
       "error": "Fout",
       "tokens": "{input, number} invoer · {output, number} uitvoer tokens",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Toolaanroepen",
+      "tool_input": "Invoer",
+      "tool_output": "Uitvoer",
+      "session_id": "Sessie-ID"
+    },
+    "git": {
+      "title": "Repository",
+      "repository": "Repository",
+      "branch": "Branch",
+      "commit": "Laatste commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Nog niet geopend",
+      "files_changed": "Gewijzigde bestanden: {count, number}",
+      "conflict_attempts": "Conflictoplossingen: {count, number}"
+    },
+    "follow_up": {
+      "title": "Dit werk voortzetten",
+      "label": "Wat moeten de agenten hierna wijzigen of doen?",
+      "placeholder": "Beschrijf de gewenste wijziging",
+      "hint": "De agenten gaan verder vanuit hun eerdere sessies en dezelfde branch. U kunt een agent ook in een opmerking vermelden.",
+      "submit": "Werk voortzetten",
+      "submitting": "Bezig met starten…"
     }
   }
 }

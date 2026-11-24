@@ -513,7 +513,29 @@
       "response": "Antwort",
       "error": "Fehler",
       "tokens": "{input, number} Eingabe- · {output, number} Ausgabe-Tokens",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Tool-Aufrufe",
+      "tool_input": "Eingabe",
+      "tool_output": "Ausgabe",
+      "session_id": "Sitzungs-ID"
+    },
+    "git": {
+      "title": "Repository",
+      "repository": "Repository",
+      "branch": "Branch",
+      "commit": "Letzter Commit",
+      "pull_request": "Pull Request",
+      "no_pull_request": "Noch nicht geöffnet",
+      "files_changed": "Geänderte Dateien: {count, number}",
+      "conflict_attempts": "Konfliktbehebungen: {count, number}"
+    },
+    "follow_up": {
+      "title": "Diese Arbeit fortsetzen",
+      "label": "Was sollen die Agenten als Nächstes ändern oder tun?",
+      "placeholder": "Beschreiben Sie die gewünschte Änderung",
+      "hint": "Die Agenten setzen ihre früheren Sitzungen und denselben Branch fort. Sie können einen Agenten auch in einem Kommentar erwähnen.",
+      "submit": "Arbeit fortsetzen",
+      "submitting": "Wird gestartet…"
     }
   }
 }

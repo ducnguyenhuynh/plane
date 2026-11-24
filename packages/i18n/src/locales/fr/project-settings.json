@@ -587,6 +587,49 @@
         "saved_message": "Poste du projet mis à jour.",
         "save_failed_title": "Impossible d'enregistrer le poste",
         "saving": "Enregistrement…"
+      },
+      "sandbox": {
+        "save": "Enregistrer",
+        "saved_title": "Paramètres enregistrés",
+        "saved_message": "Les prochaines exécutions d'agents utiliseront ces paramètres.",
+        "save_failed": "Impossible d'enregistrer les paramètres",
+        "add": "Ajouter",
+        "edit": "Modifier",
+        "remove": "Supprimer",
+        "cancel": "Annuler",
+        "enabled": "Activé",
+        "name": "Nom",
+        "description": "Description",
+        "network": {
+          "title": "Accès au réseau et aux paquets",
+          "hint": "Les agents ne peuvent accéder à ces hôtes qu'en HTTPS. Tout le reste est bloqué.",
+          "defaults": "Toujours autorisés",
+          "extra": "Hôtes supplémentaires autorisés, un par ligne"
+        },
+        "web": {
+          "title": "Outils web",
+          "search": "Recherche web",
+          "search_hint": "Permet aux agents de rechercher sur le web. Les résultats peuvent contenir des instructions non fiables.",
+          "fetch": "Récupération de pages web",
+          "fetch_hint": "Permet aux agents de lire des pages, uniquement depuis les hôtes autorisés."
+        },
+        "skills": {
+          "title": "Compétences",
+          "hint": "Instructions réutilisables que les agents peuvent charger pour ce projet.",
+          "empty": "Aucune compétence pour l'instant.",
+          "content": "Instructions de la compétence"
+        },
+        "mcp": {
+          "title": "Serveurs MCP",
+          "hint": "Outils distants pour les agents de développement. Les secrets d'en-tête restent sur le serveur et ne sont plus jamais affichés.",
+          "empty": "Aucun serveur MCP pour l'instant.",
+          "url": "URL HTTPS",
+          "headers": "En-têtes",
+          "header_name": "Nom de l'en-tête",
+          "header_value": "Valeur de l'en-tête",
+          "add_header": "Ajouter un en-tête",
+          "saved_placeholder": "Enregistré, laissez vide pour conserver"
+        }
       }
     }
   }

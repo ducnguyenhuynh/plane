@@ -587,6 +587,49 @@
         "saved_message": "Poziția din proiect a fost actualizată.",
         "save_failed_title": "Poziția nu a putut fi salvată",
         "saving": "Se salvează…"
+      },
+      "sandbox": {
+        "save": "Salvează",
+        "saved_title": "Setări salvate",
+        "saved_message": "Noile rulări ale agenților vor folosi aceste setări.",
+        "save_failed": "Setările nu au putut fi salvate",
+        "add": "Adaugă",
+        "edit": "Editează",
+        "remove": "Elimină",
+        "cancel": "Anulează",
+        "enabled": "Activat",
+        "name": "Nume",
+        "description": "Descriere",
+        "network": {
+          "title": "Acces la rețea și pachete",
+          "hint": "Agenții pot accesa aceste gazde doar prin HTTPS. Orice altceva este blocat.",
+          "defaults": "Întotdeauna permise",
+          "extra": "Gazde suplimentare permise, câte una pe linie"
+        },
+        "web": {
+          "title": "Instrumente web",
+          "search": "Căutare web",
+          "search_hint": "Permite agenților să caute pe web. Rezultatele pot conține instrucțiuni nesigure.",
+          "fetch": "Preluare de pagini web",
+          "fetch_hint": "Permite agenților să citească pagini, doar de pe gazdele permise."
+        },
+        "skills": {
+          "title": "Abilități",
+          "hint": "Instrucțiuni reutilizabile pe care agenții le pot încărca pentru acest proiect.",
+          "empty": "Încă nu există abilități.",
+          "content": "Instrucțiuni pentru abilitate"
+        },
+        "mcp": {
+          "title": "Servere MCP",
+          "hint": "Instrumente la distanță pentru agenții dezvoltatori. Secretele antetelor rămân pe server și nu mai sunt afișate niciodată.",
+          "empty": "Încă nu există servere MCP.",
+          "url": "URL HTTPS",
+          "headers": "Antete",
+          "header_name": "Nume antet",
+          "header_value": "Valoare antet",
+          "add_header": "Adaugă antet",
+          "saved_placeholder": "Salvat, lăsați gol pentru a păstra"
+        }
       }
     }
   }

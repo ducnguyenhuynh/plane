@@ -513,7 +513,29 @@
       "response": "Réponse",
       "error": "Erreur",
       "tokens": "{input, number} jetons en entrée · {output, number} jetons en sortie",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Appels d'outils",
+      "tool_input": "Entrée",
+      "tool_output": "Sortie",
+      "session_id": "ID de session"
+    },
+    "git": {
+      "title": "Dépôt",
+      "repository": "Dépôt",
+      "branch": "Branche",
+      "commit": "Dernier commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Pas encore ouverte",
+      "files_changed": "Fichiers modifiés : {count, number}",
+      "conflict_attempts": "Résolutions de conflits : {count, number}"
+    },
+    "follow_up": {
+      "title": "Poursuivre ce travail",
+      "label": "Que doivent modifier ou faire les agents ensuite ?",
+      "placeholder": "Décrivez la modification souhaitée",
+      "hint": "Les agents reprennent leurs sessions précédentes et la même branche. Vous pouvez aussi mentionner un agent dans un commentaire.",
+      "submit": "Poursuivre le travail",
+      "submitting": "Démarrage…"
     }
   }
 }

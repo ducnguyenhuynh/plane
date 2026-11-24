@@ -513,7 +513,29 @@
       "response": "Răspuns",
       "error": "Eroare",
       "tokens": "{input, number} tokenuri de intrare · {output, number} de ieșire",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Apeluri de instrumente",
+      "tool_input": "Intrare",
+      "tool_output": "Ieșire",
+      "session_id": "ID sesiune"
+    },
+    "git": {
+      "title": "Repository",
+      "repository": "Repository",
+      "branch": "Branch",
+      "commit": "Ultimul commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Încă nu a fost deschis",
+      "files_changed": "Fișiere modificate: {count, number}",
+      "conflict_attempts": "Corectări de conflicte: {count, number}"
+    },
+    "follow_up": {
+      "title": "Continuați această lucrare",
+      "label": "Ce trebuie să modifice sau să facă agenții în continuare?",
+      "placeholder": "Descrieți modificarea dorită",
+      "hint": "Agenții continuă din sesiunile anterioare și pe același branch. Puteți menționa un agent și într-un comentariu.",
+      "submit": "Continuați lucrarea",
+      "submitting": "Se pornește…"
     }
   }
 }

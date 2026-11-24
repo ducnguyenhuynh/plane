@@ -9,7 +9,7 @@ import json
 from django.utils import timezone
 from django.db.models import Exists
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 
 # Third Party imports
 from rest_framework.response import Response
@@ -21,6 +21,7 @@ from plane.app.serializers import IssueCommentSerializer, CommentReactionSeriali
 from plane.app.permissions import allow_permission, issue_hidden_from_guest, ROLE
 from plane.db.models import IssueComment, ProjectMember, CommentReaction, Project, Issue
 from plane.bgtasks.issue_activities_task import issue_activity
+from plane.utils.exception_logger import log_exception
 from plane.utils.host import base_host
 from plane.bgtasks.webhook_task import model_activity
 from .relation import issue_in_project
@@ -28,6 +29,22 @@ from .relation import issue_in_project
 # Only the content and visibility are client-writable; actor, parent and the
 # other relations are set by the server.
 COMMENT_WRITABLE_FIELDS = ("comment_html", "comment_json", "access")
+
+
+def _comment_followup(comment_id, user_id):
+    """After the comment is committed, let an agent mention start a follow-up run."""
+    # A comment must never fail because of agents
+    try:
+        # Imported lazily: the agent modules import the app's serializers
+        from plane.db.models import IssueComment, User
+        from plane.utils.agent_followup import handle_comment_followup
+
+        comment = IssueComment.objects.filter(pk=comment_id).first()
+        user = User.objects.filter(pk=user_id).first()
+        if comment is not None and user is not None:
+            handle_comment_followup(comment, user)
+    except Exception as e:
+        log_exception(e)
 
 
 class IssueCommentViewSet(BaseViewSet):
@@ -119,7 +136,7 @@ class IssueCommentViewSet(BaseViewSet):
         data = {key: request.data[key] for key in COMMENT_WRITABLE_FIELDS if key in request.data}
         serializer = IssueCommentSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(project_id=project_id, issue_id=issue_id, actor=request.user)
+            comment = serializer.save(project_id=project_id, issue_id=issue_id, actor=request.user)
             issue_activity.delay(
                 type="comment.activity.created",
                 requested_data=json.dumps(serializer.data, cls=DjangoJSONEncoder),
@@ -141,6 +158,8 @@ class IssueCommentViewSet(BaseViewSet):
                 slug=slug,
                 origin=base_host(request=request, is_app=True),
             )
+            # A comment that mentions an agent may start a follow-up run
+            transaction.on_commit(lambda: _comment_followup(comment.id, request.user.id))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -103,6 +103,62 @@ services:
       - plane-db
       - plane-redis
 
+  agent-sandbox-image:
+    profiles:
+      - agents
+    image: plane-agent-sandbox:2.2.6
+    build:
+      context: ./apps/agent-runner
+      dockerfile: sandbox.Dockerfile
+    entrypoint: ["true"]
+    restart: "no"
+    network_mode: none
+
+  agent-runner:
+    profiles:
+      - agents
+    build: ./apps/agent-runner
+    restart: unless-stopped
+    networks:
+      - dev_env
+      - agent_sandbox
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}:/agent-workspaces
+    environment:
+      AGENT_WORKSPACE_ROOT: /agent-workspaces
+      AGENT_WORKSPACE_HOST_ROOT: ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}
+    env_file:
+      - path: ./apps/agent-runner/.env
+        required: false
+
+  agent-worker:
+    profiles:
+      - agents
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: unless-stopped
+    command: ./bin/docker-entrypoint-agent-worker.sh
+    networks:
+      - dev_env
+    volumes:
+      - ./apps/api:/code
+      - ${AGENT_WORKSPACE_HOST_ROOT:-/srv/plane-agent-workspaces}:/agent-workspaces
+    env_file:
+      - path: ./apps/api/.env
+      - path: ./apps/agent-runner/.env
+        required: false
+    environment:
+      AGENT_WORKSPACE_ROOT: /agent-workspaces
+    depends_on:
+      - api
+      - plane-db
+      - plane-redis
+      - agent-runner
+
   beat-worker:
     build:
       context: ./apps/api
@@ -149,3 +205,6 @@ volumes:
 networks:
   dev_env:
     driver: bridge
+  agent_sandbox:
+    name: plane-agent-sandbox
+    internal: true

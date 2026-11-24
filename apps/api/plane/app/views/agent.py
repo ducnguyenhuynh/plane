@@ -26,9 +26,9 @@ from plane.utils.agent_bot import (
     ensure_project_member,
     sync_agent_bot_name,
 )
+from plane.utils.agent_followup import team_limits
 from plane.utils.agent_runtime import check_agent_connection
 
-from .agent_run import team_limits
 from .base import BaseAPIView
 
 

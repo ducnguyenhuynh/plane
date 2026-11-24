@@ -513,7 +513,29 @@
       "response": "Respuesta",
       "error": "Error",
       "tokens": "{input, number} tokens de entrada · {output, number} de salida",
-      "duration": "{seconds, number} s"
+      "duration": "{seconds, number} s",
+      "tools": "Llamadas a herramientas",
+      "tool_input": "Entrada",
+      "tool_output": "Salida",
+      "session_id": "ID de sesión"
+    },
+    "git": {
+      "title": "Repositorio",
+      "repository": "Repositorio",
+      "branch": "Rama",
+      "commit": "Último commit",
+      "pull_request": "Pull request",
+      "no_pull_request": "Aún no se ha abierto",
+      "files_changed": "Archivos modificados: {count, number}",
+      "conflict_attempts": "Correcciones de conflictos: {count, number}"
+    },
+    "follow_up": {
+      "title": "Continúe este trabajo",
+      "label": "¿Qué deben cambiar o hacer los agentes a continuación?",
+      "placeholder": "Describa el cambio que desea",
+      "hint": "Los agentes continúan desde sus sesiones anteriores y la misma rama. También puede mencionar a un agente en un comentario.",
+      "submit": "Continuar el trabajo",
+      "submitting": "Iniciando…"
     }
   }
 }

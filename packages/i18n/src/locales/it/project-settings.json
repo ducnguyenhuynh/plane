@@ -587,6 +587,49 @@
         "saved_message": "Posizione del progetto aggiornata.",
         "save_failed_title": "Impossibile salvare la posizione",
         "saving": "Salvataggio…"
+      },
+      "sandbox": {
+        "save": "Salva",
+        "saved_title": "Impostazioni salvate",
+        "saved_message": "Le nuove esecuzioni degli agenti useranno queste impostazioni.",
+        "save_failed": "Impossibile salvare le impostazioni",
+        "add": "Aggiungi",
+        "edit": "Modifica",
+        "remove": "Rimuovi",
+        "cancel": "Annulla",
+        "enabled": "Attivato",
+        "name": "Nome",
+        "description": "Descrizione",
+        "network": {
+          "title": "Accesso a rete e pacchetti",
+          "hint": "Gli agenti possono raggiungere questi host solo tramite HTTPS. Tutto il resto è bloccato.",
+          "defaults": "Sempre consentiti",
+          "extra": "Host aggiuntivi consentiti, uno per riga"
+        },
+        "web": {
+          "title": "Strumenti web",
+          "search": "Ricerca web",
+          "search_hint": "Consente agli agenti di cercare sul web. I risultati possono contenere istruzioni non affidabili.",
+          "fetch": "Recupero di pagine web",
+          "fetch_hint": "Consente agli agenti di leggere pagine, solo dagli host consentiti."
+        },
+        "skills": {
+          "title": "Competenze",
+          "hint": "Istruzioni riutilizzabili che gli agenti possono caricare per questo progetto.",
+          "empty": "Nessuna competenza per ora.",
+          "content": "Istruzioni della competenza"
+        },
+        "mcp": {
+          "title": "Server MCP",
+          "hint": "Strumenti remoti per gli agenti di sviluppo. I segreti degli header restano sul server e non vengono mai più mostrati.",
+          "empty": "Nessun server MCP per ora.",
+          "url": "URL HTTPS",
+          "headers": "Header",
+          "header_name": "Nome dell'header",
+          "header_value": "Valore dell'header",
+          "add_header": "Aggiungi header",
+          "saved_placeholder": "Salvato, lasciare vuoto per conservare"
+        }
       }
     }
   }

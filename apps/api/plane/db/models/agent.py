@@ -12,10 +12,14 @@ from .project import ProjectBaseModel
 
 
 class AgentProvider(models.TextChoices):
+    # Old providers stay valid so existing rows keep loading; only OpenCode may be created
     ANTHROPIC = "anthropic", "Anthropic"
     OPENAI = "openai", "OpenAI"
     OPENCODE = "opencode", "OpenCode"
     CUSTOM = "custom", "Custom (OpenAI-compatible)"
+
+
+OPENCODE_BASE_URL = "https://opencode.ai/inference/go/v1"
 
 
 class AgentRole(models.TextChoices):
@@ -38,13 +42,26 @@ class ReasoningEffort(models.TextChoices):
 DEFAULT_AGENT_TEAM = {"pm_count": 1, "qa_count": 1, "developer_count": 3}
 MAX_TEAM_COUNT = 10
 
+# Registries the sandboxes may reach when installing dependencies
+DEFAULT_AGENT_ALLOWED_HOSTS = [
+    "registry.npmjs.org",
+    "pypi.org",
+    "files.pythonhosted.org",
+    "proxy.golang.org",
+    "sum.golang.org",
+    "index.crates.io",
+    "static.crates.io",
+    "crates.io",
+]
+AGENT_WEBSEARCH_HOST = "mcp.exa.ai"
+
 
 class AIAgent(BaseModel):
     """A workspace level AI agent: which provider/model it talks to and how."""
 
     workspace = models.ForeignKey("db.Workspace", on_delete=models.CASCADE, related_name="ai_agents")
     name = models.CharField(max_length=255)
-    provider = models.CharField(max_length=30, choices=AgentProvider.choices, default=AgentProvider.ANTHROPIC)
+    provider = models.CharField(max_length=30, choices=AgentProvider.choices, default=AgentProvider.OPENCODE)
     model = models.CharField(max_length=255)
     # Encrypted with plane.license.utils.encryption before being stored, never serialized back
     api_key = models.TextField(blank=True)
@@ -110,6 +127,11 @@ class ProjectAgentTeam(ProjectBaseModel):
     pm_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["pm_count"])
     qa_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["qa_count"])
     developer_count = models.PositiveSmallIntegerField(default=DEFAULT_AGENT_TEAM["developer_count"])
+    allowed_hosts = models.JSONField(default=list)
+    websearch_enabled = models.BooleanField(default=False)
+    webfetch_enabled = models.BooleanField(default=False)
+    skills = models.JSONField(default=list)
+    mcp_servers = models.JSONField(default=list)
 
     def __str__(self):
         return f"{self.project.name} team"
